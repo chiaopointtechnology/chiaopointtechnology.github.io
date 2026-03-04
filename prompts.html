@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喬點科技 — AI 指令庫 Prompt Library</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap');
+
+        :root {
+            --bg: #f5f2ed;
+            --bg-alt: #eae6df;
+            --text: #1a1a1a;
+            --text-light: #6b6560;
+            --text-muted: #9e9790;
+            --accent: #c44b2b;
+            --accent-light: rgba(196, 75, 43, 0.08);
+            --border: #d4cfc8;
+            --card: #ffffff;
+            --serif: 'DM Serif Display', 'Noto Serif TC', serif;
+            --sans: 'Space Grotesk', 'Noto Sans TC', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        ::selection { background: var(--accent); color: #fff; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== NAV ===== */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 16px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(245, 242, 237, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-brand {
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 140px 48px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-label {
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-family: var(--serif);
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 400;
+            line-height: 1.15;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 17px;
+            color: var(--text-light);
+            max-width: 560px;
+            line-height: 1.8;
+        }
+
+        /* ===== STATS ===== */
+        .stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+        }
+
+        .stat-item .stat-num {
+            font-family: var(--serif);
+            font-size: 32px;
+            color: var(--accent);
+        }
+
+        .stat-item .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ===== SEARCH ===== */
+        .search-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 48px 40px;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 480px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            font-family: var(--sans);
+            font-size: 15px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            outline: none;
+            color: var(--text);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+        }
+
+        .search-box input::placeholder { color: var(--text-muted); }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        /* ===== CATEGORY TABS ===== */
+        .tabs-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 48px 32px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            font-family: var(--sans);
+            font-size: 14px;
+            font-weight: 500;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            border-color: var(--text-light);
+            color: var(--text);
+        }
+
+        .tab.active {
+            background: var(--text);
+            border-color: var(--text);
+            color: #fff;
+        }
+
+        .tab .tab-count {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 1px 8px;
+            border-radius: 100px;
+            font-size: 12px;
+            margin-left: 6px;
+        }
+
+        .tab.active .tab-count {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .tab:not(.active) .tab-count {
+            background: var(--bg-alt);
+        }
+
+        /* ===== PROMPTS GRID ===== */
+        .prompts-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 48px 80px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .category-header h2 {
+            font-family: var(--serif);
+            font-size: 28px;
+            font-weight: 400;
+        }
+
+        .category-header .cat-count {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .category-group {
+            margin-bottom: 56px;
+        }
+
+        .category-group.hidden { display: none; }
+
+        .subcategory-label {
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin: 24px 0 12px;
+        }
+
+        .prompts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 16px;
+        }
+
+        /* ===== PROMPT CARD ===== */
+        .prompt-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prompt-card:hover {
+            border-color: var(--text-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+        }
+
+        .prompt-card .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .prompt-card .card-title {
+            font-weight: 600;
+            font-size: 15px;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .prompt-card .card-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .tag {
+            font-size: 11px;
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-easy { background: #e8f5e9; color: #2e7d32; }
+        .tag-medium { background: #fff3e0; color: #e65100; }
+        .tag-advanced { background: #fce4ec; color: #c62828; }
+        .tag-type { background: var(--bg-alt); color: var(--text-light); }
+
+        .prompt-card .card-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .prompt-card .card-prompt {
+            background: #faf8f5;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text);
+            white-space: pre-wrap;
+            max-height: 120px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .prompt-card .card-prompt.expanded {
+            max-height: none;
+        }
+
+        .prompt-card .card-prompt::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 40px;
+            background: linear-gradient(transparent, #faf8f5);
+            pointer-events: none;
+        }
+
+        .prompt-card .card-prompt.expanded::after {
+            display: none;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .btn-copy, .btn-expand {
+            padding: 7px 14px;
+            font-family: var(--sans);
+            font-size: 12px;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            color: var(--text-light);
+        }
+
+        .btn-copy:hover {
+            background: var(--text);
+            color: #fff;
+            border-color: var(--text);
+        }
+
+        .btn-copy.copied {
+            background: #2e7d32;
+            color: #fff;
+            border-color: #2e7d32;
+        }
+
+        .btn-expand:hover {
+            border-color: var(--text-light);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 200;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            font-size: 15px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 48px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            nav { padding: 14px 20px; }
+            .nav-links { display: none; }
+            .hero { padding: 100px 20px 40px; }
+            .hero h1 { font-size: 32px; }
+            .stats { gap: 24px; flex-wrap: wrap; }
+            .search-section, .tabs-section, .prompts-section { padding-left: 20px; padding-right: 20px; }
+            .prompts-grid { grid-template-columns: 1fr; }
+            footer { padding: 32px 20px; flex-direction: column; gap: 12px; }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-brand">ChiaoPoint</div>
+    <ul class="nav-links">
+        <li><a href="index.html">Organization</a></li>
+        <li><a href="office.html">Office</a></li>
+        <li><a href="prompts.html" style="color: var(--accent);">Prompts</a></li>
+    </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-label">AI Prompt Library</div>
+    <h1>AI 指令庫</h1>
+    <p>整理好的 AI 指令模板，讓非工程背景也能精準下指令。複製、貼上、完成。不用再來回幾十次。</p>
+    <div class="stats">
+        <div class="stat-item">
+            <div class="stat-num" id="total-count">0</div>
+            <div class="stat-label">指令模板</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">6</div>
+            <div class="stat-label">分類</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">3</div>
+            <div class="stat-label">難度等級</div>
+        </div>
+    </div>
+</section>
+
+<!-- SEARCH -->
+<section class="search-section">
+    <div class="search-box">
+        <span class="search-icon">&#9906;</span>
+        <input type="text" id="searchInput" placeholder="搜尋指令... 例如：截圖、build、網站">
+    </div>
+</section>
+
+<!-- TABS -->
+<section class="tabs-section">
+    <div class="tabs" id="tabs">
+        <button class="tab active" data-cat="all">全部 <span class="tab-count" id="count-all">0</span></button>
+        <button class="tab" data-cat="app-dev">App 開發 <span class="tab-count" id="count-app-dev">0</span></button>
+        <button class="tab" data-cat="app-store">App Store 上架 <span class="tab-count" id="count-app-store">0</span></button>
+        <button class="tab" data-cat="website">網站製作 <span class="tab-count" id="count-website">0</span></button>
+        <button class="tab" data-cat="business">商業文件 <span class="tab-count" id="count-business">0</span></button>
+        <button class="tab" data-cat="marketing">行銷社群 <span class="tab-count" id="count-marketing">0</span></button>
+        <button class="tab" data-cat="automation">自動化流程 <span class="tab-count" id="count-automation">0</span></button>
+    </div>
+</section>
+
+<!-- PROMPTS -->
+<section class="prompts-section" id="prompts-container">
+</section>
+
+<!-- TOAST -->
+<div class="toast" id="toast">已複製到剪貼簿</div>
+
+<!-- FOOTER -->
+<footer>
+    <div>喬點科技 ChiaoPoint Technology &copy; 2026</div>
+    <div><a href="index.html">組織藍圖</a> &middot; <a href="office.html">虛擬辦公室</a></div>
+</footer>
+
+<script>
+// ============================================
+// PROMPT DATA
+// ============================================
+const promptData = [
+    // ──────────────────────────────────────
+    // APP 開發
+    // ──────────────────────────────────────
+    {
+        cat: 'app-dev',
+        sub: '建立新頁面',
+        title: '建立新的 SwiftUI View',
+        desc: '請 AI 在專案中新增一個完整的 SwiftUI 頁面，風格統一。',
+        tags: ['easy', 'SwiftUI'],
+        prompt: `幫我在這個 SwiftUI 專案中建立一個新的 View，名稱叫「___View」。
+
+要求：
+- 風格跟現有的 ReadyView 一致
+- 使用專案的 ThemeManager 顏色
+- 有返回按鈕 <<<
+- 支援多語系（en, zh-Hant, ja, ko, th）
+- 先讀現有的程式碼再寫`
+    },
+    {
+        cat: 'app-dev',
+        sub: '建立新頁面',
+        title: '建立清單頁面（含搜尋）',
+        desc: '建立有搜尋功能的列表頁面，帶篩選和排序。',
+        tags: ['medium', 'SwiftUI'],
+        prompt: `幫我建一個清單頁面，名稱叫「___View」。
+
+功能：
+- 頂部有搜尋欄
+- 列表顯示項目（圖片 + 標題 + 副標題）
+- 可以按分類篩選
+- 空狀態要有提示文字
+- 風格跟現有專案一致
+- 支援多語系`
+    },
+    {
+        cat: 'app-dev',
+        sub: '修 Bug',
+        title: '用截圖描述 Bug',
+        desc: '附上截圖讓 AI 理解問題，最有效的回報方式。',
+        tags: ['easy', '除錯'],
+        prompt: `這個頁面有問題，截圖如附。
+
+問題描述：[用白話說你看到什麼不對的]
+預期行為：[你希望它怎麼運作]
+
+請先讀相關的程式碼，找出問題原因，修改前先跟我確認。`
+    },
+    {
+        cat: 'app-dev',
+        sub: '修 Bug',
+        title: '功能不work的回報',
+        desc: '某個功能按了沒反應或結果不對。',
+        tags: ['easy', '除錯'],
+        prompt: `「___」功能壞了。
+
+現象：按下 [按鈕/操作] 後，[描述發生了什麼]
+正確應該是：[你期望的結果]
+在哪個頁面：[頁面名稱]
+
+請先讀該頁面的程式碼，找出原因再修改。改之前先跟我確認。`
+    },
+    {
+        cat: 'app-dev',
+        sub: 'UI 調整',
+        title: '調整頁面外觀',
+        desc: '修改顏色、字體大小、間距等視覺細節。',
+        tags: ['easy', 'UI'],
+        prompt: `幫我調整「___View」的外觀：
+
+- [要改什麼，例如：標題字太小、間距太寬、顏色要改成___]
+- 截圖如附（標註了要改的地方）
+
+改完截圖給我看確認。`
+    },
+    {
+        cat: 'app-dev',
+        sub: 'UI 調整',
+        title: '照截圖/設計稿做 UI',
+        desc: '給 AI 一張截圖或設計稿，請它照做。',
+        tags: ['medium', 'UI'],
+        prompt: `我要做一個像截圖這樣的畫面（截圖如附）。
+
+請照這個設計做一個 SwiftUI View：
+- 整體佈局跟截圖一致
+- 用專案現有的配色和字體風格
+- 需要的圖片先用 SF Symbols 代替
+- 先跟我確認你理解的設計再開始寫`
+    },
+    {
+        cat: 'app-dev',
+        sub: '功能開發',
+        title: '新增一個功能',
+        desc: '請 AI 開發新功能，用白話描述你要什麼。',
+        tags: ['medium', '功能'],
+        prompt: `我想在 App 裡加一個新功能：「___」
+
+使用情境：[使用者什麼時候會用到這個功能]
+功能描述：[用你自己的話描述它做什麼]
+參考：[有沒有其他 App 的類似功能可以參考]
+
+請先告訴我你打算怎麼做，我確認後再寫程式碼。`
+    },
+    {
+        cat: 'app-dev',
+        sub: '功能開發',
+        title: '加入動畫效果',
+        desc: '為現有頁面加上轉場或互動動畫。',
+        tags: ['medium', '動畫'],
+        prompt: `幫我在「___View」加入動畫效果：
+
+我想要的效果：[描述動畫，例如：卡片滑入、淡入淡出、按下會彈跳]
+參考：[如果有參考影片或 App 可以描述]
+觸發時機：[什麼時候播放動畫，例如：頁面載入時、按下按鈕時]
+
+用 SwiftUI 原生動畫，不要用第三方套件。`
+    },
+    {
+        cat: 'app-dev',
+        sub: '資料與後端',
+        title: '新增 Firebase 功能',
+        desc: '新增 Firestore 讀寫、Auth 或其他 Firebase 功能。',
+        tags: ['advanced', 'Firebase'],
+        prompt: `我要在 App 中加一個跟 Firebase 相關的功能：
+
+功能：[例如：儲存使用者的 OOO 資料到 Firestore]
+資料結構：[你想存什麼欄位]
+誰可以讀寫：[所有人 / 只有自己]
+
+請使用專案現有的 Firebase 設定（已有 Auth 和 Firestore）。`
+    },
+    {
+        cat: 'app-dev',
+        sub: '多語系',
+        title: '新增多語系翻譯',
+        desc: '幫新功能加入 5 個語系的翻譯。',
+        tags: ['easy', '多語系'],
+        prompt: `我剛做了新功能，需要加入多語系翻譯。
+
+需要翻譯的文字：
+1. 「___」
+2. 「___」
+3. 「___」
+
+請幫我更新這 5 個語系的 Localizable.strings：
+- en（英文）
+- zh-Hant（繁體中文）
+- ja（日文）
+- ko（韓文）
+- th（泰文）`
+    },
+
+    // ──────────────────────────────────────
+    // APP STORE 上架
+    // ──────────────────────────────────────
+    {
+        cat: 'app-store',
+        sub: 'Build 上傳',
+        title: 'Build Number +1 並上傳',
+        desc: '準備新 Build 上傳到 App Store Connect。',
+        tags: ['easy', 'Xcode'],
+        prompt: `幫我把 Build Number 加 1（兩個 Target 都要改：PetitAPetit 和 RunningActivityWidget），然後告訴我 Archive 和上傳的步驟。`
+    },
+    {
+        cat: 'app-store',
+        sub: 'Build 上傳',
+        title: '版本號升級',
+        desc: '從 1.x 升到下一個版本。',
+        tags: ['easy', 'Xcode'],
+        prompt: `幫我把 App 版本從 ___ 升到 ___（兩個 Target 都要改），Build Number 設為 ___。改完告訴我確認。`
+    },
+    {
+        cat: 'app-store',
+        sub: '審查回覆',
+        title: '回覆 Apple 審查被拒',
+        desc: '被 Apple 拒絕後，產生英文回覆訊息。',
+        tags: ['easy', '審查'],
+        prompt: `App 被 Apple 審查拒絕了，原因如截圖。
+
+請幫我：
+1. 用中文解釋被拒的原因
+2. 告訴我需要修改什麼
+3. 寫一段簡短的英文回覆給審查人員（禮貌、專業、說明已修正）`
+    },
+    {
+        cat: 'app-store',
+        sub: '審查回覆',
+        title: '申訴 Apple 審查決定',
+        desc: '如果你認為被拒的理由不合理，可以申訴。',
+        tags: ['medium', '審查'],
+        prompt: `App 被拒了，但我覺得原因不合理：
+
+被拒原因：[Apple 說的理由]
+我認為的情況：[為什麼你覺得不合理]
+
+幫我寫一封英文申訴信，語氣禮貌但堅定，附上具體說明。`
+    },
+    {
+        cat: 'app-store',
+        sub: 'ASO 優化',
+        title: 'App Store 多語系文案',
+        desc: '產生多語系的 App 名稱、副標題、描述、關鍵字。',
+        tags: ['medium', 'ASO'],
+        prompt: `幫我優化 App Store 的多語系文案。
+
+App 名稱：___
+App 功能簡述：___
+
+請產出以下語系的內容（每個都要）：
+- English / 繁體中文 / 日本語 / 한국어 / ภาษาไทย
+
+每個語系需要：
+1. App 名稱（含關鍵字，30字以內）
+2. 副標題（30字以內）
+3. 關鍵字（100字以內，逗號分隔）
+4. 簡短描述（前3行最重要）`
+    },
+    {
+        cat: 'app-store',
+        sub: '截圖',
+        title: '準備上架截圖',
+        desc: '生成或調整 App Store 截圖尺寸。',
+        tags: ['easy', '截圖'],
+        prompt: `幫我處理 App Store 截圖：
+
+- 原始截圖在：[路徑]
+- 需要 resize 到 1284x2778（6.5 吋 iPhone）
+- 語系：[en / zh / ja / ko / th]
+
+請用 sips 指令幫我批次處理。`
+    },
+    {
+        cat: 'app-store',
+        sub: 'IAP 商品',
+        title: 'IAP 商品元資料',
+        desc: '準備 In-App Purchase 商品的多語系名稱和說明。',
+        tags: ['medium', 'IAP'],
+        prompt: `幫我準備 IAP 商品的多語系元資料。
+
+商品：
+1. [商品名稱] - [價格] - [功能描述]
+2. ...
+
+請產出 5 個語系（en, zh-Hant, ja, ko, th）的：
+- 顯示名稱
+- 說明文字（簡短，一行）`
+    },
+
+    // ──────────────────────────────────────
+    // 網站製作
+    // ──────────────────────────────────────
+    {
+        cat: 'website',
+        sub: '整頁網站',
+        title: '藝術風格單頁網站',
+        desc: '建立一個有質感的滾動式單頁網站。',
+        tags: ['medium', '網站'],
+        prompt: `幫我建一個藝術風格的滾動式單頁網站。
+
+主題：___
+風格：[極簡 / 日系 / 歐美雜誌 / Readymag 風格]
+需要的區塊：
+1. Hero（大標題 + 副標題）
+2. [你要的區塊，例如：功能介紹、團隊、價格]
+3. Footer
+
+配色偏好：[有的話寫，沒有就讓 AI 配]
+要用到的圖片：[路徑，或用 placeholder]
+輸出成一個 HTML 檔案，CSS 寫在裡面。`
+    },
+    {
+        cat: 'website',
+        sub: '整頁網站',
+        title: '產品 Landing Page',
+        desc: '為 App 或產品做一個推廣頁面。',
+        tags: ['medium', '網站'],
+        prompt: `幫我做一個 App 的 Landing Page。
+
+App 名稱：___
+一句話介紹：___
+主要功能（3-5個）：
+1. ___
+2. ___
+3. ___
+
+需要的區塊：
+- Hero 區（App 名稱 + 標語 + 下載按鈕）
+- 功能亮點
+- 截圖展示
+- Footer（隱私政策 + 服務條款連結）
+
+風格：現代、簡潔
+輸出：單一 HTML 檔案`
+    },
+    {
+        cat: 'website',
+        sub: '頁面元件',
+        title: '隱私政策 / 服務條款頁面',
+        desc: '產生 App 必備的法律頁面。',
+        tags: ['easy', '法律'],
+        prompt: `幫我做一個隱私政策頁面。
+
+App 名稱：___
+公司名稱：___
+收集的資料：[例如：位置、Email、健身資料]
+聯絡信箱：___
+
+要符合 App Store 審查要求，用英文撰寫，做成 HTML 頁面。`
+    },
+    {
+        cat: 'website',
+        sub: '頁面元件',
+        title: 'GitHub Pages 部署',
+        desc: '把 HTML 網站部署到 GitHub Pages。',
+        tags: ['easy', '部署'],
+        prompt: `幫我把這個網站部署到 GitHub Pages。
+
+倉庫：[GitHub repo 名稱]
+要部署的檔案：[路徑]
+
+請告訴我 git 指令步驟，一步一步來。`
+    },
+    {
+        cat: 'website',
+        sub: '互動元件',
+        title: '互動式資料視覺化',
+        desc: '用圖表或動態效果呈現資料。',
+        tags: ['advanced', '視覺化'],
+        prompt: `幫我做一個互動式的資料視覺化頁面。
+
+資料內容：[描述你的資料]
+圖表類型：[長條圖 / 圓餅圖 / 折線圖 / 時間軸]
+互動需求：[hover 顯示數值 / 可篩選 / 可動態更新]
+
+用純 HTML + CSS + JavaScript，不用外部套件。`
+    },
+
+    // ──────────────────────────────────────
+    // 商業文件
+    // ──────────────────────────────────────
+    {
+        cat: 'business',
+        sub: '提案文件',
+        title: '客戶提案書',
+        desc: '為潛在客戶準備的 AI 解決方案提案。',
+        tags: ['medium', '提案'],
+        prompt: `幫我寫一份客戶提案書。
+
+客戶產業：___
+客戶需求：___
+我們提供的解決方案：___
+預算範圍：___
+
+提案架構：
+1. 客戶現狀分析
+2. 解決方案概述
+3. 實施計劃和時程
+4. 預期效益
+5. 報價
+
+語氣：專業但不艱澀，讓非技術背景的客戶也能理解。`
+    },
+    {
+        cat: 'business',
+        sub: '提案文件',
+        title: '商業計劃書',
+        desc: '用於募資或合作的商業計劃。',
+        tags: ['advanced', '計劃'],
+        prompt: `幫我寫一份商業計劃書大綱。
+
+公司名稱：___
+核心業務：___
+目標市場：___
+商業模式：___
+團隊規模：___
+
+需要包含：
+1. 執行摘要
+2. 市場分析（規模、趨勢、競爭）
+3. 產品/服務說明
+4. 營運計劃
+5. 財務預測（簡要）
+6. 團隊介紹`
+    },
+    {
+        cat: 'business',
+        sub: 'Email 模板',
+        title: '商業合作邀請信',
+        desc: '寫一封專業的合作邀請 Email。',
+        tags: ['easy', 'Email'],
+        prompt: `幫我寫一封商業合作邀請信。
+
+寄給：[對方公司/人名/職稱]
+合作內容：[你想合作什麼]
+我們能提供的：[你的優勢]
+語言：[中文/英文/雙語]
+語氣：[正式/輕鬆專業]
+
+簡短就好，不要超過 200 字。`
+    },
+    {
+        cat: 'business',
+        sub: 'Email 模板',
+        title: '回覆客戶詢問',
+        desc: '專業地回覆客戶的問題或需求。',
+        tags: ['easy', 'Email'],
+        prompt: `幫我回覆客戶的訊息。
+
+客戶問的是：[貼上客戶的訊息或描述]
+我想表達的重點：[你想回覆什麼]
+語言：[中文/英文]
+語氣：親切專業
+
+幫我潤飾成專業的回覆，簡潔有力。`
+    },
+    {
+        cat: 'business',
+        sub: '簡報',
+        title: '簡報大綱與內容',
+        desc: '產生簡報的架構和每頁重點。',
+        tags: ['medium', '簡報'],
+        prompt: `幫我做一份簡報的內容大綱。
+
+簡報主題：___
+對象：[客戶/投資人/內部團隊]
+時間：[幾分鐘]
+目的：[說服/教學/報告]
+
+請列出：
+1. 每一頁的標題
+2. 每頁的 2-3 個重點
+3. 建議放什麼圖表或視覺元素`
+    },
+
+    // ──────────────────────────────────────
+    // 行銷社群
+    // ──────────────────────────────────────
+    {
+        cat: 'marketing',
+        sub: 'Instagram',
+        title: 'IG 貼文文案',
+        desc: '產生 Instagram 貼文，含 hashtag。',
+        tags: ['easy', 'IG'],
+        prompt: `幫我寫一則 Instagram 貼文。
+
+主題：___
+風格：[活潑/專業/文青/勵志]
+語言：[中文/英文/雙語]
+目的：[推廣/分享/互動]
+
+需要：
+1. 文案（不超過 150 字）
+2. 10-15 個相關 hashtag
+3. 一個吸引人的開頭（前兩行決定是否展開）`
+    },
+    {
+        cat: 'marketing',
+        sub: 'Instagram',
+        title: 'IG 限時動態文案',
+        desc: '產生適合限動的短文案和互動元素。',
+        tags: ['easy', 'IG'],
+        prompt: `幫我想 3-5 則 Instagram 限時動態的內容。
+
+主題：___
+目的：[宣傳/互動/日常分享]
+
+每則需要：
+- 簡短文字（2-3行）
+- 建議用什麼互動功能（投票/問答/滑桿/倒數）
+- 視覺建議（底色/字體風格）`
+    },
+    {
+        cat: 'marketing',
+        sub: '文案撰寫',
+        title: '產品推廣文案',
+        desc: '為產品寫各種情境的推廣文案。',
+        tags: ['easy', '文案'],
+        prompt: `幫我為這個產品寫推廣文案。
+
+產品：___
+目標客群：___
+主要賣點：___
+
+請產出：
+1. 一句話標語（Slogan）
+2. 電梯簡報版（30秒能說完）
+3. 社群貼文版（150字以內）
+4. 長版說明（300字）`
+    },
+    {
+        cat: 'marketing',
+        sub: '文案撰寫',
+        title: '招募/徵才文案',
+        desc: '寫吸引人的招募文。',
+        tags: ['easy', '文案'],
+        prompt: `幫我寫一則招募文案。
+
+職位：___
+公司：___
+工作內容：___
+希望的特質：___
+待遇/福利：___
+語言：[中文/英文]
+
+風格要親切有吸引力，不要太制式。`
+    },
+    {
+        cat: 'marketing',
+        sub: 'SEO',
+        title: '部落格 SEO 文章',
+        desc: '寫一篇針對搜尋引擎優化的文章。',
+        tags: ['medium', 'SEO'],
+        prompt: `幫我寫一篇 SEO 優化的部落格文章。
+
+主題：___
+目標關鍵字：___
+文章長度：[800-1500字]
+語言：[中文/英文]
+
+需要：
+1. 吸引人的標題（含關鍵字）
+2. 小標題架構（H2, H3）
+3. 自然地置入關鍵字
+4. 結尾有 CTA（行動呼籲）`
+    },
+
+    // ──────────────────────────────────────
+    // 自動化流程
+    // ──────────────────────────────────────
+    {
+        cat: 'automation',
+        sub: 'n8n 工作流',
+        title: '客戶自動回覆流程',
+        desc: '新客戶來信自動產生回覆和建檔。',
+        tags: ['advanced', 'n8n'],
+        prompt: `幫我設計一個 n8n 自動化流程：
+
+觸發：客戶透過表單/Email 發送詢問
+自動執行：
+1. 用 AI 分析客戶需求
+2. 自動回覆確認信
+3. 在 Notion 建立客戶檔案
+4. 通知 Slack 頻道
+
+請給我流程圖和各節點的設定。`
+    },
+    {
+        cat: 'automation',
+        sub: 'n8n 工作流',
+        title: '內容自動發布流程',
+        desc: '寫好文章後自動排程發布到各平台。',
+        tags: ['advanced', 'n8n'],
+        prompt: `幫我設計一個內容自動發布的 n8n 流程：
+
+觸發：Notion 資料庫中文章狀態改為「完成」
+自動執行：
+1. AI 潤飾內容
+2. 自動產生社群版本（IG/Twitter/LinkedIn）
+3. 排程發布
+4. 更新 Notion 狀態
+
+請給我各節點設定和需要的 API Key。`
+    },
+    {
+        cat: 'automation',
+        sub: '腳本工具',
+        title: '批次檔案處理',
+        desc: '一次處理大量檔案（重新命名、轉檔、壓縮）。',
+        tags: ['easy', '腳本'],
+        prompt: `幫我寫一個批次處理腳本。
+
+要處理的檔案：[路徑]
+處理方式：[例如：全部重新命名為 001.png, 002.png... / 轉成 jpg / 壓縮到 50%]
+
+用 bash 或 python，一個指令就能執行完成。`
+    },
+    {
+        cat: 'automation',
+        sub: '腳本工具',
+        title: '定時備份腳本',
+        desc: '自動備份重要檔案到指定位置。',
+        tags: ['medium', '腳本'],
+        prompt: `幫我寫一個自動備份腳本。
+
+要備份的資料夾：[路徑]
+備份到：[目標路徑/雲端]
+頻率：[每天/每週]
+保留幾份：[例如：最近 7 份]
+
+用 bash 寫，可以設成 cron job 自動執行。`
+    },
+    {
+        cat: 'automation',
+        sub: 'AI 整合',
+        title: 'Claude API 串接',
+        desc: '用 API 自動化 AI 任務。',
+        tags: ['advanced', 'API'],
+        prompt: `幫我寫一個串接 Claude API 的腳本。
+
+用途：[例如：自動翻譯文件 / 自動產生摘要 / 自動回覆]
+輸入：[什麼格式的資料]
+輸出：[你要什麼結果]
+語言：Python
+
+請附上安裝方式和使用說明。`
+    },
+    {
+        cat: 'automation',
+        sub: 'AI 整合',
+        title: '多檔案 AI 批次處理',
+        desc: '用 AI 一次處理多個檔案的內容。',
+        tags: ['advanced', 'API'],
+        prompt: `幫我寫一個 Python 腳本，用 AI 批次處理檔案。
+
+輸入：[資料夾路徑，裡面有什麼類型的檔案]
+每個檔案要做的事：[例如：翻譯成英文 / 產生摘要 / 提取關鍵字]
+輸出：[結果存到哪裡、什麼格式]
+
+用 Claude API，要有進度條和錯誤處理。`
+    }
+];
+
+// ============================================
+// CATEGORY CONFIG
+// ============================================
+const catConfig = {
+    'app-dev':    { name: 'App 開發',    icon: '{}',  color: '#6366f1', bgColor: 'rgba(99,102,241,0.1)' },
+    'app-store':  { name: 'App Store 上架', icon: '&starf;', color: '#0ea5e9', bgColor: 'rgba(14,165,233,0.1)' },
+    'website':    { name: '網站製作',    icon: '&lt;/&gt;', color: '#8b5cf6', bgColor: 'rgba(139,92,246,0.1)' },
+    'business':   { name: '商業文件',    icon: '&#9998;', color: '#f59e0b', bgColor: 'rgba(245,158,11,0.1)' },
+    'marketing':  { name: '行銷社群',    icon: '&#9829;', color: '#ec4899', bgColor: 'rgba(236,72,153,0.1)' },
+    'automation': { name: '自動化流程',  icon: '&#9881;', color: '#10b981', bgColor: 'rgba(16,185,129,0.1)' }
+};
+
+// ============================================
+// RENDER
+// ============================================
+function render(filter = 'all', search = '') {
+    const container = document.getElementById('prompts-container');
+    const searchLower = search.toLowerCase();
+
+    // Filter data
+    let filtered = promptData.filter(p => {
+        const matchCat = filter === 'all' || p.cat === filter;
+        const matchSearch = !search ||
+            p.title.toLowerCase().includes(searchLower) ||
+            p.desc.toLowerCase().includes(searchLower) ||
+            p.prompt.toLowerCase().includes(searchLower) ||
+            p.tags.some(t => t.toLowerCase().includes(searchLower)) ||
+            (p.sub && p.sub.toLowerCase().includes(searchLower));
+        return matchCat && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">&#128269;</div>
+                <p>找不到符合的指令，試試其他關鍵字？</p>
+            </div>`;
+        return;
+    }
+
+    // Group by category then subcategory
+    const groups = {};
+    filtered.forEach(p => {
+        if (!groups[p.cat]) groups[p.cat] = {};
+        if (!groups[p.cat][p.sub]) groups[p.cat][p.sub] = [];
+        groups[p.cat][p.sub].push(p);
+    });
+
+    let html = '';
+    for (const cat in groups) {
+        const cfg = catConfig[cat];
+        const catItems = Object.values(groups[cat]).flat();
+        html += `<div class="category-group reveal" data-cat="${cat}">`;
+        html += `<div class="category-header">
+            <div class="category-icon" style="background:${cfg.bgColor};color:${cfg.color}">${cfg.icon}</div>
+            <h2>${cfg.name}</h2>
+            <span class="cat-count">${catItems.length} 個指令</span>
+        </div>`;
+
+        for (const sub in groups[cat]) {
+            html += `<div class="subcategory-label">${sub}</div>`;
+            html += `<div class="prompts-grid">`;
+            groups[cat][sub].forEach((p, idx) => {
+                const globalIdx = promptData.indexOf(p);
+                const diffTag = p.tags[0];
+                const diffClass = diffTag === 'easy' ? 'tag-easy' : diffTag === 'medium' ? 'tag-medium' : 'tag-advanced';
+                const diffLabel = diffTag === 'easy' ? '簡單' : diffTag === 'medium' ? '中等' : '進階';
+                const typeTag = p.tags[1] || '';
+
+                html += `
+                <div class="prompt-card">
+                    <div class="card-top">
+                        <div class="card-title">${p.title}</div>
+                    </div>
+                    <div class="card-tags">
+                        <span class="tag ${diffClass}">${diffLabel}</span>
+                        ${typeTag ? `<span class="tag tag-type">${typeTag}</span>` : ''}
+                    </div>
+                    <div class="card-desc">${p.desc}</div>
+                    <div class="card-prompt" id="prompt-${globalIdx}">${escapeHtml(p.prompt)}</div>
+                    <div class="card-actions">
+                        <button class="btn-copy" onclick="copyPrompt(${globalIdx}, this)">複製指令</button>
+                        <button class="btn-expand" onclick="toggleExpand(${globalIdx}, this)">展開全文</button>
+                    </div>
+                </div>`;
+            });
+            html += `</div>`;
+        }
+        html += `</div>`;
+    }
+
+    container.innerHTML = html;
+
+    // Trigger reveal animation
+    requestAnimationFrame(() => {
+        document.querySelectorAll('.reveal').forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), i * 100);
+        });
+    });
+}
+
+function escapeHtml(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// ============================================
+// ACTIONS
+// ============================================
+function copyPrompt(idx, btn) {
+    const text = promptData[idx].prompt;
+    navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '已複製 ✓';
+        btn.classList.add('copied');
+        showToast('已複製到剪貼簿');
+        setTimeout(() => {
+            btn.textContent = '複製指令';
+            btn.classList.remove('copied');
+        }, 2000);
+    });
+}
+
+function toggleExpand(idx, btn) {
+    const el = document.getElementById(`prompt-${idx}`);
+    el.classList.toggle('expanded');
+    btn.textContent = el.classList.contains('expanded') ? '收合' : '展開全文';
+}
+
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ============================================
+// TABS & SEARCH
+// ============================================
+let currentFilter = 'all';
+
+document.getElementById('tabs').addEventListener('click', e => {
+    const tab = e.target.closest('.tab');
+    if (!tab) return;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentFilter = tab.dataset.cat;
+    render(currentFilter, document.getElementById('searchInput').value);
+});
+
+document.getElementById('searchInput').addEventListener('input', e => {
+    render(currentFilter, e.target.value);
+});
+
+// ============================================
+// COUNTS
+// ============================================
+function updateCounts() {
+    document.getElementById('total-count').textContent = promptData.length;
+    document.getElementById('count-all').textContent = promptData.length;
+    for (const cat in catConfig) {
+        const count = promptData.filter(p => p.cat === cat).length;
+        const el = document.getElementById(`count-${cat}`);
+        if (el) el.textContent = count;
+    }
+}
+
+// ============================================
+// INIT
+// ============================================
+updateCounts();
+render();
+</script>
+
+</body>
+</html>
