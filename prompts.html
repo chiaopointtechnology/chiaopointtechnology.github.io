@@ -507,7 +507,7 @@
             <div class="stat-label">指令模板</div>
         </div>
         <div class="stat-item">
-            <div class="stat-num">6</div>
+            <div class="stat-num">7</div>
             <div class="stat-label">分類</div>
         </div>
         <div class="stat-item">
@@ -535,6 +535,7 @@
         <button class="tab" data-cat="business">商業文件 <span class="tab-count" id="count-business">0</span></button>
         <button class="tab" data-cat="marketing">行銷社群 <span class="tab-count" id="count-marketing">0</span></button>
         <button class="tab" data-cat="automation">自動化流程 <span class="tab-count" id="count-automation">0</span></button>
+        <button class="tab" data-cat="claude-code">Claude Code 指令 <span class="tab-count" id="count-claude-code">0</span></button>
     </div>
 </section>
 
@@ -1174,6 +1175,102 @@ App 名稱：___
 輸出：[結果存到哪裡、什麼格式]
 
 用 Claude API，要有進度條和錯誤處理。`
+    },
+
+    // ──────────────────────────────────────
+    // CLAUDE CODE 指令（Slash Commands）
+    // ──────────────────────────────────────
+    {
+        cat: 'claude-code',
+        sub: '白牌餐飲 App',
+        title: '/foodmod-single — 單店版模板',
+        desc: '快速設定 FoodMODAPP 單店版：StoreInfoView、電話訂位、單一地圖。',
+        tags: ['medium', 'SwiftUI'],
+        prompt: `/foodmod-single 店家名稱
+
+自動執行：
+1. 收集店家資訊（店名、地址、電話、營業時間、品牌色、LINE URL、點餐連結）
+2. 產生 SampleStore.json（branches 為空）
+3. HomeView Quick Actions：品牌資訊、店家資訊、LINE好友、線上點餐、電話訂位
+4. 更新 Splash 畫面店名、App 顯示名稱、AppIcon
+5. 更新品牌故事內容
+
+適用：單一店面的餐飲店家`
+    },
+    {
+        cat: 'claude-code',
+        sub: '白牌餐飲 App',
+        title: '/foodmod-chain — 連鎖版模板',
+        desc: '快速設定 FoodMODAPP 連鎖版：BranchListView、多分店地圖。',
+        tags: ['medium', 'SwiftUI'],
+        prompt: `/foodmod-chain 品牌名稱
+
+自動執行：
+1. 收集品牌資訊 + 各分店資料（名稱、地址、電話、營業時間、座標）
+2. 產生 SampleStore.json（branches 填入所有分店）
+3. HomeView Quick Actions：品牌資訊、分店資訊、LINE好友、線上點餐
+4. 更新 Splash 畫面品牌名、App 顯示名稱、AppIcon
+5. 更新品牌故事內容
+
+適用：有多間分店的連鎖餐飲品牌
+提示：可提供 Google Maps 連結批次解析分店資料`
+    },
+    {
+        cat: 'claude-code',
+        sub: '專案工具',
+        title: '/new-view — SwiftUI View 生成器',
+        desc: '在專案中快速建立一個風格一致的新 SwiftUI View。',
+        tags: ['easy', 'SwiftUI'],
+        prompt: `/new-view ViewName
+
+自動執行：
+1. 讀取專案現有 View 風格
+2. 建立新的 SwiftUI View 檔案
+3. 包含 NavigationView 結構和 Preview
+4. 風格與現有程式碼一致`
+    },
+    {
+        cat: 'claude-code',
+        sub: '專案工具',
+        title: '/project-summary — 專案現況總結',
+        desc: '快速總結專案結構、Git 紀錄、待辦事項。',
+        tags: ['easy', '工具'],
+        prompt: `/project-summary
+
+自動執行：
+1. 讀取專案目錄結構
+2. 讀取 README.md 或 CLAUDE.md
+3. 顯示最近 5 筆 Git commit
+4. 列出目前待辦事項
+5. 用繁體中文輸出`
+    },
+    {
+        cat: 'claude-code',
+        sub: '網站生成',
+        title: '/art — 藝術風格單頁網站',
+        desc: '建立 Readymag 等級的藝廊風格滾動式單頁網站。',
+        tags: ['medium', '網站'],
+        prompt: `/art 主題名稱
+
+自動執行：
+1. 深色底 + 淺色區塊交替的戲劇性對比
+2. Playfair Display + Space Grotesk 字體組合
+3. 滾動揭示動畫、自訂游標、跑馬燈文字、視差滾動
+4. 完整 RWD（桌面 + 手機）
+5. 單一 HTML 檔案輸出（CSS/JS inline）`
+    },
+    {
+        cat: 'claude-code',
+        sub: '專案工具',
+        title: '/list — 指令清單',
+        desc: '列出所有自訂 Claude Code 指令的說明和用法。',
+        tags: ['easy', '工具'],
+        prompt: `/list
+
+自動執行：
+1. 讀取 ~/.claude/commands/ 下所有 .md 檔案
+2. 用表格列出：指令名稱、說明、用法範例
+3. 用繁體中文輸出`
     }
 ];
 
@@ -1186,7 +1283,8 @@ const catConfig = {
     'website':    { name: '網站製作',    icon: '&lt;/&gt;', color: '#8b5cf6', bgColor: 'rgba(139,92,246,0.1)' },
     'business':   { name: '商業文件',    icon: '&#9998;', color: '#f59e0b', bgColor: 'rgba(245,158,11,0.1)' },
     'marketing':  { name: '行銷社群',    icon: '&#9829;', color: '#ec4899', bgColor: 'rgba(236,72,153,0.1)' },
-    'automation': { name: '自動化流程',  icon: '&#9881;', color: '#10b981', bgColor: 'rgba(16,185,129,0.1)' }
+    'automation': { name: '自動化流程',  icon: '&#9881;', color: '#10b981', bgColor: 'rgba(16,185,129,0.1)' },
+    'claude-code': { name: 'Claude Code 指令', icon: '&#9002;', color: '#d97706', bgColor: 'rgba(217,119,6,0.1)' }
 };
 
 // ============================================
