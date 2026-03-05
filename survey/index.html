@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>餐飲品牌 App 需求調查</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans TC', -apple-system, sans-serif;
+    background: #1a1a2e;
+    color: #fff;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Progress Bar */
+  .progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #FF6B35, #FFB347);
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* Header */
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+  }
+
+  .header-logo {
+    font-size: 14px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+  }
+
+  .question-counter {
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+  }
+
+  /* Slide Container */
+  .slides-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px 120px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    overflow-y: auto;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .slide.exit-up {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  .slide-content {
+    max-width: 600px;
+    width: 100%;
+  }
+
+  /* Welcome Slide */
+  .welcome-icon {
+    font-size: 48px;
+    margin-bottom: 24px;
+  }
+
+  .welcome-title {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #FF6B35, #FFB347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .welcome-desc {
+    font-size: 17px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  /* Question */
+  .q-number {
+    font-size: 14px;
+    font-weight: 700;
+    color: #FF6B35;
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+  }
+
+  .q-title {
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
+
+  .q-subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 32px;
+  }
+
+  /* Options */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: rgba(255,255,255,0.03);
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .option:hover {
+    border-color: rgba(255,107,53,0.4);
+    background: rgba(255,107,53,0.06);
+  }
+
+  .option.selected {
+    border-color: #FF6B35;
+    background: rgba(255,107,53,0.12);
+  }
+
+  .option-key {
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    border: 2px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+  }
+
+  .option.selected .option-key {
+    background: #FF6B35;
+    border-color: #FF6B35;
+    color: #fff;
+  }
+
+  .option-text {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .option-check {
+    margin-left: auto;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    color: #FF6B35;
+  }
+
+  .option.selected .option-check { opacity: 1; }
+
+  /* Multi-select next button */
+  .btn-next-multi {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+    background: linear-gradient(135deg, #FF6B35, #FF8F5E);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+    width: 100%;
+  }
+
+  .btn-next-multi.visible {
+    display: flex;
+  }
+
+  .btn-next-multi:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(255,107,53,0.4);
+  }
+
+  /* Input Fields */
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .input-label {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .text-input {
+    width: 100%;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: #fff;
+    font-size: 16px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.25s ease;
+  }
+
+  .text-input:focus {
+    border-color: rgba(255,107,53,0.5);
+  }
+
+  .text-input::placeholder {
+    color: rgba(255,255,255,0.25);
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #FF6B35, #FF8F5E);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(255,107,53,0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(255,107,53,0.4);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Navigation */
+  .nav-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 50;
+  }
+
+  .nav-arrows {
+    display: flex;
+    gap: 8px;
+  }
+
+  .nav-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 2px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.25s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .nav-btn:hover {
+    border-color: rgba(255,255,255,0.3);
+    color: #fff;
+  }
+
+  .nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .enter-hint {
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .enter-hint kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    font-size: 12px;
+    margin: 0 2px;
+  }
+
+  /* Thank You */
+  .thankyou-icon {
+    font-size: 64px;
+    margin-bottom: 24px;
+  }
+
+  .thankyou-title {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, #FF6B35, #FFB347);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .thankyou-desc {
+    font-size: 17px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    .welcome-title, .thankyou-title { font-size: 26px; }
+    .q-title { font-size: 22px; }
+    .option { padding: 14px 16px; }
+    .slide { padding: 70px 20px 100px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="header">
+  <div class="header-logo">FoodMOD</div>
+  <div class="question-counter" id="questionCounter"></div>
+</div>
+
+<div class="slides-container" id="slidesContainer">
+
+  <!-- Slide 0: Welcome -->
+  <div class="slide active" data-slide="0">
+    <div class="slide-content">
+      <div class="welcome-icon">&#127869;</div>
+      <h1 class="welcome-title">打造你的餐飲品牌 App</h1>
+      <p class="welcome-desc">
+        只需 1 分鐘，回答 7 個問題<br>
+        幫助我們了解你的需求，為你量身打造最適合的方案
+      </p>
+      <button class="btn btn-primary" onclick="nextSlide()">
+        開始填寫 <span>&#8594;</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Slide 1: 店家類型 -->
+  <div class="slide" data-slide="1">
+    <div class="slide-content">
+      <div class="q-number">Q1</div>
+      <h2 class="q-title">你的店家類型是？</h2>
+      <p class="q-subtitle">選擇一個最符合的選項</p>
+      <div class="options" data-question="storeType" data-type="single">
+        <div class="option" data-value="單店" onclick="selectOption(this)">
+          <span class="option-key">A</span>
+          <span class="option-text">單店經營</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="連鎖 2-5 間" onclick="selectOption(this)">
+          <span class="option-key">B</span>
+          <span class="option-text">連鎖 2 - 5 間</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="連鎖 6 間以上" onclick="selectOption(this)">
+          <span class="option-key">C</span>
+          <span class="option-text">連鎖 6 間以上</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2: 數位工具 -->
+  <div class="slide" data-slide="2">
+    <div class="slide-content">
+      <div class="q-number">Q2</div>
+      <h2 class="q-title">目前有使用哪些數位工具？</h2>
+      <p class="q-subtitle">可複選</p>
+      <div class="options" data-question="digitalTools" data-type="multi">
+        <div class="option" data-value="LINE 官方帳號" onclick="selectOption(this)">
+          <span class="option-key">A</span>
+          <span class="option-text">LINE 官方帳號</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="Instagram" onclick="selectOption(this)">
+          <span class="option-key">B</span>
+          <span class="option-text">Instagram</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="Facebook 粉專" onclick="selectOption(this)">
+          <span class="option-key">C</span>
+          <span class="option-text">Facebook 粉專</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="Google 商家" onclick="selectOption(this)">
+          <span class="option-key">D</span>
+          <span class="option-text">Google 商家</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="第三方會員系統" onclick="selectOption(this)">
+          <span class="option-key">E</span>
+          <span class="option-text">第三方會員系統</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="都沒有" onclick="selectOption(this)">
+          <span class="option-key">F</span>
+          <span class="option-text">都沒有</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+      </div>
+      <button class="btn-next-multi" onclick="nextSlide()">下一題 &#8594;</button>
+    </div>
+  </div>
+
+  <!-- Slide 3: App 功能 -->
+  <div class="slide" data-slide="3">
+    <div class="slide-content">
+      <div class="q-number">Q3</div>
+      <h2 class="q-title">最想要 App 有什麼功能？</h2>
+      <p class="q-subtitle">可複選，最多 3 個</p>
+      <div class="options" data-question="features" data-type="multi" data-max="3">
+        <div class="option" data-value="線上點餐" onclick="selectOption(this)">
+          <span class="option-key">A</span>
+          <span class="option-text">線上點餐</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="線上訂位" onclick="selectOption(this)">
+          <span class="option-key">B</span>
+          <span class="option-text">線上訂位</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="會員集點" onclick="selectOption(this)">
+          <span class="option-key">C</span>
+          <span class="option-text">會員集點 / 會員系統</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="優惠券推播" onclick="selectOption(this)">
+          <span class="option-key">D</span>
+          <span class="option-text">優惠券 / 推播通知</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="品牌形象展示" onclick="selectOption(this)">
+          <span class="option-key">E</span>
+          <span class="option-text">品牌形象展示</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="菜單瀏覽" onclick="selectOption(this)">
+          <span class="option-key">F</span>
+          <span class="option-text">菜單瀏覽</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="分店資訊" onclick="selectOption(this)">
+          <span class="option-key">G</span>
+          <span class="option-text">分店資訊</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+      </div>
+      <button class="btn-next-multi" onclick="nextSlide()">下一題 &#8594;</button>
+    </div>
+  </div>
+
+  <!-- Slide 4: 月租型預算 -->
+  <div class="slide" data-slide="4">
+    <div class="slide-content">
+      <div class="q-number">Q4</div>
+      <h2 class="q-title">月租型方案，每月預算？</h2>
+      <p class="q-subtitle">含 App 維護、更新、雲端服務</p>
+      <div class="options" data-question="monthlyBudget" data-type="single">
+        <div class="option" data-value="$500 以下" onclick="selectOption(this)">
+          <span class="option-key">A</span>
+          <span class="option-text">NT$ 500 以下</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="$500-1,500" onclick="selectOption(this)">
+          <span class="option-key">B</span>
+          <span class="option-text">NT$ 500 - 1,500</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="$1,500-3,000" onclick="selectOption(this)">
+          <span class="option-key">C</span>
+          <span class="option-text">NT$ 1,500 - 3,000</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="$3,000-5,000" onclick="selectOption(this)">
+          <span class="option-key">D</span>
+          <span class="option-text">NT$ 3,000 - 5,000</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="$5,000 以上" onclick="selectOption(this)">
+          <span class="option-key">E</span>
+          <span class="option-text">NT$ 5,000 以上</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 5: 買斷型預算 -->
+  <div class="slide" data-slide="5">
+    <div class="slide-content">
+      <div class="q-number">Q5</div>
+      <h2 class="q-title">買斷型方案，一次性預算？</h2>
+      <p class="q-subtitle">一次付清，App 永久使用</p>
+      <div class="options" data-question="onetimeBudget" data-type="single">
+        <div class="option" data-value="$10,000 以下" onclick="selectOption(this)">
+          <span class="option-key">A</span>
+          <span class="option-text">NT$ 10,000 以下</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="$10,000-30,000" onclick="selectOption(this)">
+          <span class="option-key">B</span>
+          <span class="option-text">NT$ 10,000 - 30,000</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="$30,000-50,000" onclick="selectOption(this)">
+          <span class="option-key">C</span>
+          <span class="option-text">NT$ 30,000 - 50,000</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="$50,000-100,000" onclick="selectOption(this)">
+          <span class="option-key">D</span>
+          <span class="option-text">NT$ 50,000 - 100,000</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="$100,000 以上" onclick="selectOption(this)">
+          <span class="option-key">E</span>
+          <span class="option-text">NT$ 100,000 以上</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6: 時間 -->
+  <div class="slide" data-slide="6">
+    <div class="slide-content">
+      <div class="q-number">Q6</div>
+      <h2 class="q-title">希望多快擁有自己的 App？</h2>
+      <p class="q-subtitle">選擇一個最符合的選項</p>
+      <div class="options" data-question="timeline" data-type="single">
+        <div class="option" data-value="越快越好" onclick="selectOption(this)">
+          <span class="option-key">A</span>
+          <span class="option-text">越快越好</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="1-3 個月內" onclick="selectOption(this)">
+          <span class="option-key">B</span>
+          <span class="option-text">1 - 3 個月內</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="半年內" onclick="selectOption(this)">
+          <span class="option-key">C</span>
+          <span class="option-text">半年內</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+        <div class="option" data-value="還在評估" onclick="selectOption(this)">
+          <span class="option-key">D</span>
+          <span class="option-text">還在評估中</span>
+          <span class="option-check">&#10003;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 7: 聯絡方式 -->
+  <div class="slide" data-slide="7">
+    <div class="slide-content">
+      <div class="q-number">Q7</div>
+      <h2 class="q-title">留下聯絡方式，讓我們為你服務</h2>
+      <p class="q-subtitle">選填，但我們很想認識你！</p>
+      <div class="input-group">
+        <div class="input-label">店名 / 品牌名稱</div>
+        <input type="text" class="text-input" id="inputStoreName" placeholder="例：老潮派">
+      </div>
+      <div class="input-group">
+        <div class="input-label">LINE ID 或電話</div>
+        <input type="text" class="text-input" id="inputContact" placeholder="方便我們聯繫你">
+      </div>
+      <button class="btn btn-primary" onclick="submitSurvey()" id="submitBtn" style="margin-top: 24px; width: 100%; justify-content: center;">
+        送出問卷 &#10003;
+      </button>
+    </div>
+  </div>
+
+  <!-- Slide 8: Thank You -->
+  <div class="slide" data-slide="8">
+    <div class="slide-content" style="text-align: center;">
+      <div class="thankyou-icon">&#127881;</div>
+      <h2 class="thankyou-title">感謝你的回覆！</h2>
+      <p class="thankyou-desc">
+        我們會盡快與你聯繫<br>
+        一起打造屬於你的品牌 App
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-footer" id="navFooter">
+  <div class="nav-arrows">
+    <button class="nav-btn" id="btnPrev" onclick="prevSlide()" disabled>&#8593;</button>
+    <button class="nav-btn" id="btnNext" onclick="nextSlide()">&#8595;</button>
+  </div>
+  <div class="enter-hint" id="enterHint">
+    按 <kbd>Enter</kbd> 繼續
+  </div>
+</div>
+
+<script>
+// ---- State ----
+let currentSlide = 0;
+const totalQuestions = 7;
+const answers = {};
+let isTransitioning = false;
+
+// ---- Elements ----
+const slides = document.querySelectorAll('.slide');
+const progressBar = document.getElementById('progressBar');
+const counter = document.getElementById('questionCounter');
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+const navFooter = document.getElementById('navFooter');
+const enterHint = document.getElementById('enterHint');
+
+// ---- Navigation ----
+function goToSlide(n) {
+  if (isTransitioning || n < 0 || n >= slides.length) return;
+  isTransitioning = true;
+
+  const prev = slides[currentSlide];
+  const next = slides[n];
+  const direction = n > currentSlide ? 'exit-up' : '';
+
+  prev.classList.remove('active');
+  if (direction) prev.classList.add(direction);
+
+  setTimeout(() => {
+    prev.classList.remove(direction);
+    next.classList.add('active');
+    currentSlide = n;
+    updateUI();
+    // Extra delay to prevent ghost taps on mobile from triggering next slide
+    setTimeout(() => {
+      isTransitioning = false;
+    }, 350);
+  }, 150);
+}
+
+function nextSlide() {
+  if (currentSlide < slides.length - 1) {
+    goToSlide(currentSlide + 1);
+  }
+}
+
+function prevSlide() {
+  if (currentSlide > 0) {
+    goToSlide(currentSlide - 1);
+  }
+}
+
+function updateUI() {
+  // Progress
+  const progress = currentSlide === 0 ? 0 : (currentSlide / (totalQuestions + 1)) * 100;
+  progressBar.style.width = progress + '%';
+
+  // Counter
+  if (currentSlide >= 1 && currentSlide <= totalQuestions) {
+    counter.textContent = currentSlide + ' / ' + totalQuestions;
+  } else {
+    counter.textContent = '';
+  }
+
+  // Nav buttons
+  btnPrev.disabled = currentSlide <= 0;
+
+  // Hide nav on thank you
+  if (currentSlide === slides.length - 1) {
+    navFooter.style.opacity = '0';
+  } else {
+    navFooter.style.opacity = '1';
+  }
+
+  // Enter hint
+  if (currentSlide === 0) {
+    enterHint.innerHTML = '按 <kbd>Enter</kbd> 開始';
+  } else if (currentSlide === totalQuestions) {
+    enterHint.innerHTML = '';
+  } else {
+    enterHint.innerHTML = '按 <kbd>Enter</kbd> 繼續';
+  }
+}
+
+// ---- Show/hide multi-select next button ----
+function updateMultiNextBtn(container) {
+  const btn = container.parentElement.querySelector('.btn-next-multi');
+  if (!btn) return;
+  const hasSelection = container.querySelectorAll('.option.selected').length > 0;
+  btn.classList.toggle('visible', hasSelection);
+}
+
+// ---- Option Selection ----
+function selectOption(el) {
+  const container = el.closest('.options');
+  const type = container.dataset.type;
+  const question = container.dataset.question;
+  const max = parseInt(container.dataset.max) || Infinity;
+
+  if (type === 'single') {
+    container.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    answers[question] = el.dataset.value;
+
+    // Auto-advance after brief delay for single select
+    setTimeout(() => nextSlide(), 400);
+  } else {
+    // Multi select
+    if (el.classList.contains('selected')) {
+      el.classList.remove('selected');
+    } else {
+      const selectedCount = container.querySelectorAll('.option.selected').length;
+      if (selectedCount >= max) return;
+      el.classList.add('selected');
+    }
+
+    // Handle "都沒有" exclusive logic
+    if (el.dataset.value === '都沒有' && el.classList.contains('selected')) {
+      container.querySelectorAll('.option').forEach(o => {
+        if (o !== el) o.classList.remove('selected');
+      });
+    } else if (el.dataset.value !== '都沒有') {
+      const noneOption = container.querySelector('[data-value="都沒有"]');
+      if (noneOption) noneOption.classList.remove('selected');
+    }
+
+    answers[question] = Array.from(container.querySelectorAll('.option.selected'))
+      .map(o => o.dataset.value);
+
+    updateMultiNextBtn(container);
+  }
+}
+
+// ---- Keyboard ----
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    if (currentSlide === totalQuestions) {
+      submitSurvey();
+    } else {
+      nextSlide();
+    }
+  } else if (e.key === 'ArrowUp') {
+    prevSlide();
+  } else if (e.key === 'ArrowDown') {
+    nextSlide();
+  }
+
+  // A-G key selection
+  const key = e.key.toUpperCase();
+  if (key >= 'A' && key <= 'G' && currentSlide >= 1 && currentSlide <= totalQuestions) {
+    const activeSlide = slides[currentSlide];
+    const options = activeSlide.querySelectorAll('.option');
+    const index = key.charCodeAt(0) - 65;
+    if (index < options.length) {
+      selectOption(options[index]);
+    }
+  }
+});
+
+// ---- Submit ----
+function submitSurvey() {
+  const storeName = document.getElementById('inputStoreName').value.trim();
+  const contact = document.getElementById('inputContact').value.trim();
+
+  answers.storeName = storeName;
+  answers.contact = contact;
+  answers.timestamp = new Date().toLocaleString('zh-TW');
+
+  // Send to Google Sheets (replace URL with your Apps Script Web App URL)
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdTUghaa903agLXTxL8Gt39wdtZkQOv866OWW73KiWqmI9oPExDhquh5kvXjZkeAEL/exec';
+
+  if (SCRIPT_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL') {
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(answers)
+    }).catch(() => {});
+  }
+
+  // Also log to console for testing
+  console.log('Survey answers:', JSON.stringify(answers, null, 2));
+
+  // Go to thank you
+  goToSlide(slides.length - 1);
+  progressBar.style.width = '100%';
+}
+
+// ---- Init ----
+updateUI();
+</script>
+
+</body>
+</html>
