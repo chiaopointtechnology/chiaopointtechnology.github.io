@@ -333,8 +333,9 @@
         /* === THEME TOGGLE === */
         .theme-toggle-wrap {
             position: absolute;
-            bottom: 20%;
-            right: 22%;
+            top: 64%;
+            right: -18px;
+            transform: translateY(-50%);
         }
 
         .theme-toggle-label {
@@ -346,6 +347,7 @@
         }
 
         .theme-toggle {
+            display: inline-block;
             position: relative;
             width: 51px;
             height: 31px;
@@ -449,6 +451,11 @@
             .nav-inner { padding: 0 24px; }
             .hero { padding: 100px 24px 48px; min-height: 60vh; }
             .hero-logo { width: 240px; }
+            .theme-toggle-wrap {
+                right: -28px;
+                transform: scale(0.8) translateY(-50%);
+                transform-origin: left center;
+            }
             section { padding: 56px 24px; }
             .about-grid { grid-template-columns: 1fr; gap: 40px; }
             .values-grid { grid-template-columns: 1fr; }
