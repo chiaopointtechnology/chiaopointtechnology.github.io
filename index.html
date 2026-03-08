@@ -435,6 +435,19 @@
         body.dark-mode .nav-logo img { filter: brightness(0) invert(1); }
         body.dark-mode .btn-contact:hover { background: var(--pink); border-color: var(--pink); color: #fff; }
 
+        /* === SCROLL ANIMATIONS === */
+        .slide-left, .slide-right, .slide-up {
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .slide-left { transform: translateX(-60px); }
+        .slide-right { transform: translateX(60px); }
+        .slide-up { transform: translateY(40px); }
+        .slide-left.visible, .slide-right.visible, .slide-up.visible {
+            opacity: 1;
+            transform: translate(0);
+        }
+
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
             .nav-right { display: none; }
@@ -518,14 +531,14 @@
 <!-- ABOUT -->
 <section class="section-border">
     <div class="about-grid">
-        <div>
+        <div class="slide-left">
             <h2 class="section-title">
                 <span class="lang-en">Technology Should<br>Enhance Life</span>
                 <span class="lang-zh" style="display:none">科技應該讓<br>生活更美好</span>
                 <span class="lang-ja" style="display:none">テクノロジーで<br>暮らしをもっと豊かに</span>
             </h2>
         </div>
-        <div>
+        <div class="slide-right">
             <p class="section-desc">
                 <span class="lang-en">CHIAOPOINT focuses on iOS app development and helping enterprises adopt AI system solutions. From product design to technical implementation, we create simple yet efficient digital experiences driven by design thinking and user insights.</span>
                 <span class="lang-zh" style="display:none">喬點科技專注於開發 iOS 應用程式，同時協助企業導入 AI 系統解決方案。從產品設計到技術落地，我們以設計思維與用戶洞察為核心，為客戶創造簡單而高效的數位體驗。</span>
@@ -537,25 +550,25 @@
 
 <!-- VALUES -->
 <section class="section-border">
-    <h2 class="section-title">
+    <h2 class="section-title slide-left">
         <span class="lang-en">Core Values</span>
         <span class="lang-zh" style="display:none">核心價值</span>
         <span class="lang-ja" style="display:none">コアバリュー</span>
     </h2>
     <div class="values-grid">
-        <div class="value-card">
+        <div class="value-card slide-up">
             <div class="value-num">01</div>
             <h3><span class="lang-en">Design-First</span><span class="lang-zh" style="display:none">專注美學</span><span class="lang-ja" style="display:none">デザイン・ファースト</span></h3>
             <p class="value-en">Design-First</p>
             <p><span class="lang-en">Design before code, aesthetics drive development. A great app should be a joy to use every moment.</span><span class="lang-zh" style="display:none">設計先於技術，美感驅動開發。好的 App 不只功能完善，更要讓人享受使用的每一刻。</span><span class="lang-ja" style="display:none">デザインをコードより先に、美意識が開発を駆動します。優れたアプリは機能だけでなく、使う喜びを届けます。</span></p>
         </div>
-        <div class="value-card">
+        <div class="value-card slide-up" style="transition-delay:0.15s">
             <div class="value-num">02</div>
             <h3><span class="lang-en">User-Centric</span><span class="lang-zh" style="display:none">用戶至上</span><span class="lang-ja" style="display:none">ユーザー中心</span></h3>
             <p class="value-en">User-Centric</p>
             <p><span class="lang-en">Deeply understand needs, build intuitive experiences. Every feature starts from how users feel.</span><span class="lang-zh" style="display:none">深入理解需求，打造直覺體驗。每一個功能、每一個動畫，都以用戶感受為出發點。</span><span class="lang-ja" style="display:none">ニーズを深く理解し、直感的な体験を構築。すべての機能はユーザーの感覚から始まります。</span></p>
         </div>
-        <div class="value-card">
+        <div class="value-card slide-up" style="transition-delay:0.3s">
             <div class="value-num">03</div>
             <h3><span class="lang-en">AI-Focused</span><span class="lang-zh" style="display:none">專注 AI 應用</span><span class="lang-ja" style="display:none">AI特化</span></h3>
             <p class="value-en">AI-Focused</p>
@@ -566,7 +579,7 @@
 
 <!-- CONTACT -->
 <section class="section-border" style="text-align:center;padding:60px 48px">
-    <a href="mailto:chiaopoint.technology@gmail.com" class="btn btn-contact">
+    <a href="mailto:chiaopoint.technology@gmail.com" class="btn btn-contact slide-up">
         <span class="lang-en">Contact Us</span><span class="lang-zh" style="display:none">聯絡我們</span><span class="lang-ja" style="display:none">お問い合わせ</span>
     </a>
 </section>
@@ -604,6 +617,12 @@ document.addEventListener('DOMContentLoaded',()=>{
     switchLanguage(localStorage.getItem('cp_lang')||'en');
     document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));
     document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));
+
+    // Scroll animations
+    const observer=new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});
+    },{threshold:0.15});
+    document.querySelectorAll('.slide-left,.slide-right,.slide-up').forEach(el=>observer.observe(el));
 
     // Theme toggle: checked=ON=light, unchecked=OFF=dark
     const toggle=document.getElementById('themeToggle');
