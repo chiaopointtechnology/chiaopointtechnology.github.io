@@ -111,10 +111,15 @@
             position: relative;
         }
 
+        .hero-logo-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 32px;
+        }
+
         .hero-logo {
             width: 320px;
             max-width: 80%;
-            margin-bottom: 32px;
         }
 
         .hero h1 {
@@ -327,11 +332,10 @@
 
         /* === THEME TOGGLE === */
         .theme-toggle-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 8px;
+            position: absolute;
+            bottom: 18%;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .theme-toggle-label {
@@ -492,12 +496,14 @@
 
 <!-- HERO -->
 <section class="hero">
-    <img src="CPlogo4.png" alt="CHIAO.POINT();" class="hero-logo">
-    <div class="theme-toggle-wrap">
-        <label class="theme-toggle" aria-label="Toggle dark mode">
-            <input type="checkbox" id="themeToggle" checked>
-            <span class="toggle-slider"></span>
-        </label>
+    <div class="hero-logo-wrap">
+        <img src="CPlogo4.png" alt="CHIAO.POINT();" class="hero-logo">
+        <div class="theme-toggle-wrap">
+            <label class="theme-toggle" aria-label="Toggle dark mode">
+                <input type="checkbox" id="themeToggle" checked>
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
     </div>
 </section>
 
