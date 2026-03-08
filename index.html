@@ -310,6 +310,113 @@
             margin-right: auto;
         }
 
+        /* === THEME TOGGLE === */
+        .theme-toggle-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .theme-toggle-label {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        .theme-toggle {
+            position: relative;
+            width: 51px;
+            height: 31px;
+            cursor: pointer;
+        }
+
+        .theme-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #e0e0e0;
+            border-radius: 31px;
+            transition: background 0.3s;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 27px;
+            height: 27px;
+            left: 2px;
+            bottom: 2px;
+            background: #ffffff;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .theme-toggle input:checked + .toggle-slider {
+            background: #89CFF0;
+        }
+
+        .theme-toggle input:checked + .toggle-slider::before {
+            transform: translateX(20px);
+        }
+
+        /* === DARK MODE === */
+        body.dark-mode {
+            background: #111111;
+            color: #e8e8e8;
+        }
+
+        body.dark-mode nav {
+            background: rgba(17,17,17,0.95);
+            border-bottom-color: #333;
+        }
+
+        body.dark-mode .nav-links a { color: #999; }
+        body.dark-mode .nav-links a:hover,
+        body.dark-mode .nav-links a.active { color: #e8e8e8; }
+
+        body.dark-mode .lang-btn { color: #999; border-color: #444; }
+        body.dark-mode .lang-btn.active { background: #e8e8e8; color: #111; border-color: #e8e8e8; }
+
+        body.dark-mode .nav-right.open { background: rgba(17,17,17,0.98); border-bottom-color: #333; }
+        body.dark-mode .menu-toggle span { background: #e8e8e8; }
+
+        body.dark-mode .section-border { border-top-color: #333; }
+        body.dark-mode .section-desc { color: #999; }
+        body.dark-mode .theme-toggle-label { color: #777; }
+
+        body.dark-mode .values-grid { background: #333; }
+        body.dark-mode .value-card { background: #111111; }
+        body.dark-mode .value-num { color: #1a1a1a; -webkit-text-stroke: 1px #333; }
+        body.dark-mode .value-card p { color: #999; }
+
+        body.dark-mode .btn-dark { background: #e8e8e8; color: #111; }
+        body.dark-mode .btn-dark:hover { background: #ccc; }
+
+        body.dark-mode footer { border-top-color: #333; }
+        body.dark-mode .footer-info { color: #999; }
+        body.dark-mode .footer-links a { color: #999; }
+        body.dark-mode .footer-links a:hover { color: #e8e8e8; }
+        body.dark-mode .footer-copy { color: #666; border-top-color: #333; }
+
+        body.dark-mode .nav-logo img {
+            background: #fff;
+            border-radius: 4px;
+            padding: 2px 6px;
+        }
+        body.dark-mode .hero-logo {
+            border-radius: 16px;
+        }
+
         /* === RESPONSIVE === */
         @media (max-width: 768px) {
             .nav-right { display: none; }
@@ -376,6 +483,12 @@
 <!-- HERO -->
 <section class="hero">
     <img src="CPlogo4.jpg" alt="CHIAO.POINT();" class="hero-logo">
+    <div class="theme-toggle-wrap">
+        <label class="theme-toggle" aria-label="Toggle dark mode">
+            <input type="checkbox" id="themeToggle" checked>
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
 </section>
 
 <!-- ABOUT -->
@@ -463,6 +576,23 @@ document.addEventListener('DOMContentLoaded',()=>{
     switchLanguage(localStorage.getItem('cp_lang')||'zh');
     document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));
     document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));
+
+    // Theme toggle: checked=ON=light, unchecked=OFF=dark
+    const toggle=document.getElementById('themeToggle');
+    const savedTheme=localStorage.getItem('cp_theme');
+    if(savedTheme==='dark'){
+        document.body.classList.add('dark-mode');
+        toggle.checked=false;
+    }
+    toggle.addEventListener('change',()=>{
+        if(toggle.checked){
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('cp_theme','light');
+        }else{
+            document.body.classList.add('dark-mode');
+            localStorage.setItem('cp_theme','dark');
+        }
+    });
 });
 </script>
 
