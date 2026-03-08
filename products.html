@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>產品 — CHIAO.POINT();</title>
+    <title>Products — CHIAO.POINT();</title>
     <link rel="icon" href="CPlogo4.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        :root{--white:#fff;--bg:#fafafa;--text:#222;--text-light:#888;--pink:#E8A0B4;--mint:#8FBFB4;--border:#e8e8e8;--font-body:'Roboto','Noto Sans TC',sans-serif;--font-mono:'Space Mono',monospace}
+        :root{--white:#fff;--bg:#fafafa;--text:#222;--text-light:#888;--pink:#E8A0B4;--mint:#8FBFB4;--border:#e8e8e8;--font-body:'Roboto','Noto Sans TC','Noto Sans JP',sans-serif;--font-mono:'Space Mono',monospace}
         body{font-family:var(--font-body);background:var(--white);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
 
         nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
@@ -26,7 +26,6 @@
         .menu-toggle span{display:block;width:22px;height:1.5px;background:var(--text);margin:5px 0}
 
         .page-header{padding:140px 48px 56px;max-width:900px;margin:0 auto}
-        .page-header .num{font-family:var(--font-mono);font-size:12px;color:var(--pink);letter-spacing:2px;margin-bottom:16px}
         .page-header h1{font-size:clamp(24px,3.5vw,36px);font-weight:700;letter-spacing:-0.5px;margin-bottom:8px}
         .page-header p{font-size:15px;color:var(--text-light);font-weight:300}
 
@@ -58,8 +57,6 @@
 
         footer{border-top:1px solid var(--border);padding:64px 48px}
         .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start}
-        .footer-logo{font-family:var(--font-mono);font-size:16px;font-weight:700;margin-bottom:12px}
-        .footer-logo .cp-chiao{color:var(--pink)}.footer-logo .cp-point{color:var(--mint)}
         .footer-info{font-size:13px;color:var(--text-light);line-height:2}
         .footer-links{display:flex;gap:40px}
         .footer-links a{color:var(--text-light);text-decoration:none;font-size:13px;transition:color 0.2s}
@@ -74,7 +71,7 @@
         body.dark-mode .nav-right.open{background:rgba(17,17,17,0.98);border-bottom-color:#333}
         body.dark-mode .menu-toggle span{background:#e8e8e8}
         body.dark-mode .nav-logo img{filter:brightness(0) invert(1)}
-        body.dark-mode .page-header p:not(.num){color:#999}
+        body.dark-mode .page-header p{color:#999}
         body.dark-mode .product-card{border-bottom-color:#333}body.dark-mode .product-card:first-child{border-top-color:#333}
         body.dark-mode .product-desc{color:#999}body.dark-mode .product-features li{color:#999}
         body.dark-mode .product-status{background:#222}
@@ -101,20 +98,24 @@
         <a href="index.html" class="nav-logo"><img src="nav-logo.png" alt="CHIAO.POINT();"></a>
         <div class="nav-right" id="navRight">
             <div class="nav-links">
-                <a href="index.html"><span class="lang-zh">首頁</span><span class="lang-en" style="display:none">Home</span></a>
-                <a href="products.html" class="active"><span class="lang-zh">產品</span><span class="lang-en" style="display:none">Products</span></a>
-                <a href="privacy.html"><span class="lang-zh">隱私政策</span><span class="lang-en" style="display:none">Privacy</span></a>
-                <a href="terms.html"><span class="lang-zh">服務條款</span><span class="lang-en" style="display:none">Terms</span></a>
+                <a href="index.html"><span class="lang-en">Home</span><span class="lang-zh" style="display:none">首頁</span><span class="lang-ja" style="display:none">ホーム</span></a>
+                <a href="products.html" class="active"><span class="lang-en">Products</span><span class="lang-zh" style="display:none">產品</span><span class="lang-ja" style="display:none">製品</span></a>
+                <a href="privacy.html"><span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span></a>
+                <a href="terms.html"><span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span></a>
             </div>
-            <div class="lang-switch"><button class="lang-btn active" data-lang="zh">中</button><button class="lang-btn" data-lang="en">EN</button></div>
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="zh">中</button>
+                <button class="lang-btn" data-lang="ja">日</button>
+            </div>
         </div>
         <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
 </nav>
 
 <div class="page-header">
-    <h1><span class="lang-zh">用心打造的每一款 App</span><span class="lang-en" style="display:none">Every App, Crafted with Care</span></h1>
-    <p><span class="lang-zh">從跑步藝術到智慧衣櫃，每一款產品都專注於解決真實需求</span><span class="lang-en" style="display:none">From running art to smart wardrobes, solving real needs</span></p>
+    <h1><span class="lang-en">Every App, Crafted with Care</span><span class="lang-zh" style="display:none">用心打造的每一款 App</span><span class="lang-ja" style="display:none">一つひとつ、心を込めて</span></h1>
+    <p><span class="lang-en">From running art to smart wardrobes, solving real needs</span><span class="lang-zh" style="display:none">從跑步藝術到智慧衣櫃，每一款產品都專注於解決真實需求</span><span class="lang-ja" style="display:none">ランニングアートからスマートクローゼットまで、リアルなニーズに応えます</span></p>
 </div>
 
 <div class="products">
@@ -125,15 +126,15 @@
         <div class="product-body">
             <div class="product-top">
                 <h2 class="product-name">Petit a Petit</h2>
-                <span class="product-status status-live"><span class="lang-zh">已上架</span><span class="lang-en" style="display:none">Available</span></span>
+                <span class="product-status status-live"><span class="lang-en">Available</span><span class="lang-zh" style="display:none">已上架</span><span class="lang-ja" style="display:none">公開中</span></span>
             </div>
-            <p class="product-desc"><span class="lang-zh">將每次跑步化為藝術作品。追蹤 GPS 軌跡，生成獨特的藝術風格分享卡，讓運動成為可以收藏與分享的創作。</span><span class="lang-en" style="display:none">Turn every run into art. Track GPS routes and create unique artistic share cards that make workouts shareable.</span></p>
+            <p class="product-desc"><span class="lang-en">Turn every run into art. Track GPS routes and create unique artistic share cards that make workouts shareable.</span><span class="lang-zh" style="display:none">將每次跑步化為藝術作品。追蹤 GPS 軌跡，生成獨特的藝術風格分享卡，讓運動成為可以收藏與分享的創作。</span><span class="lang-ja" style="display:none">ランニングをアートに。GPSルートを追跡し、ユニークなアートスタイルのシェアカードを生成。ワークアウトを共有可能な作品に変えます。</span></p>
             <ul class="product-features">
-                <li><span class="lang-zh">GPS 跑步追蹤與 3D 導航</span><span class="lang-en" style="display:none">GPS run tracking & 3D navigation</span></li>
-                <li><span class="lang-zh">藝術風格分享卡生成</span><span class="lang-en" style="display:none">Artistic share card generation</span></li>
-                <li><span class="lang-zh">多主題顏色與 80+ 貼圖</span><span class="lang-en" style="display:none">Multi-theme colors & 80+ stickers</span></li>
+                <li><span class="lang-en">GPS run tracking & 3D navigation</span><span class="lang-zh" style="display:none">GPS 跑步追蹤與 3D 導航</span><span class="lang-ja" style="display:none">GPSランニング追跡 & 3Dナビ</span></li>
+                <li><span class="lang-en">Artistic share card generation</span><span class="lang-zh" style="display:none">藝術風格分享卡生成</span><span class="lang-ja" style="display:none">アートスタイルシェアカード生成</span></li>
+                <li><span class="lang-en">Multi-theme colors & 80+ stickers</span><span class="lang-zh" style="display:none">多主題顏色與 80+ 貼圖</span><span class="lang-ja" style="display:none">マルチテーマカラー & 80以上のステッカー</span></li>
             </ul>
-            <a href="https://apps.apple.com/app/id6758299890" class="product-link" target="_blank"><span class="lang-zh">App Store 下載</span><span class="lang-en" style="display:none">Download on App Store</span> &rarr;</a>
+            <a href="https://apps.apple.com/app/id6758299890" class="product-link" target="_blank"><span class="lang-en">Download on App Store</span><span class="lang-zh" style="display:none">App Store 下載</span><span class="lang-ja" style="display:none">App Store でダウンロード</span> &rarr;</a>
         </div>
     </div>
 
@@ -142,15 +143,15 @@
         <img src="icon-closettime.png" alt="ClosetTime" class="product-icon">
         <div class="product-body">
             <div class="product-top">
-                <h2 class="product-name"><span class="lang-zh">衣櫃時光</span><span class="lang-en" style="display:none">ClosetTime</span></h2>
-                <span class="product-status status-soon"><span class="lang-zh">即將上架</span><span class="lang-en" style="display:none">Coming Soon</span></span>
+                <h2 class="product-name"><span class="lang-en">ClosetTime</span><span class="lang-zh" style="display:none">衣櫃時光</span><span class="lang-ja" style="display:none">クローゼットタイム</span></h2>
+                <span class="product-status status-soon"><span class="lang-en">Coming Soon</span><span class="lang-zh" style="display:none">即將上架</span><span class="lang-ja" style="display:none">近日公開</span></span>
             </div>
-            <p class="product-desc"><span class="lang-zh">智慧衣櫃管理 App。結合天氣 API 智慧推薦每日穿搭，統計分析穿衣習慣，讓每天出門不再煩惱。</span><span class="lang-en" style="display:none">Smart wardrobe management. Weather-based outfit recommendations and wearing habit analytics.</span></p>
+            <p class="product-desc"><span class="lang-en">Smart wardrobe management. Weather-based outfit recommendations and wearing habit analytics.</span><span class="lang-zh" style="display:none">智慧衣櫃管理 App。結合天氣 API 智慧推薦每日穿搭，統計分析穿衣習慣，讓每天出門不再煩惱。</span><span class="lang-ja" style="display:none">スマートクローゼット管理App。天気APIによるスマート穿搭レコメンド、着用習慣の統計分析で、毎日の服選びの悩みを解消します。</span></p>
             <ul class="product-features">
-                <li><span class="lang-zh">衣物照片管理與分類篩選</span><span class="lang-en" style="display:none">Clothing photo management & filtering</span></li>
-                <li><span class="lang-zh">天氣智能穿搭推薦</span><span class="lang-en" style="display:none">Weather-based outfit suggestions</span></li>
-                <li><span class="lang-zh">穿搭日記與月曆記錄</span><span class="lang-en" style="display:none">Outfit diary & calendar records</span></li>
-                <li><span class="lang-zh">穿著頻率統計圖表</span><span class="lang-en" style="display:none">Wearing frequency analytics</span></li>
+                <li><span class="lang-en">Clothing photo management & filtering</span><span class="lang-zh" style="display:none">衣物照片管理與分類篩選</span><span class="lang-ja" style="display:none">衣類写真管理 & フィルタリング</span></li>
+                <li><span class="lang-en">Weather-based outfit suggestions</span><span class="lang-zh" style="display:none">天氣智能穿搭推薦</span><span class="lang-ja" style="display:none">天気ベースの穿搭提案</span></li>
+                <li><span class="lang-en">Outfit diary & calendar records</span><span class="lang-zh" style="display:none">穿搭日記與月曆記錄</span><span class="lang-ja" style="display:none">穿搭日記 & カレンダー記録</span></li>
+                <li><span class="lang-en">Wearing frequency analytics</span><span class="lang-zh" style="display:none">穿著頻率統計圖表</span><span class="lang-ja" style="display:none">着用頻度分析チャート</span></li>
             </ul>
         </div>
     </div>
@@ -161,14 +162,14 @@
         <div class="product-body">
             <div class="product-top">
                 <h2 class="product-name">CCeSIM</h2>
-                <span class="product-status status-dev"><span class="lang-zh">開發中</span><span class="lang-en" style="display:none">In Development</span></span>
+                <span class="product-status status-dev"><span class="lang-en">In Development</span><span class="lang-zh" style="display:none">開發中</span><span class="lang-ja" style="display:none">開発中</span></span>
             </div>
-            <p class="product-desc"><span class="lang-zh">日本旅遊 eSIM 一鍵安裝 App。簡化繁瑣的 eSIM 設定流程，讓旅客出發前輕鬆搞定上網。</span><span class="lang-en" style="display:none">One-tap eSIM installation for Japan travel. Simplify the eSIM setup process so travelers get connected effortlessly.</span></p>
+            <p class="product-desc"><span class="lang-en">One-tap eSIM installation for Japan travel. Simplify the eSIM setup process so travelers get connected effortlessly.</span><span class="lang-zh" style="display:none">日本旅遊 eSIM 一鍵安裝 App。簡化繁瑣的 eSIM 設定流程，讓旅客出發前輕鬆搞定上網。</span><span class="lang-ja" style="display:none">日本旅行用eSIMワンタップインストールApp。複雑なeSIM設定を簡素化し、旅行者が出発前に簡単にネット接続できます。</span></p>
             <ul class="product-features">
-                <li><span class="lang-zh">一鍵安裝 eSIM</span><span class="lang-en" style="display:none">One-tap eSIM installation</span></li>
-                <li><span class="lang-zh">日本旅遊專用方案</span><span class="lang-en" style="display:none">Japan travel data plans</span></li>
-                <li><span class="lang-zh">Apple Pay 付款</span><span class="lang-en" style="display:none">Apple Pay payment</span></li>
-                <li><span class="lang-zh">訂單管理與紀錄</span><span class="lang-en" style="display:none">Order management & history</span></li>
+                <li><span class="lang-en">One-tap eSIM installation</span><span class="lang-zh" style="display:none">一鍵安裝 eSIM</span><span class="lang-ja" style="display:none">ワンタップeSIMインストール</span></li>
+                <li><span class="lang-en">Japan travel data plans</span><span class="lang-zh" style="display:none">日本旅遊專用方案</span><span class="lang-ja" style="display:none">日本旅行専用プラン</span></li>
+                <li><span class="lang-en">Apple Pay payment</span><span class="lang-zh" style="display:none">Apple Pay 付款</span><span class="lang-ja" style="display:none">Apple Pay決済</span></li>
+                <li><span class="lang-en">Order management & history</span><span class="lang-zh" style="display:none">訂單管理與紀錄</span><span class="lang-ja" style="display:none">注文管理 & 履歴</span></li>
             </ul>
         </div>
     </div>
@@ -179,13 +180,13 @@
         <div class="product-body">
             <div class="product-top">
                 <h2 class="product-name">FoodMODAPP</h2>
-                <span class="product-status status-dev"><span class="lang-zh">開發中</span><span class="lang-en" style="display:none">In Development</span></span>
+                <span class="product-status status-dev"><span class="lang-en">In Development</span><span class="lang-zh" style="display:none">開發中</span><span class="lang-ja" style="display:none">開発中</span></span>
             </div>
-            <p class="product-desc"><span class="lang-zh">為中小型餐飲店家打造的白牌 App 模板。透過 JSON 設定檔快速客製化，幫助品牌擁有專屬行動應用。</span><span class="lang-en" style="display:none">White-label app template for small restaurants. Quickly customize branded apps via JSON config files.</span></p>
+            <p class="product-desc"><span class="lang-en">White-label app template for small restaurants. Quickly customize branded apps via JSON config files.</span><span class="lang-zh" style="display:none">為中小型餐飲店家打造的白牌 App 模板。透過 JSON 設定檔快速客製化，幫助品牌擁有專屬行動應用。</span><span class="lang-ja" style="display:none">中小飲食店向けホワイトラベルAppテンプレート。JSON設定ファイルで素早くカスタマイズし、ブランド専用モバイルアプリを実現します。</span></p>
             <ul class="product-features">
-                <li><span class="lang-zh">品牌形象展示與跑馬燈</span><span class="lang-en" style="display:none">Brand showcase & marquee</span></li>
-                <li><span class="lang-zh">線上點餐整合</span><span class="lang-en" style="display:none">Online ordering integration</span></li>
-                <li><span class="lang-zh">菜單分類瀏覽</span><span class="lang-en" style="display:none">Menu category browsing</span></li>
+                <li><span class="lang-en">Brand showcase & marquee</span><span class="lang-zh" style="display:none">品牌形象展示與跑馬燈</span><span class="lang-ja" style="display:none">ブランドショーケース & マーキー</span></li>
+                <li><span class="lang-en">Online ordering integration</span><span class="lang-zh" style="display:none">線上點餐整合</span><span class="lang-ja" style="display:none">オンライン注文統合</span></li>
+                <li><span class="lang-en">Menu category browsing</span><span class="lang-zh" style="display:none">菜單分類瀏覽</span><span class="lang-ja" style="display:none">メニューカテゴリブラウジング</span></li>
             </ul>
         </div>
     </div>
@@ -194,16 +195,16 @@
 
 <footer>
     <div class="footer-inner">
-        <div><div class="footer-info"><span class="lang-zh">喬點科技有限公司</span><span class="lang-en" style="display:none">CHIAOPOINT Technology Co., Ltd.</span><br>chiaopoint.technology@gmail.com</div></div>
-        <div class="footer-links"><a href="index.html"><span class="lang-zh">首頁</span><span class="lang-en" style="display:none">Home</span></a><a href="privacy.html"><span class="lang-zh">隱私政策</span><span class="lang-en" style="display:none">Privacy</span></a><a href="terms.html"><span class="lang-zh">服務條款</span><span class="lang-en" style="display:none">Terms</span></a></div>
+        <div><div class="footer-info"><span class="lang-en">CHIAOPOINT Technology Co., Ltd.</span><span class="lang-zh" style="display:none">喬點科技有限公司</span><span class="lang-ja" style="display:none">CHIAOPOINT テクノロジー株式会社</span><br>chiaopoint.technology@gmail.com</div></div>
+        <div class="footer-links"><a href="index.html"><span class="lang-en">Home</span><span class="lang-zh" style="display:none">首頁</span><span class="lang-ja" style="display:none">ホーム</span></a><a href="privacy.html"><span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span></a><a href="terms.html"><span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span></a></div>
     </div>
     <p class="footer-copy">&copy; 2026 CHIAOPOINT Technology Co., Ltd. All rights reserved.</p>
 </footer>
 
 <script>
-let currentLang='zh';
-function switchLanguage(lang){currentLang=lang;document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('cp_lang',lang);document.documentElement.lang=lang==='zh'?'zh-Hant':'en';}
-document.addEventListener('DOMContentLoaded',()=>{switchLanguage(localStorage.getItem('cp_lang')||'zh');document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));if(localStorage.getItem('cp_theme')==='dark')document.body.classList.add('dark-mode');});
+let currentLang='en';
+function switchLanguage(lang){currentLang=lang;document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-ja').forEach(el=>el.style.display='none');document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('cp_lang',lang);document.documentElement.lang=lang==='zh'?'zh-Hant':lang==='ja'?'ja':'en';}
+document.addEventListener('DOMContentLoaded',()=>{switchLanguage(localStorage.getItem('cp_lang')||'en');document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));if(localStorage.getItem('cp_theme')==='dark')document.body.classList.add('dark-mode');});
 </script>
 </body>
 </html>

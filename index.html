@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CHIAO.POINT(); — App Development & AI Solution</title>
-    <meta name="description" content="喬點科技有限公司 — App Development & AI Solution">
-    <meta property="og:title" content="CHIAO.POINT(); — 喬點科技">
+    <meta name="description" content="CHIAOPOINT Technology — App Development & AI Solution">
+    <meta property="og:title" content="CHIAO.POINT(); — CHIAOPOINT Technology">
     <meta property="og:description" content="App Development & AI Solution">
     <meta property="og:image" content="CPlogo4.png">
     <link rel="icon" href="CPlogo4.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -21,7 +21,7 @@
             --pink: #E8A0B4;
             --mint: #8FBFB4;
             --border: #e8e8e8;
-            --font-body: 'Roboto', 'Noto Sans TC', sans-serif;
+            --font-body: 'Roboto', 'Noto Sans TC', 'Noto Sans JP', sans-serif;
             --font-mono: 'Space Mono', monospace;
         }
 
@@ -466,21 +466,22 @@
         <div class="nav-right" id="navRight">
             <div class="nav-links">
                 <a href="index.html" class="active">
-                    <span class="lang-zh">首頁</span><span class="lang-en" style="display:none">Home</span>
+                    <span class="lang-en">Home</span><span class="lang-zh" style="display:none">首頁</span><span class="lang-ja" style="display:none">ホーム</span>
                 </a>
                 <a href="products.html">
-                    <span class="lang-zh">產品</span><span class="lang-en" style="display:none">Products</span>
+                    <span class="lang-en">Products</span><span class="lang-zh" style="display:none">產品</span><span class="lang-ja" style="display:none">製品</span>
                 </a>
                 <a href="privacy.html">
-                    <span class="lang-zh">隱私政策</span><span class="lang-en" style="display:none">Privacy</span>
+                    <span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span>
                 </a>
                 <a href="terms.html">
-                    <span class="lang-zh">服務條款</span><span class="lang-en" style="display:none">Terms</span>
+                    <span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span>
                 </a>
             </div>
             <div class="lang-switch">
-                <button class="lang-btn active" data-lang="zh">中</button>
-                <button class="lang-btn" data-lang="en">EN</button>
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="zh">中</button>
+                <button class="lang-btn" data-lang="ja">日</button>
             </div>
         </div>
         <button class="menu-toggle" id="menuToggle" aria-label="Menu">
@@ -505,14 +506,16 @@
     <div class="about-grid">
         <div>
             <h2 class="section-title">
-                <span class="lang-zh">科技應該讓<br>生活更美好</span>
-                <span class="lang-en" style="display:none">Technology Should<br>Enhance Life</span>
+                <span class="lang-en">Technology Should<br>Enhance Life</span>
+                <span class="lang-zh" style="display:none">科技應該讓<br>生活更美好</span>
+                <span class="lang-ja" style="display:none">テクノロジーで<br>暮らしをもっと豊かに</span>
             </h2>
         </div>
         <div>
             <p class="section-desc">
-                <span class="lang-zh">喬點科技專注於開發 iOS 應用程式，同時協助企業導入 AI 系統解決方案。從產品設計到技術落地，我們以設計思維與用戶洞察為核心，為客戶創造簡單而高效的數位體驗。</span>
-                <span class="lang-en" style="display:none">CHIAOPOINT focuses on iOS app development and helping enterprises adopt AI system solutions. From product design to technical implementation, we create simple yet efficient digital experiences driven by design thinking and user insights.</span>
+                <span class="lang-en">CHIAOPOINT focuses on iOS app development and helping enterprises adopt AI system solutions. From product design to technical implementation, we create simple yet efficient digital experiences driven by design thinking and user insights.</span>
+                <span class="lang-zh" style="display:none">喬點科技專注於開發 iOS 應用程式，同時協助企業導入 AI 系統解決方案。從產品設計到技術落地，我們以設計思維與用戶洞察為核心，為客戶創造簡單而高效的數位體驗。</span>
+                <span class="lang-ja" style="display:none">CHIAOPOINTはiOSアプリ開発に専念し、企業のAIソリューション導入を支援しています。プロダクトデザインから技術実装まで、デザイン思考とユーザーインサイトを軸に、シンプルで効率的なデジタル体験を創造します。</span>
             </p>
         </div>
     </div>
@@ -521,27 +524,28 @@
 <!-- VALUES -->
 <section class="section-border">
     <h2 class="section-title">
-        <span class="lang-zh">核心價值</span>
-        <span class="lang-en" style="display:none">Core Values</span>
+        <span class="lang-en">Core Values</span>
+        <span class="lang-zh" style="display:none">核心價值</span>
+        <span class="lang-ja" style="display:none">コアバリュー</span>
     </h2>
     <div class="values-grid">
         <div class="value-card">
             <div class="value-num">01</div>
-            <h3><span class="lang-zh">專注美學</span><span class="lang-en" style="display:none">Design-First</span></h3>
+            <h3><span class="lang-en">Design-First</span><span class="lang-zh" style="display:none">專注美學</span><span class="lang-ja" style="display:none">デザイン・ファースト</span></h3>
             <p class="value-en">Design-First</p>
-            <p><span class="lang-zh">設計先於技術，美感驅動開發。好的 App 不只功能完善，更要讓人享受使用的每一刻。</span><span class="lang-en" style="display:none">Design before code, aesthetics drive development. A great app should be a joy to use every moment.</span></p>
+            <p><span class="lang-en">Design before code, aesthetics drive development. A great app should be a joy to use every moment.</span><span class="lang-zh" style="display:none">設計先於技術，美感驅動開發。好的 App 不只功能完善，更要讓人享受使用的每一刻。</span><span class="lang-ja" style="display:none">デザインをコードより先に、美意識が開発を駆動します。優れたアプリは機能だけでなく、使う喜びを届けます。</span></p>
         </div>
         <div class="value-card">
             <div class="value-num">02</div>
-            <h3><span class="lang-zh">用戶至上</span><span class="lang-en" style="display:none">User-Centric</span></h3>
+            <h3><span class="lang-en">User-Centric</span><span class="lang-zh" style="display:none">用戶至上</span><span class="lang-ja" style="display:none">ユーザー中心</span></h3>
             <p class="value-en">User-Centric</p>
-            <p><span class="lang-zh">深入理解需求，打造直覺體驗。每一個功能、每一個動畫，都以用戶感受為出發點。</span><span class="lang-en" style="display:none">Deeply understand needs, build intuitive experiences. Every feature starts from how users feel.</span></p>
+            <p><span class="lang-en">Deeply understand needs, build intuitive experiences. Every feature starts from how users feel.</span><span class="lang-zh" style="display:none">深入理解需求，打造直覺體驗。每一個功能、每一個動畫，都以用戶感受為出發點。</span><span class="lang-ja" style="display:none">ニーズを深く理解し、直感的な体験を構築。すべての機能はユーザーの感覚から始まります。</span></p>
         </div>
         <div class="value-card">
             <div class="value-num">03</div>
-            <h3><span class="lang-zh">專注 AI 應用</span><span class="lang-en" style="display:none">AI-Focused</span></h3>
+            <h3><span class="lang-en">AI-Focused</span><span class="lang-zh" style="display:none">專注 AI 應用</span><span class="lang-ja" style="display:none">AI特化</span></h3>
             <p class="value-en">AI-Focused</p>
-            <p><span class="lang-zh">結合 AI 技術與實務需求，協助企業導入智慧化解決方案，提升營運效率與競爭力。</span><span class="lang-en" style="display:none">Combining AI technology with real-world needs, helping enterprises adopt intelligent solutions to boost efficiency and competitiveness.</span></p>
+            <p><span class="lang-en">Combining AI technology with real-world needs, helping enterprises adopt intelligent solutions to boost efficiency and competitiveness.</span><span class="lang-zh" style="display:none">結合 AI 技術與實務需求，協助企業導入智慧化解決方案，提升營運效率與競爭力。</span><span class="lang-ja" style="display:none">AI技術と実務ニーズを融合し、企業のスマートソリューション導入を支援。効率と競争力を向上させます。</span></p>
         </div>
     </div>
 </section>
@@ -549,7 +553,7 @@
 <!-- CONTACT -->
 <section class="section-border" style="text-align:center;padding:60px 48px">
     <a href="mailto:chiaopoint.technology@gmail.com" class="btn btn-contact">
-        <span class="lang-zh">聯絡我們</span><span class="lang-en" style="display:none">Contact Us</span>
+        <span class="lang-en">Contact Us</span><span class="lang-zh" style="display:none">聯絡我們</span><span class="lang-ja" style="display:none">お問い合わせ</span>
     </a>
 </section>
 
@@ -557,32 +561,33 @@
     <div class="footer-inner">
         <div>
             <div class="footer-info">
-                <span class="lang-zh">喬點科技有限公司</span><span class="lang-en" style="display:none">CHIAOPOINT Technology Co., Ltd.</span><br>
+                <span class="lang-en">CHIAOPOINT Technology Co., Ltd.</span><span class="lang-zh" style="display:none">喬點科技有限公司</span><span class="lang-ja" style="display:none">CHIAOPOINT テクノロジー株式会社</span><br>
                 chiaopoint.technology@gmail.com
             </div>
         </div>
         <div class="footer-links">
-            <a href="products.html"><span class="lang-zh">產品</span><span class="lang-en" style="display:none">Products</span></a>
-            <a href="privacy.html"><span class="lang-zh">隱私政策</span><span class="lang-en" style="display:none">Privacy</span></a>
-            <a href="terms.html"><span class="lang-zh">服務條款</span><span class="lang-en" style="display:none">Terms</span></a>
+            <a href="products.html"><span class="lang-en">Products</span><span class="lang-zh" style="display:none">產品</span><span class="lang-ja" style="display:none">製品</span></a>
+            <a href="privacy.html"><span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span></a>
+            <a href="terms.html"><span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span></a>
         </div>
     </div>
     <p class="footer-copy">&copy; 2026 CHIAOPOINT Technology Co., Ltd. All rights reserved.</p>
 </footer>
 
 <script>
-let currentLang='zh';
+let currentLang='en';
 function switchLanguage(lang){
     currentLang=lang;
-    document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');
     document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');
+    document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');
+    document.querySelectorAll('.lang-ja').forEach(el=>el.style.display='none');
     document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});
     document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));
     localStorage.setItem('cp_lang',lang);
-    document.documentElement.lang=lang==='zh'?'zh-Hant':'en';
+    document.documentElement.lang=lang==='zh'?'zh-Hant':lang==='ja'?'ja':'en';
 }
 document.addEventListener('DOMContentLoaded',()=>{
-    switchLanguage(localStorage.getItem('cp_lang')||'zh');
+    switchLanguage(localStorage.getItem('cp_lang')||'en');
     document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));
     document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));
 
