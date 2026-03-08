@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服務條款 — CHIAO.POINT();</title>
+    <link rel="icon" href="CPLOGO.jpg">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{--white:#fff;--bg:#fafafa;--text:#222;--text-light:#888;--pink:#E8A0B4;--mint:#8FBFB4;--border:#e8e8e8;--font-body:'Roboto','Noto Sans TC',sans-serif;--font-mono:'Space Mono',monospace}
+        body{font-family:var(--font-body);background:var(--white);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+        nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+        .nav-inner{max-width:1200px;margin:0 auto;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between}
+        .nav-logo{text-decoration:none;font-family:var(--font-mono);font-size:18px;font-weight:700;letter-spacing:-0.5px}
+        .nav-logo .cp-chiao{color:var(--pink)}.nav-logo .cp-point{color:var(--mint)}
+        .nav-right{display:flex;align-items:center;gap:36px}
+        .nav-links{display:flex;align-items:center;gap:32px}
+        .nav-links a{text-decoration:none;color:var(--text-light);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}
+        .nav-links a:hover,.nav-links a.active{color:var(--text)}
+        .lang-switch{display:flex;gap:4px}
+        .lang-btn{background:none;border:1px solid var(--border);padding:4px 10px;font-size:11px;font-family:var(--font-body);cursor:pointer;color:var(--text-light);transition:all 0.2s;border-radius:3px}
+        .lang-btn.active{background:var(--text);color:var(--white);border-color:var(--text)}
+        .menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px}
+        .menu-toggle span{display:block;width:22px;height:1.5px;background:var(--text);margin:5px 0}
+
+        .content{max-width:720px;margin:0 auto;padding:140px 48px 120px}
+        .content .num{font-family:var(--font-mono);font-size:12px;color:var(--pink);letter-spacing:2px;margin-bottom:20px}
+        .content h1{font-size:clamp(28px,4vw,40px);font-weight:700;margin-bottom:8px;letter-spacing:-0.5px}
+        .content .updated{font-size:13px;color:var(--text-light);margin-bottom:56px}
+        .content h2{font-size:20px;font-weight:700;margin:48px 0 16px;padding-top:32px;border-top:1px solid var(--border)}
+        .content p{font-size:15px;color:var(--text-light);line-height:1.9;margin-bottom:16px;font-weight:300}
+        .content ul{list-style:none;margin-bottom:16px}
+        .content ul li{font-size:15px;color:var(--text-light);line-height:1.9;padding-left:24px;position:relative;font-weight:300}
+        .content ul li::before{content:'';width:12px;height:1px;background:var(--mint);position:absolute;left:0;top:12px}
+        .content strong{color:var(--text);font-weight:500}
+
+        footer{border-top:1px solid var(--border);padding:64px 48px}
+        .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start}
+        .footer-logo{font-family:var(--font-mono);font-size:16px;font-weight:700;margin-bottom:12px}
+        .footer-logo .cp-chiao{color:var(--pink)}.footer-logo .cp-point{color:var(--mint)}
+        .footer-info{font-size:13px;color:var(--text-light);line-height:2}
+        .footer-links{display:flex;gap:40px}
+        .footer-links a{color:var(--text-light);text-decoration:none;font-size:13px;transition:color 0.2s}
+        .footer-links a:hover{color:var(--text)}
+        .footer-copy{margin-top:48px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--text-light);text-align:center;max-width:1200px;margin-left:auto;margin-right:auto}
+
+        @media(max-width:768px){
+            .nav-right{display:none}.nav-right.open{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:rgba(255,255,255,0.98);padding:32px 48px;border-bottom:1px solid var(--border);gap:24px}
+            .nav-links{flex-direction:column;gap:20px}.menu-toggle{display:block}.nav-inner{padding:0 24px}
+            .content{padding:120px 24px 80px}
+            .footer-inner{flex-direction:column;gap:32px}.footer-links{flex-direction:column;gap:12px}footer{padding:48px 24px}
+        }
+    </style>
+</head>
+<body>
+
+<nav><div class="nav-inner">
+    <a href="index.html" class="nav-logo"><span class="cp-chiao">CHIAO.</span><span class="cp-point">POINT();</span></a>
+    <div class="nav-right" id="navRight">
+        <div class="nav-links">
+            <a href="index.html"><span class="lang-zh">首頁</span><span class="lang-en" style="display:none">Home</span></a>
+            <a href="products.html"><span class="lang-zh">產品</span><span class="lang-en" style="display:none">Products</span></a>
+            <a href="privacy.html"><span class="lang-zh">隱私政策</span><span class="lang-en" style="display:none">Privacy</span></a>
+            <a href="terms.html" class="active"><span class="lang-zh">服務條款</span><span class="lang-en" style="display:none">Terms</span></a>
+        </div>
+        <div class="lang-switch"><button class="lang-btn active" data-lang="zh">中</button><button class="lang-btn" data-lang="en">EN</button></div>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</div></nav>
+
+<div class="content">
+    <p class="num">TERMS OF SERVICE —</p>
+    <h1><span class="lang-zh">服務條款</span><span class="lang-en" style="display:none">Terms of Service</span></h1>
+    <p class="updated"><span class="lang-zh">最後更新：2026 年 3 月</span><span class="lang-en" style="display:none">Last updated: March 2026</span></p>
+
+    <p><span class="lang-zh">歡迎使用喬點科技有限公司（以下簡稱「我們」）開發與營運的應用程式。使用我們的服務即表示您同意以下條款。本條款適用於我們所有的應用程式，包括但不限於 Petit a Petit、ClosetTime 衣櫃時光、FoodMODAPP 及未來推出的產品。</span><span class="lang-en" style="display:none">Welcome to the apps developed and operated by CHIAOPOINT CO., Ltd. ("we", "us"). By using our services, you agree to the following terms. These terms apply to all our apps, including but not limited to Petit a Petit, ClosetTime, FoodMODAPP, and future products.</span></p>
+
+    <h2><span class="lang-zh">1. 服務範圍</span><span class="lang-en" style="display:none">1. Scope of Services</span></h2>
+    <ul>
+        <li><span class="lang-zh">我們提供 iOS 應用程式軟體服務</span><span class="lang-en" style="display:none">We provide iOS application software services</span></li>
+        <li><span class="lang-zh">我們保留隨時變更、暫停或終止服務的權利</span><span class="lang-en" style="display:none">We reserve the right to modify, suspend, or terminate services at any time</span></li>
+        <li><span class="lang-zh">我們不保證服務永不中斷或完全無誤</span><span class="lang-en" style="display:none">We do not guarantee uninterrupted or error-free service</span></li>
+    </ul>
+
+    <h2><span class="lang-zh">2. 用戶責任</span><span class="lang-en" style="display:none">2. User Responsibilities</span></h2>
+    <p><span class="lang-zh">使用我們的服務，您同意：</span><span class="lang-en" style="display:none">By using our services, you agree to:</span></p>
+    <ul>
+        <li><span class="lang-zh">年滿 13 歲（或您所在地區的法定年齡）</span><span class="lang-en" style="display:none">Be at least 13 years old (or legal age in your jurisdiction)</span></li>
+        <li><span class="lang-zh">提供真實、準確的資訊</span><span class="lang-en" style="display:none">Provide truthful and accurate information</span></li>
+        <li><span class="lang-zh">不得濫用服務或進行非法行為</span><span class="lang-en" style="display:none">Not abuse the service or engage in illegal activities</span></li>
+        <li><span class="lang-zh">不得逆向工程、反編譯或試圖提取原始碼</span><span class="lang-en" style="display:none">Not reverse engineer, decompile, or attempt to extract source code</span></li>
+    </ul>
+
+    <h2><span class="lang-zh">3. 付費條款</span><span class="lang-en" style="display:none">3. Payment Terms</span></h2>
+    <ul>
+        <li><span class="lang-zh">App 內購買透過 Apple App Store 處理</span><span class="lang-en" style="display:none">In-app purchases are processed through Apple App Store</span></li>
+        <li><span class="lang-zh">非消耗性商品（如主題、貼圖、Pro 版功能）一次購買永久有效</span><span class="lang-en" style="display:none">Non-consumable items (themes, stickers, Pro features) are permanent once purchased</span></li>
+        <li><span class="lang-zh">退款政策依 Apple App Store 條款辦理</span><span class="lang-en" style="display:none">Refund policy follows Apple App Store terms</span></li>
+        <li><span class="lang-zh">我們不直接處理退款請求，請透過 Apple App Store 申請</span><span class="lang-en" style="display:none">We do not handle refund requests directly; please apply through Apple App Store</span></li>
+    </ul>
+
+    <h2><span class="lang-zh">4. 智慧財產權</span><span class="lang-en" style="display:none">4. Intellectual Property</span></h2>
+    <ul>
+        <li><span class="lang-zh">App 內所有內容（程式碼、設計、圖示、文字）為喬點科技有限公司所有</span><span class="lang-en" style="display:none">All app content (code, design, icons, text) is owned by CHIAOPOINT CO., Ltd.</span></li>
+        <li><span class="lang-zh">您在 App 中生成的內容（跑步紀錄、照片、穿搭記錄等）歸您所有</span><span class="lang-en" style="display:none">User-generated content (run records, photos, outfit logs, etc.) belongs to you</span></li>
+        <li><span class="lang-zh">未經授權，不得複製、修改或散佈我們的 App 內容</span><span class="lang-en" style="display:none">Unauthorized copying, modification, or distribution of our app content is prohibited</span></li>
+    </ul>
+
+    <h2><span class="lang-zh">5. 免責聲明</span><span class="lang-en" style="display:none">5. Disclaimers</span></h2>
+    <ul>
+        <li><span class="lang-zh">GPS 定位可能存在誤差，請勿完全依賴導航功能</span><span class="lang-en" style="display:none">GPS location may have errors; do not rely solely on navigation features</span></li>
+        <li><span class="lang-zh">因跑步或運動造成的任何身體傷害，本公司不承擔責任</span><span class="lang-en" style="display:none">We are not liable for any physical injuries from running or exercise</span></li>
+        <li><span class="lang-zh">天氣推薦與穿搭建議僅供參考，準確性無法保證</span><span class="lang-en" style="display:none">Weather recommendations and outfit suggestions are for reference only; accuracy not guaranteed</span></li>
+        <li><span class="lang-zh">我們不保證資料永久保存，請自行備份重要資料</span><span class="lang-en" style="display:none">We do not guarantee permanent data storage; please back up important data</span></li>
+    </ul>
+
+    <h2><span class="lang-zh">6. 帳號與終止</span><span class="lang-en" style="display:none">6. Account & Termination</span></h2>
+    <ul>
+        <li><span class="lang-zh">您可隨時在 App 內刪除帳號以終止服務</span><span class="lang-en" style="display:none">You may delete your account anytime within the app to terminate services</span></li>
+        <li><span class="lang-zh">違反本條款者，我們保留停用帳號的權利</span><span class="lang-en" style="display:none">We reserve the right to suspend accounts that violate these terms</span></li>
+        <li><span class="lang-zh">帳號終止後，您的雲端資料將被刪除</span><span class="lang-en" style="display:none">After account termination, your cloud data will be deleted</span></li>
+    </ul>
+
+    <h2><span class="lang-zh">7. 條款變更</span><span class="lang-en" style="display:none">7. Changes to Terms</span></h2>
+    <p><span class="lang-zh">我們可能會不定期更新本服務條款。變更後的條款將在本頁面公佈，並更新「最後更新」日期。繼續使用我們的服務即表示您接受更新後的條款。</span><span class="lang-en" style="display:none">We may update these Terms of Service from time to time. Changes will be posted on this page with an updated "Last updated" date. Continued use of our services constitutes acceptance of the updated terms.</span></p>
+
+    <h2><span class="lang-zh">8. 法律管轄</span><span class="lang-en" style="display:none">8. Governing Law</span></h2>
+    <p><span class="lang-zh">本條款適用中華民國（台灣）法律。如有任何爭議，雙方同意以台灣台北地方法院為第一審管轄法院。</span><span class="lang-en" style="display:none">These terms are governed by the laws of the Republic of China (Taiwan). For any disputes, both parties agree to submit to the jurisdiction of the Taipei District Court as the court of first instance.</span></p>
+
+    <h2><span class="lang-zh">9. 聯絡我們</span><span class="lang-en" style="display:none">9. Contact Us</span></h2>
+    <p><span class="lang-zh">如有任何條款相關問題，請透過以下方式聯絡我們：</span><span class="lang-en" style="display:none">For any terms-related questions, please contact us at:</span></p>
+    <p><span class="lang-zh">喬點科技有限公司</span><span class="lang-en" style="display:none">CHIAOPOINT CO., Ltd.</span><br>Email: chiaopoint.technology@gmail.com</p>
+</div>
+
+<footer><div class="footer-inner">
+    <div><p class="footer-logo"><span class="cp-chiao">CHIAO.</span><span class="cp-point">POINT();</span></p><div class="footer-info"><span class="lang-zh">喬點科技有限公司</span><span class="lang-en" style="display:none">CHIAOPOINT CO., Ltd.</span><br>chiaopoint.technology@gmail.com</div></div>
+    <div class="footer-links"><a href="index.html"><span class="lang-zh">首頁</span><span class="lang-en" style="display:none">Home</span></a><a href="products.html"><span class="lang-zh">產品</span><span class="lang-en" style="display:none">Products</span></a><a href="privacy.html"><span class="lang-zh">隱私政策</span><span class="lang-en" style="display:none">Privacy</span></a></div>
+</div><p class="footer-copy">&copy; 2026 CHIAOPOINT CO., Ltd. All rights reserved.</p></footer>
+
+<script>
+let currentLang='zh';
+function switchLanguage(lang){currentLang=lang;document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('cp_lang',lang);document.documentElement.lang=lang==='zh'?'zh-Hant':'en';}
+document.addEventListener('DOMContentLoaded',()=>{switchLanguage(localStorage.getItem('cp_lang')||'zh');document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));});
+</script>
+</body>
+</html>
