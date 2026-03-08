@@ -114,12 +114,14 @@
         .hero-logo-wrap {
             position: relative;
             display: inline-block;
+            width: 320px;
+            max-width: 80%;
             margin-bottom: 32px;
         }
 
         .hero-logo {
-            width: 320px;
-            max-width: 80%;
+            display: block;
+            width: 100%;
         }
 
         .hero h1 {
@@ -333,8 +335,8 @@
         /* === THEME TOGGLE === */
         .theme-toggle-wrap {
             position: absolute;
-            top: 64%;
-            right: -18px;
+            top: 66%;
+            left: 97%;
             transform: translateY(-50%);
         }
 
@@ -450,10 +452,9 @@
             .menu-toggle { display: block; }
             .nav-inner { padding: 0 24px; }
             .hero { padding: 100px 24px 48px; min-height: 60vh; }
-            .hero-logo { width: 240px; }
+            .hero-logo-wrap { width: 240px; }
             .theme-toggle-wrap {
-                right: -28px;
-                transform: scale(0.8) translateY(-50%);
+                transform: scale(0.75) translateY(-50%);
                 transform-origin: left center;
             }
             section { padding: 56px 24px; }
