@@ -618,11 +618,18 @@ document.addEventListener('DOMContentLoaded',()=>{
     document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));
     document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));
 
-    // Scroll animations
+    // Scroll animations — only animate elements that enter viewport by scrolling
+    const animEls=document.querySelectorAll('.slide-left,.slide-right,.slide-up');
+    // Elements already in viewport on load: show immediately without animation
+    animEls.forEach(el=>{
+        const rect=el.getBoundingClientRect();
+        if(rect.top<window.innerHeight){el.style.transition='none';el.classList.add('visible');requestAnimationFrame(()=>requestAnimationFrame(()=>el.style.transition=''));}
+    });
+    // Elements below fold: animate on scroll
     const observer=new IntersectionObserver((entries)=>{
         entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});
     },{threshold:0.15});
-    document.querySelectorAll('.slide-left,.slide-right,.slide-up').forEach(el=>observer.observe(el));
+    animEls.forEach(el=>{if(!el.classList.contains('visible'))observer.observe(el);});
 
     // Theme toggle: checked=ON=light, unchecked=OFF=dark
     const toggle=document.getElementById('themeToggle');
