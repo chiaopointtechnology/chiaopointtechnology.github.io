@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consult — CHIAO.POINT();</title>
+    <link rel="icon" href="CPlogo4.png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        :root{--white:#fff;--bg:#fafafa;--text:#222;--text-light:#888;--pink:#E8A0B4;--mint:#8FBFB4;--border:#e8e8e8;--font-body:'Roboto','Noto Sans TC','Noto Sans JP',sans-serif;--font-mono:'Space Mono',monospace}
+        body{font-family:var(--font-body);background:var(--white);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+
+        nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+        .nav-inner{max-width:1200px;margin:0 auto;padding:0 48px;height:72px;display:flex;align-items:center;justify-content:space-between}
+        .nav-logo{text-decoration:none;display:flex;align-items:center}
+        .nav-logo img{height:32px;width:auto}
+        .nav-right{display:flex;align-items:center;gap:36px}
+        .nav-links{display:flex;align-items:center;gap:32px}
+        .nav-links a{text-decoration:none;color:var(--text-light);font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s}
+        .nav-links a:hover,.nav-links a.active{color:var(--text)}
+        .lang-switch{display:flex;gap:4px}
+        .lang-btn{background:none;border:1px solid var(--border);padding:4px 10px;font-size:11px;font-family:var(--font-body);cursor:pointer;color:var(--text-light);transition:all 0.2s;border-radius:3px}
+        .lang-btn.active{background:var(--text);color:var(--white);border-color:var(--text)}
+        .menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px}
+        .menu-toggle span{display:block;width:22px;height:1.5px;background:var(--text);margin:5px 0}
+
+        .page-header{padding:140px 48px 56px;max-width:720px;margin:0 auto}
+        .page-header h1{font-size:clamp(24px,3.5vw,36px);font-weight:700;letter-spacing:-0.5px;margin-bottom:8px}
+        .page-header p{font-size:15px;color:var(--text-light);font-weight:300}
+
+        .form-wrap{max-width:720px;margin:0 auto;padding:0 48px 100px}
+        .form-section{margin-bottom:36px}
+        .form-section-title{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+
+        .form-row{margin-bottom:20px}
+        .form-row label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--text)}
+        .form-row label .required{color:#c44b2b;margin-left:2px}
+        .form-row input[type="text"],
+        .form-row input[type="email"],
+        .form-row input[type="tel"],
+        .form-row select,
+        .form-row textarea{
+            width:100%;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-body);font-size:14px;color:var(--text);background:var(--white);transition:border-color 0.2s;outline:none
+        }
+        .form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--text)}
+        .form-row textarea{min-height:120px;resize:vertical}
+        .form-row select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23888' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+
+        .radio-group{display:flex;gap:12px;flex-wrap:wrap}
+        .radio-group label{display:flex;align-items:center;gap:8px;padding:10px 20px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:14px;font-weight:400;transition:all 0.2s}
+        .radio-group label:hover{border-color:var(--text)}
+        .radio-group input[type="radio"]{accent-color:var(--text)}
+        .radio-group input[type="radio"]:checked + span{font-weight:500}
+
+        .form-submit{display:inline-flex;align-items:center;gap:8px;padding:14px 40px;background:var(--text);color:var(--white);border:none;border-radius:8px;font-family:var(--font-body);font-size:14px;font-weight:500;letter-spacing:1px;cursor:pointer;transition:all 0.3s;margin-top:8px}
+        .form-submit:hover{background:#444;transform:translateY(-1px)}
+
+        .success-msg{display:none;text-align:center;padding:60px 32px;margin-bottom:40px}
+        .success-msg.show{display:block}
+        .success-msg h2{font-size:24px;margin-bottom:12px}
+        .success-msg p{color:var(--text-light);font-size:15px}
+        .success-msg .check{font-size:48px;margin-bottom:16px;display:block}
+        .form-content.hide{display:none}
+
+        footer{border-top:1px solid var(--border);padding:64px 48px}
+        .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start}
+        .footer-info{font-size:13px;color:var(--text-light);line-height:2}
+        .footer-links{display:flex;gap:40px}
+        .footer-links a{color:var(--text-light);text-decoration:none;font-size:13px;transition:color 0.2s}
+        .footer-links a:hover{color:var(--text)}
+        .footer-copy{margin-top:48px;padding-top:24px;border-top:1px solid var(--border);font-size:12px;color:var(--text-light);text-align:center;max-width:1200px;margin-left:auto;margin-right:auto}
+
+        body.dark-mode{background:#111;color:#e8e8e8}
+        body.dark-mode nav{background:rgba(17,17,17,0.95);border-bottom-color:#333}
+        body.dark-mode .nav-links a{color:#999}body.dark-mode .nav-links a:hover,body.dark-mode .nav-links a.active{color:#e8e8e8}
+        body.dark-mode .lang-btn{color:#999;border-color:#444}body.dark-mode .lang-btn.active{background:#e8e8e8;color:#111;border-color:#e8e8e8}
+        body.dark-mode .nav-right.open{background:rgba(17,17,17,0.98);border-bottom-color:#333}
+        body.dark-mode .menu-toggle span{background:#e8e8e8}
+        body.dark-mode .nav-logo img{filter:brightness(0) invert(1)}
+        body.dark-mode .page-header p{color:#999}
+        body.dark-mode .form-section-title{color:#999;border-bottom-color:#333}
+        body.dark-mode .form-row label{color:#e8e8e8}
+        body.dark-mode .form-row input,body.dark-mode .form-row select,body.dark-mode .form-row textarea{background:#1a1a1a;border-color:#333;color:#e8e8e8}
+        body.dark-mode .form-row input:focus,body.dark-mode .form-row select:focus,body.dark-mode .form-row textarea:focus{border-color:#e8e8e8}
+        body.dark-mode .radio-group label{border-color:#333;color:#e8e8e8}
+        body.dark-mode .radio-group label:hover{border-color:#e8e8e8}
+        body.dark-mode .form-submit{background:#e8e8e8;color:#111}body.dark-mode .form-submit:hover{background:#ccc}
+        body.dark-mode .success-msg p{color:#999}
+        body.dark-mode footer{border-top-color:#333}body.dark-mode .footer-info{color:#999}body.dark-mode .footer-links a{color:#999}body.dark-mode .footer-links a:hover{color:#e8e8e8}
+        body.dark-mode .footer-copy{color:#666;border-top-color:#333}
+        body.dark-mode .form-row select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E")}
+
+        @media(max-width:768px){
+            .nav-right{display:none}.nav-right.open{display:flex;flex-direction:column;position:absolute;top:72px;left:0;right:0;background:rgba(255,255,255,0.98);padding:32px 48px;border-bottom:1px solid var(--border);gap:24px}
+            .nav-links{flex-direction:column;gap:20px}.menu-toggle{display:block}.nav-inner{padding:0 24px}
+            .page-header{padding:120px 24px 40px}.form-wrap{padding:0 24px 80px}
+            .radio-group{flex-direction:column}
+            .footer-inner{flex-direction:column;gap:32px}.footer-links{flex-direction:column;gap:12px}footer{padding:48px 24px}
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo"><img src="nav-logo.png" alt="CHIAO.POINT();"></a>
+        <div class="nav-right" id="navRight">
+            <div class="nav-links">
+                <a href="index.html"><span class="lang-en">Home</span><span class="lang-zh" style="display:none">首頁</span><span class="lang-ja" style="display:none">ホーム</span></a>
+                <a href="products.html"><span class="lang-en">Services</span><span class="lang-zh" style="display:none">產品服務</span><span class="lang-ja" style="display:none">サービス</span></a>
+                <a href="contact.html" class="active"><span class="lang-en">Consult</span><span class="lang-zh" style="display:none">諮詢</span><span class="lang-ja" style="display:none">お問い合わせ</span></a>
+                <a href="privacy.html"><span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span></a>
+                <a href="terms.html"><span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span></a>
+            </div>
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="zh">中</button>
+                <button class="lang-btn" data-lang="ja">日</button>
+            </div>
+        </div>
+        <button class="menu-toggle" id="menuToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+</nav>
+
+<div class="page-header">
+    <h1><span class="lang-en">Get in Touch</span><span class="lang-zh" style="display:none">免費諮詢</span><span class="lang-ja" style="display:none">お問い合わせ</span></h1>
+    <p><span class="lang-en">Tell us about your needs — we'll get back to you within 24 hours</span><span class="lang-zh" style="display:none">告訴我們你的需求，我們將在 24 小時內回覆</span><span class="lang-ja" style="display:none">ご要望をお聞かせください。24時間以内にご返信いたします</span></p>
+</div>
+
+<div class="form-wrap">
+
+    <div class="success-msg" id="successMsg">
+        <span class="check">&#10003;</span>
+        <h2><span class="lang-en">Thank You!</span><span class="lang-zh" style="display:none">感謝您的諮詢！</span><span class="lang-ja" style="display:none">お問い合わせありがとうございます！</span></h2>
+        <p><span class="lang-en">We've received your message and will contact you within 24 hours.</span><span class="lang-zh" style="display:none">我們已收到您的訊息，將在 24 小時內與您聯繫。</span><span class="lang-ja" style="display:none">メッセージを受け取りました。24時間以内にご連絡いたします。</span></p>
+    </div>
+
+    <form class="form-content" id="consultForm" action="https://formsubmit.co/chiaopoint.technology@gmail.com" method="POST">
+        <!-- FormSubmit settings -->
+        <input type="hidden" name="_subject" value="New Consultation Request / 新諮詢表單">
+        <input type="hidden" name="_captcha" value="true">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="_honey" style="display:none">
+        <input type="hidden" name="_next" id="formNext">
+
+        <!-- Section 1: Basic Info -->
+        <div class="form-section">
+            <div class="form-section-title"><span class="lang-en">Basic Information</span><span class="lang-zh" style="display:none">基本資料</span><span class="lang-ja" style="display:none">基本情報</span></div>
+
+            <div class="form-row">
+                <label><span class="lang-en">Name</span><span class="lang-zh" style="display:none">姓名</span><span class="lang-ja" style="display:none">お名前</span><span class="required">*</span></label>
+                <input type="text" name="name" required>
+            </div>
+
+            <div class="form-row">
+                <label>Email<span class="required">*</span></label>
+                <input type="email" name="email" required>
+            </div>
+
+            <div class="form-row">
+                <label><span class="lang-en">Phone</span><span class="lang-zh" style="display:none">電話</span><span class="lang-ja" style="display:none">電話番号</span></label>
+                <input type="tel" name="phone">
+            </div>
+
+            <div class="form-row">
+                <label><span class="lang-en">Company / Store Name</span><span class="lang-zh" style="display:none">公司 / 店名</span><span class="lang-ja" style="display:none">会社名 / 店舗名</span><span class="required">*</span></label>
+                <input type="text" name="company" required>
+            </div>
+        </div>
+
+        <!-- Section 2: Service Interest -->
+        <div class="form-section">
+            <div class="form-section-title"><span class="lang-en">Service Interest</span><span class="lang-zh" style="display:none">感興趣的服務</span><span class="lang-ja" style="display:none">ご興味のあるサービス</span></div>
+
+            <div class="form-row">
+                <div class="radio-group">
+                    <label><input type="radio" name="service" value="AI Smart Ordering" required> <span><span class="lang-en">AI Smart Ordering</span><span class="lang-zh" style="display:none">AI 智慧叫貨系統</span><span class="lang-ja" style="display:none">AI スマート発注</span></span></label>
+                    <label><input type="radio" name="service" value="Brand App"> <span><span class="lang-en">Brand App</span><span class="lang-zh" style="display:none">品牌形象 App</span><span class="lang-ja" style="display:none">ブランドアプリ</span></span></label>
+                    <label><input type="radio" name="service" value="Both"> <span><span class="lang-en">Both</span><span class="lang-zh" style="display:none">兩者都要</span><span class="lang-ja" style="display:none">両方</span></span></label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Business Details -->
+        <div class="form-section">
+            <div class="form-section-title"><span class="lang-en">Business Details</span><span class="lang-zh" style="display:none">營業資訊</span><span class="lang-ja" style="display:none">事業詳細</span></div>
+
+            <div class="form-row">
+                <label><span class="lang-en">Number of Stores</span><span class="lang-zh" style="display:none">目前店數</span><span class="lang-ja" style="display:none">店舗数</span></label>
+                <select name="stores" data-i18n="select">
+                    <option value="" disabled selected data-en="Select" data-zh="請選擇" data-ja="選択">Select</option>
+                    <option value="1">1</option>
+                    <option value="2-5">2 - 5</option>
+                    <option value="5+">5+</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label><span class="lang-en">Current POS System</span><span class="lang-zh" style="display:none">使用的 POS 系統</span><span class="lang-ja" style="display:none">ご利用のPOSシステム</span></label>
+                <select name="pos" data-i18n="select">
+                    <option value="" disabled selected data-en="Select" data-zh="請選擇" data-ja="選択">Select</option>
+                    <option value="iCHEF">iCHEF</option>
+                    <option value="肚肚 POS">肚肚 POS</option>
+                    <option value="Toast">Toast</option>
+                    <option value="Square">Square</option>
+                    <option value="Other" data-en="Other" data-zh="其他" data-ja="その他">Other</option>
+                    <option value="None" data-en="None" data-zh="沒有" data-ja="なし">None</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label><span class="lang-en">Budget Range</span><span class="lang-zh" style="display:none">預算範圍</span><span class="lang-ja" style="display:none">ご予算</span></label>
+                <select name="budget" data-i18n="select">
+                    <option value="" disabled selected data-en="Select" data-zh="請選擇" data-ja="選択">Select</option>
+                    <option value="Under NT$5,000" data-en="Under NT$5,000" data-zh="NT$5,000 以下" data-ja="NT$5,000 以下">Under NT$5,000</option>
+                    <option value="NT$5,000 - 15,000">NT$5,000 - 15,000</option>
+                    <option value="NT$15,000+">NT$15,000+</option>
+                    <option value="Let's discuss" data-en="Let's discuss" data-zh="再討論" data-ja="要相談">Let's discuss</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Section 4: Problem Description -->
+        <div class="form-section">
+            <div class="form-section-title"><span class="lang-en">Your Needs</span><span class="lang-zh" style="display:none">需求描述</span><span class="lang-ja" style="display:none">ご要望</span></div>
+
+            <div class="form-row">
+                <label><span class="lang-en">Tell us what problems you'd like to solve</span><span class="lang-zh" style="display:none">請告訴我們您希望解決的問題</span><span class="lang-ja" style="display:none">解決したい課題をお聞かせください</span><span class="required">*</span></label>
+                <textarea name="message" required></textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="form-submit">
+            <span class="lang-en">Submit</span><span class="lang-zh" style="display:none">送出諮詢</span><span class="lang-ja" style="display:none">送信</span> &rarr;
+        </button>
+    </form>
+</div>
+
+<footer>
+    <div class="footer-inner">
+        <div><div class="footer-info"><span class="lang-en">CHIAOPOINT Technology Co., Ltd.</span><span class="lang-zh" style="display:none">喬點科技有限公司</span><span class="lang-ja" style="display:none">チャオポイントテクノロジー株式会社</span><br>chiaopoint.technology@gmail.com</div></div>
+        <div class="footer-links"><a href="index.html"><span class="lang-en">Home</span><span class="lang-zh" style="display:none">首頁</span><span class="lang-ja" style="display:none">ホーム</span></a><a href="privacy.html"><span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span></a><a href="terms.html"><span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span></a></div>
+    </div>
+    <p class="footer-copy">&copy; 2026 CHIAOPOINT Technology Co., Ltd. All rights reserved.</p>
+</footer>
+
+<script>
+let currentLang='en';
+function switchLanguage(lang){currentLang=lang;document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-ja').forEach(el=>el.style.display='none');document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('cp_lang',lang);document.documentElement.lang=lang==='zh'?'zh-Hant':lang==='ja'?'ja':'en';document.querySelectorAll('option[data-'+lang+']').forEach(opt=>{opt.textContent=opt.getAttribute('data-'+lang);});}
+document.addEventListener('DOMContentLoaded',()=>{
+    switchLanguage(localStorage.getItem('cp_lang')||'en');
+    document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));
+    document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));
+    if(localStorage.getItem('cp_theme')==='dark')document.body.classList.add('dark-mode');
+    // Set redirect URL for FormSubmit
+    document.getElementById('formNext').value=window.location.href.split('?')[0]+'?sent=1';
+    // Show success message if redirected back
+    if(new URLSearchParams(window.location.search).get('sent')==='1'){
+        document.getElementById('successMsg').classList.add('show');
+        document.getElementById('consultForm').classList.add('hide');
+    }
+});
+</script>
+</body>
+</html>
