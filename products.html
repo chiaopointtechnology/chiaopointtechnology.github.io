@@ -181,11 +181,7 @@
 </div>
 
 <div class="cat-tabs">
-    <button class="cat-tab active" data-cat="all">
-        <span class="lang-en">All</span><span class="lang-zh" style="display:none">全部</span><span class="lang-ja" style="display:none">すべて</span>
-        <span class="tab-count">5</span>
-    </button>
-    <button class="cat-tab" data-cat="app">
+    <button class="cat-tab active" data-cat="app">
         <span class="tab-icon">&#9883;</span>
         <span class="lang-en">APP</span><span class="lang-zh" style="display:none">APP 應用</span><span class="lang-ja" style="display:none">アプリ</span>
         <span class="tab-count">3</span>
@@ -201,14 +197,6 @@
 
     <!-- ===== APP 應用 ===== -->
     <div class="products-section" data-section="app">
-    <div class="section-header">
-        <div class="section-icon app">&#128241;</div>
-        <div>
-            <div class="section-title"><span class="lang-en">Mobile Apps</span><span class="lang-zh" style="display:none">APP 應用</span><span class="lang-ja" style="display:none">モバイルアプリ</span></div>
-            <div class="section-subtitle"><span class="lang-en">Crafted apps solving real needs</span><span class="lang-zh" style="display:none">用心打造，解決真實需求</span><span class="lang-ja" style="display:none">一つひとつ、リアルなニーズに応える</span></div>
-        </div>
-    </div>
-
     <!-- Petit a Petit -->
     <div class="product-card">
         <img src="icon-pap.png" alt="Petit a Petit" class="product-icon">
@@ -335,7 +323,7 @@
 let currentLang='en';
 function switchLanguage(lang){currentLang=lang;document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-ja').forEach(el=>el.style.display='none');document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('cp_lang',lang);document.documentElement.lang=lang==='zh'?'zh-Hant':lang==='ja'?'ja':'en';}
 function filterCategory(cat){document.querySelectorAll('.cat-tab').forEach(t=>t.classList.toggle('active',t.dataset.cat===cat));document.querySelectorAll('.products-section').forEach(s=>{if(cat==='all'){s.classList.remove('hidden')}else{s.classList.toggle('hidden',s.dataset.section!==cat)}});}
-document.addEventListener('DOMContentLoaded',()=>{switchLanguage(localStorage.getItem('cp_lang')||'en');document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));document.querySelectorAll('.cat-tab').forEach(tab=>tab.addEventListener('click',()=>filterCategory(tab.dataset.cat)));if(localStorage.getItem('cp_theme')==='dark')document.body.classList.add('dark-mode');});
+document.addEventListener('DOMContentLoaded',()=>{switchLanguage(localStorage.getItem('cp_lang')||'en');document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));document.querySelectorAll('.cat-tab').forEach(tab=>tab.addEventListener('click',()=>filterCategory(tab.dataset.cat)));filterCategory('app');if(localStorage.getItem('cp_theme')==='dark')document.body.classList.add('dark-mode');});
 </script>
 </body>
 </html>
