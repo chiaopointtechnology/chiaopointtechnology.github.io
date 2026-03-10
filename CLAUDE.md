@@ -13,11 +13,14 @@
 
 | 檔案 | 說明 | 網址 |
 |------|------|------|
-| `index.html` | 組織藍圖（6部門、18 AI 模組、4 產品線） | /index.html |
+| `index.html` | 公司首頁（核心價值、聯絡方式、多語系 EN/中/日） | /index.html |
+| `products.html` | 產品展示（PAP、ClosetTime、CCeSIM、FoodMODAPP） | /products.html |
+| `prompts.html` | 方案中心（9 分類、50+ 方案模板與 AI 指令） | /prompts.html |
 | `office.html` | 像素風格虛擬辦公室（RPG 動畫） | /office.html |
-| `prompts.html` | AI 指令庫（6 分類、30+ 指令模板） | /prompts.html |
+| `privacy.html` | 隱私政策 | /privacy.html |
+| `terms.html` | 服務條款 | /terms.html |
 
-### AI 指令庫分類
+### 方案中心分類（prompts.html）
 
 | 分類 | 內容 |
 |------|------|
@@ -27,6 +30,9 @@
 | 商業文件 | 客戶提案、商業計劃、合作信、客戶回覆、簡報 |
 | 行銷社群 | IG 貼文、限動、產品文案、招募文、SEO |
 | 自動化流程 | n8n 工作流、批次處理、備份、Claude API |
+| Claude Code 指令 | /foodmod-single、/foodmod-chain、/new-view、/art、/list |
+| **AI 應用方案** | **餐飲 AI 智慧叫貨（架構、預測引擎、防範機制、LINE版、SMS版、Prompt）** |
+| 學習專區 | Claude Code、Node.js、GitHub、API、Git、MCP、Hooks、SDK、Skills |
 
 ### n8n 自動化工作流（未部署）
 
@@ -42,9 +48,15 @@
 
 ## 設計風格
 
+### prompts.html（方案中心）
 - 配色：米色 `#f5f2ed`、深色文字 `#1a1a1a`、強調色 `#c44b2b`
 - 字體：DM Serif Display + Space Grotesk + Noto Sans TC
-- 風格：簡約藝術、Readymig 風格
+- 風格：簡約藝術、Readymag 風格
+
+### index.html / products.html（公司首頁）
+- 配色：白底 `#ffffff`、粉色 `#E8A0B4`、薄荷 `#8FBFB4`
+- 字體：Roboto + Space Mono + Noto Sans TC/JP
+- 支援深色模式、多語系（EN/中/日）
 
 ## 部署方式
 
@@ -59,4 +71,4 @@ git add -A && git commit -m "update" && git push
 
 - 使用者非工程背景，請用白話解釋
 - 改 code 前先確認
-- 指令庫的目的：讓非技術人員也能精準使用 AI
+- 方案中心的目的：讓非技術人員也能瀏覽喬點科技的所有應用方案與 AI 工具

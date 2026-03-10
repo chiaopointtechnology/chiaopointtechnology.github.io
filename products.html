@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products — CHIAO.POINT();</title>
+    <title>Services — CHIAO.POINT();</title>
     <link rel="icon" href="CPlogo4.png">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -55,6 +55,51 @@
         .product-link{display:inline-flex;align-items:center;gap:6px;color:var(--text);text-decoration:none;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--text);padding-bottom:1px;transition:all 0.3s;margin-top:4px;width:fit-content}
         .product-link:hover{color:var(--pink);border-color:var(--pink)}
 
+        /* === CATEGORY TABS === */
+        .cat-tabs{max-width:900px;margin:0 auto;padding:0 48px 32px;display:flex;gap:12px}
+        .cat-tab{padding:10px 24px;border-radius:30px;border:1.5px solid var(--border);background:none;font-family:var(--font-body);font-size:14px;font-weight:500;cursor:pointer;color:var(--text-light);transition:all 0.25s;display:flex;align-items:center;gap:8px}
+        .cat-tab:hover{border-color:var(--text);color:var(--text)}
+        .cat-tab.active{background:var(--text);color:var(--white);border-color:var(--text)}
+        .cat-tab .tab-icon{font-size:16px}
+        .cat-tab .tab-count{font-size:11px;opacity:0.7;font-weight:400}
+        body.dark-mode .cat-tab{border-color:#444;color:#999}
+        body.dark-mode .cat-tab:hover{border-color:#e8e8e8;color:#e8e8e8}
+        body.dark-mode .cat-tab.active{background:#e8e8e8;color:#111;border-color:#e8e8e8}
+
+        /* === SECTION HEADER === */
+        .section-header{display:flex;align-items:center;gap:14px;padding:8px 0 24px;margin-top:16px}
+        .section-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+        .section-icon.app{background:linear-gradient(135deg,#E8A0B4,#d48da0)}
+        .section-icon.ai{background:linear-gradient(135deg,#0ea5e9,#0284c7)}
+        .section-title{font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-light)}
+        .section-subtitle{font-size:12px;color:var(--text-light);font-weight:300;margin-top:2px}
+        body.dark-mode .section-title{color:#999}
+        body.dark-mode .section-subtitle{color:#666}
+
+        .products-section{transition:opacity 0.3s,max-height 0.4s}
+        .products-section.hidden{display:none}
+
+        /* === AI HIGHLIGHT CARD === */
+        .ai-highlight{background:linear-gradient(135deg,rgba(14,165,233,0.04),rgba(2,132,199,0.08));border:1px solid rgba(14,165,233,0.15);border-radius:16px;padding:32px;margin-bottom:8px}
+        .ai-highlight .product-card{border:none;padding:0}
+        .ai-highlight .product-card:first-child{border-top:none}
+        .ai-stats{display:flex;gap:24px;margin-top:16px;flex-wrap:wrap}
+        .ai-stat{text-align:center;padding:12px 20px;background:rgba(255,255,255,0.7);border-radius:10px;min-width:100px}
+        .ai-stat-value{font-size:22px;font-weight:700;color:#0284c7;font-family:var(--font-mono)}
+        .ai-stat-label{font-size:11px;color:var(--text-light);margin-top:2px}
+        body.dark-mode .ai-highlight{background:linear-gradient(135deg,rgba(14,165,233,0.06),rgba(2,132,199,0.12));border-color:rgba(14,165,233,0.25)}
+        body.dark-mode .ai-stat{background:rgba(255,255,255,0.05)}
+        body.dark-mode .ai-stat-value{color:#38bdf8}
+
+        @media(max-width:768px){
+            .cat-tabs{padding:0 24px 24px;flex-wrap:wrap;gap:8px}
+            .cat-tab{padding:8px 16px;font-size:13px}
+            .ai-stats{gap:12px}
+            .ai-stat{min-width:80px;padding:10px 14px}
+            .ai-stat-value{font-size:18px}
+            .ai-highlight{padding:20px}
+        }
+
         footer{border-top:1px solid var(--border);padding:64px 48px}
         .footer-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start}
         .footer-info{font-size:13px;color:var(--text-light);line-height:2}
@@ -99,7 +144,8 @@
         <div class="nav-right" id="navRight">
             <div class="nav-links">
                 <a href="index.html"><span class="lang-en">Home</span><span class="lang-zh" style="display:none">首頁</span><span class="lang-ja" style="display:none">ホーム</span></a>
-                <a href="products.html" class="active"><span class="lang-en">Products</span><span class="lang-zh" style="display:none">產品</span><span class="lang-ja" style="display:none">製品</span></a>
+                <a href="products.html" class="active"><span class="lang-en">Services</span><span class="lang-zh" style="display:none">產品服務</span><span class="lang-ja" style="display:none">サービス</span></a>
+                <a href="prompts.html"><span class="lang-en">Solutions</span><span class="lang-zh" style="display:none">方案中心</span><span class="lang-ja" style="display:none">ソリューション</span></a>
                 <a href="privacy.html"><span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span></a>
                 <a href="terms.html"><span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span></a>
             </div>
@@ -114,11 +160,38 @@
 </nav>
 
 <div class="page-header">
-    <h1><span class="lang-en">Every App, Crafted with Care</span><span class="lang-zh" style="display:none">用心打造的每一款 App</span><span class="lang-ja" style="display:none">一つひとつ、心を込めて</span></h1>
-    <p><span class="lang-en">From running art to smart wardrobes, solving real needs</span><span class="lang-zh" style="display:none">從跑步藝術到智慧衣櫃，每一款產品都專注於解決真實需求</span><span class="lang-ja" style="display:none">ランニングアートからスマートクローゼットまで、リアルなニーズに応えます</span></p>
+    <h1><span class="lang-en">Products & Services</span><span class="lang-zh" style="display:none">產品與服務</span><span class="lang-ja" style="display:none">製品とサービス</span></h1>
+    <p><span class="lang-en">From mobile apps to AI-powered restaurant solutions — technology that solves real problems</span><span class="lang-zh" style="display:none">從行動應用到 AI 餐飲解決方案 — 用科技解決真實問題</span><span class="lang-ja" style="display:none">モバイルアプリからAIレストランソリューションまで — テクノロジーで課題を解決</span></p>
+</div>
+
+<div class="cat-tabs">
+    <button class="cat-tab active" data-cat="all">
+        <span class="lang-en">All</span><span class="lang-zh" style="display:none">全部</span><span class="lang-ja" style="display:none">すべて</span>
+        <span class="tab-count">5</span>
+    </button>
+    <button class="cat-tab" data-cat="app">
+        <span class="tab-icon">&#9883;</span>
+        <span class="lang-en">APP</span><span class="lang-zh" style="display:none">APP 應用</span><span class="lang-ja" style="display:none">アプリ</span>
+        <span class="tab-count">4</span>
+    </button>
+    <button class="cat-tab" data-cat="ai">
+        <span class="tab-icon">&#9881;</span>
+        <span class="lang-en">AI F&B</span><span class="lang-zh" style="display:none">AI 餐飲</span><span class="lang-ja" style="display:none">AI 飲食</span>
+        <span class="tab-count">1</span>
+    </button>
 </div>
 
 <div class="products">
+
+    <!-- ===== APP 應用 ===== -->
+    <div class="products-section" data-section="app">
+    <div class="section-header">
+        <div class="section-icon app">&#128241;</div>
+        <div>
+            <div class="section-title"><span class="lang-en">Mobile Apps</span><span class="lang-zh" style="display:none">APP 應用</span><span class="lang-ja" style="display:none">モバイルアプリ</span></div>
+            <div class="section-subtitle"><span class="lang-en">Crafted apps solving real needs</span><span class="lang-zh" style="display:none">用心打造，解決真實需求</span><span class="lang-ja" style="display:none">一つひとつ、リアルなニーズに応える</span></div>
+        </div>
+    </div>
 
     <!-- Petit a Petit -->
     <div class="product-card">
@@ -190,6 +263,55 @@
             </ul>
         </div>
     </div>
+    </div>
+
+    <!-- ===== AI 餐飲 ===== -->
+    <div class="products-section" data-section="ai">
+    <div class="section-header">
+        <div class="section-icon ai">&#129302;</div>
+        <div>
+            <div class="section-title"><span class="lang-en">AI Restaurant Solutions</span><span class="lang-zh" style="display:none">AI 餐飲解決方案</span><span class="lang-ja" style="display:none">AI レストランソリューション</span></div>
+            <div class="section-subtitle"><span class="lang-en">Smart automation for food & beverage businesses</span><span class="lang-zh" style="display:none">餐飲智慧自動化，省時省錢省心</span><span class="lang-ja" style="display:none">飲食ビジネスのスマート自動化</span></div>
+        </div>
+    </div>
+
+    <div class="ai-highlight">
+        <div class="product-card">
+            <div class="product-body">
+                <div class="product-top">
+                    <h2 class="product-name"><span class="lang-en">AI Smart Ordering</span><span class="lang-zh" style="display:none">AI 智慧叫貨系統</span><span class="lang-ja" style="display:none">AI スマート発注システム</span></h2>
+                    <span class="product-status status-dev"><span class="lang-en">Building</span><span class="lang-zh" style="display:none">建置中</span><span class="lang-ja" style="display:none">構築中</span></span>
+                </div>
+                <p class="product-desc"><span class="lang-en">AI-powered automated ordering for restaurants. Every morning, receive a smart ordering suggestion on your phone — review it, tap confirm, done. From 30-60 minutes of daily inventory work to just 10 seconds.</span><span class="lang-zh" style="display:none">餐飲 AI 自動叫貨系統。每天早上手機收到叫貨建議，看一眼、按確認、搞定。把每天 30-60 分鐘的盤點叫貨，縮減為 10 秒。</span><span class="lang-ja" style="display:none">飲食店向けAI自動発注システム。毎朝スマホに発注提案が届き、確認してタップするだけ。毎日30〜60分の発注作業をわずか10秒に。</span></p>
+                <ul class="product-features">
+                    <li><span class="lang-en">AI predicts what you need, before you run out</span><span class="lang-zh" style="display:none">AI 預測食材需求，不再缺貨也不浪費</span><span class="lang-ja" style="display:none">AIが必要な食材を予測、欠品もムダもなし</span></li>
+                    <li><span class="lang-en">Daily ordering suggestion sent to your phone</span><span class="lang-zh" style="display:none">每天自動推送叫貨建議到手機</span><span class="lang-ja" style="display:none">毎日スマホに発注提案を自動送信</span></li>
+                    <li><span class="lang-en">One-tap confirm, auto-notify suppliers</span><span class="lang-zh" style="display:none">一鍵確認，自動通知供應商</span><span class="lang-ja" style="display:none">ワンタップ確認、自動で仕入先に通知</span></li>
+                    <li><span class="lang-en">Supports LINE (Taiwan) & SMS (US)</span><span class="lang-zh" style="display:none">支援 LINE（台灣）與 SMS（美國）</span><span class="lang-ja" style="display:none">LINE（台湾）& SMS（米国）対応</span></li>
+                </ul>
+                <div class="ai-stats">
+                    <div class="ai-stat">
+                        <div class="ai-stat-value">10<span style="font-size:12px;font-weight:400">s</span></div>
+                        <div class="ai-stat-label"><span class="lang-en">Daily ordering</span><span class="lang-zh" style="display:none">每日叫貨</span><span class="lang-ja" style="display:none">毎日の発注</span></div>
+                    </div>
+                    <div class="ai-stat">
+                        <div class="ai-stat-value">30<span style="font-size:12px;font-weight:400">+</span></div>
+                        <div class="ai-stat-label"><span class="lang-en">Min saved/day</span><span class="lang-zh" style="display:none">分鐘/天省下</span><span class="lang-ja" style="display:none">分/日の節約</span></div>
+                    </div>
+                    <div class="ai-stat">
+                        <div class="ai-stat-value">0</div>
+                        <div class="ai-stat-label"><span class="lang-en">Manual work</span><span class="lang-zh" style="display:none">手動盤點</span><span class="lang-ja" style="display:none">手作業</span></div>
+                    </div>
+                    <div class="ai-stat">
+                        <div class="ai-stat-value">24<span style="font-size:12px;font-weight:400">/7</span></div>
+                        <div class="ai-stat-label"><span class="lang-en">Auto tracking</span><span class="lang-zh" style="display:none">全天候追蹤</span><span class="lang-ja" style="display:none">常時トラッキング</span></div>
+                    </div>
+                </div>
+                <a href="prompts.html" class="product-link" onclick="localStorage.setItem('cp_filter','ai-solutions')"><span class="lang-en">View Solutions</span><span class="lang-zh" style="display:none">查看方案詳情</span><span class="lang-ja" style="display:none">ソリューション詳細</span> &rarr;</a>
+            </div>
+        </div>
+    </div>
+    </div>
 
 </div>
 
@@ -204,7 +326,8 @@
 <script>
 let currentLang='en';
 function switchLanguage(lang){currentLang=lang;document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-ja').forEach(el=>el.style.display='none');document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('cp_lang',lang);document.documentElement.lang=lang==='zh'?'zh-Hant':lang==='ja'?'ja':'en';}
-document.addEventListener('DOMContentLoaded',()=>{switchLanguage(localStorage.getItem('cp_lang')||'en');document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));if(localStorage.getItem('cp_theme')==='dark')document.body.classList.add('dark-mode');});
+function filterCategory(cat){document.querySelectorAll('.cat-tab').forEach(t=>t.classList.toggle('active',t.dataset.cat===cat));document.querySelectorAll('.products-section').forEach(s=>{if(cat==='all'){s.classList.remove('hidden')}else{s.classList.toggle('hidden',s.dataset.section!==cat)}});}
+document.addEventListener('DOMContentLoaded',()=>{switchLanguage(localStorage.getItem('cp_lang')||'en');document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));document.querySelectorAll('.cat-tab').forEach(tab=>tab.addEventListener('click',()=>filterCategory(tab.dataset.cat)));if(localStorage.getItem('cp_theme')==='dark')document.body.classList.add('dark-mode');});
 </script>
 </body>
 </html>
