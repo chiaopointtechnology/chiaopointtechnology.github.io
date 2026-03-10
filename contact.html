@@ -203,16 +203,15 @@
             </div>
 
             <div class="form-row">
-                <label><span class="lang-en">Current POS System</span><span class="lang-zh" style="display:none">使用的 POS 系統</span><span class="lang-ja" style="display:none">ご利用のPOSシステム</span></label>
-                <select name="pos" data-i18n="select">
-                    <option value="" disabled selected data-en="Select" data-zh="請選擇" data-ja="選択">Select</option>
-                    <option value="iCHEF">iCHEF</option>
-                    <option value="肚肚 POS">肚肚 POS</option>
-                    <option value="Toast">Toast</option>
-                    <option value="Square">Square</option>
-                    <option value="Other" data-en="Other" data-zh="其他" data-ja="その他">Other</option>
-                    <option value="None" data-en="None" data-zh="沒有" data-ja="なし">None</option>
-                </select>
+                <label><span class="lang-en">Do you use a POS system?</span><span class="lang-zh" style="display:none">是否有使用 POS 系統？</span><span class="lang-ja" style="display:none">POSシステムをご利用ですか？</span></label>
+                <div class="radio-group">
+                    <label><input type="radio" name="has_pos" value="Yes" id="posYes"> <span><span class="lang-en">Yes</span><span class="lang-zh" style="display:none">有</span><span class="lang-ja" style="display:none">はい</span></span></label>
+                    <label><input type="radio" name="has_pos" value="No" id="posNo"> <span><span class="lang-en">No</span><span class="lang-zh" style="display:none">沒有</span><span class="lang-ja" style="display:none">いいえ</span></span></label>
+                </div>
+            </div>
+            <div class="form-row" id="posBrandRow" style="display:none">
+                <label><span class="lang-en">POS Brand</span><span class="lang-zh" style="display:none">POS 品牌</span><span class="lang-ja" style="display:none">POSブランド</span></label>
+                <input type="text" name="pos_brand" placeholder="">
             </div>
 
             <div class="form-row">
@@ -306,6 +305,9 @@ document.addEventListener('DOMContentLoaded',()=>{
             sel.appendChild(opt);
         });
     }
+    // POS brand toggle
+    document.getElementById('posYes').addEventListener('change',()=>{document.getElementById('posBrandRow').style.display='';});
+    document.getElementById('posNo').addEventListener('change',()=>{document.getElementById('posBrandRow').style.display='none';document.querySelector('input[name="pos_brand"]').value='';});
     document.getElementById('currencySelect').addEventListener('change',updateBudget);
     updateBudget();
     // Set redirect URL for FormSubmit
