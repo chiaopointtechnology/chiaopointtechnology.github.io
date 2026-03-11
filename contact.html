@@ -53,10 +53,6 @@
         .radio-group input[type="radio"]{accent-color:var(--text)}
         .radio-group input[type="radio"]:checked + span{font-weight:500}
 
-        .budget-row{display:flex;gap:10px}
-        .currency-select{width:140px!important;flex-shrink:0}
-        .budget-row select:last-child{flex:1}
-
         .form-submit{display:inline-flex;align-items:center;gap:8px;padding:14px 40px;background:var(--text);color:var(--white);border:none;border-radius:8px;font-family:var(--font-body);font-size:14px;font-weight:500;letter-spacing:1px;cursor:pointer;transition:all 0.3s;margin-top:8px}
         .form-submit:hover{background:#444;transform:translateY(-1px)}
 
@@ -182,58 +178,12 @@
                     <label><input type="radio" name="service" value="AI Smart Ordering" required> <span><span class="lang-en">AI Smart Ordering</span><span class="lang-zh" style="display:none">AI 智慧叫貨系統</span><span class="lang-ja" style="display:none">AI スマート発注</span></span></label>
                     <label><input type="radio" name="service" value="Brand App"> <span><span class="lang-en">Brand App</span><span class="lang-zh" style="display:none">品牌形象 App</span><span class="lang-ja" style="display:none">ブランドアプリ</span></span></label>
                     <label><input type="radio" name="service" value="Both"> <span><span class="lang-en">Both</span><span class="lang-zh" style="display:none">兩者都要</span><span class="lang-ja" style="display:none">両方</span></span></label>
+                    <label><input type="radio" name="service" value="Other"> <span><span class="lang-en">Other</span><span class="lang-zh" style="display:none">其他</span><span class="lang-ja" style="display:none">その他</span></span></label>
                 </div>
             </div>
         </div>
 
-        <!-- Section 3: Business Details -->
-        <div class="form-section">
-            <div class="form-section-title"><span class="lang-en">Business Details</span><span class="lang-zh" style="display:none">營業資訊</span><span class="lang-ja" style="display:none">事業詳細</span></div>
-
-            <div class="form-row">
-                <label><span class="lang-en">Number of Stores</span><span class="lang-zh" style="display:none">目前店數</span><span class="lang-ja" style="display:none">店舗数</span></label>
-                <select name="stores" data-i18n="select">
-                    <option value="" disabled selected data-en="Select" data-zh="請選擇" data-ja="選択">Select</option>
-                    <option value="1">1</option>
-                    <option value="2-5">2 - 5</option>
-                    <option value="6-10">6 - 10</option>
-                    <option value="11-30">11 - 30</option>
-                    <option value="30+">30+</option>
-                </select>
-            </div>
-
-            <div class="form-row">
-                <label><span class="lang-en">Do you use a POS system?</span><span class="lang-zh" style="display:none">是否有使用 POS 系統？</span><span class="lang-ja" style="display:none">POSシステムをご利用ですか？</span></label>
-                <div class="radio-group">
-                    <label><input type="radio" name="has_pos" value="Yes" id="posYes"> <span><span class="lang-en">Yes</span><span class="lang-zh" style="display:none">有</span><span class="lang-ja" style="display:none">はい</span></span></label>
-                    <label><input type="radio" name="has_pos" value="No" id="posNo"> <span><span class="lang-en">No</span><span class="lang-zh" style="display:none">沒有</span><span class="lang-ja" style="display:none">いいえ</span></span></label>
-                </div>
-            </div>
-            <div class="form-row" id="posBrandRow" style="display:none">
-                <label><span class="lang-en">POS Brand</span><span class="lang-zh" style="display:none">POS 品牌</span><span class="lang-ja" style="display:none">POSブランド</span></label>
-                <input type="text" name="pos_brand" placeholder="">
-            </div>
-
-            <div class="form-row">
-                <label><span class="lang-en">Budget Range</span><span class="lang-zh" style="display:none">預算範圍</span><span class="lang-ja" style="display:none">ご予算</span></label>
-                <div class="budget-row">
-                    <select name="currency" id="currencySelect" class="currency-select">
-                        <option value="TWD">TWD (NT$)</option>
-                        <option value="USD">USD ($)</option>
-                        <option value="JPY">JPY (¥)</option>
-                    </select>
-                    <select name="budget" id="budgetSelect" data-i18n="select">
-                        <option value="" disabled selected data-en="Select" data-zh="請選擇" data-ja="選択">Select</option>
-                        <option value="Under NT$5,000" data-en="Under NT$5,000" data-zh="NT$5,000 以下" data-ja="NT$5,000 以下">Under NT$5,000</option>
-                        <option value="NT$5,000 - 15,000">NT$5,000 - 15,000</option>
-                        <option value="NT$15,000+">NT$15,000+</option>
-                        <option value="Let's discuss" data-en="Let's discuss" data-zh="再討論" data-ja="要相談">Let's discuss</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 4: Problem Description -->
+        <!-- Section 3: Your Needs -->
         <div class="form-section">
             <div class="form-section-title"><span class="lang-en">Your Needs</span><span class="lang-zh" style="display:none">需求描述</span><span class="lang-ja" style="display:none">ご要望</span></div>
 
@@ -251,65 +201,20 @@
 
 <footer>
     <div class="footer-inner">
-        <div><div class="footer-info"><span class="lang-en">CHIAOPOINT Technology Co., Ltd.</span><span class="lang-zh" style="display:none">喬點科技有限公司</span><span class="lang-ja" style="display:none">チャオポイントテクノロジー株式会社</span><br>chiaopoint.technology@gmail.com</div></div>
+        <div><div class="footer-info"><span class="lang-en">CHIAOPOINT TECHNOLOGY LLC</span><span class="lang-zh" style="display:none">CHIAOPOINT TECHNOLOGY LLC</span><span class="lang-ja" style="display:none">CHIAOPOINT TECHNOLOGY LLC</span><br>chiaopoint.technology@gmail.com</div></div>
         <div class="footer-links"><a href="index.html"><span class="lang-en">Home</span><span class="lang-zh" style="display:none">首頁</span><span class="lang-ja" style="display:none">ホーム</span></a><a href="privacy.html"><span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span></a><a href="terms.html"><span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span></a></div>
     </div>
-    <p class="footer-copy">&copy; 2026 CHIAOPOINT Technology Co., Ltd. All rights reserved.</p>
+    <p class="footer-copy">&copy; 2026 CHIAOPOINT TECHNOLOGY LLC All rights reserved.</p>
 </footer>
 
 <script>
 let currentLang='en';
-function switchLanguage(lang){currentLang=lang;document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-ja').forEach(el=>el.style.display='none');document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('cp_lang',lang);document.documentElement.lang=lang==='zh'?'zh-Hant':lang==='ja'?'ja':'en';document.querySelectorAll('option[data-'+lang+']').forEach(opt=>{opt.textContent=opt.getAttribute('data-'+lang);});if(typeof updateBudget==='function')updateBudget();}
+function switchLanguage(lang){currentLang=lang;document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');document.querySelectorAll('.lang-ja').forEach(el=>el.style.display='none');document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));localStorage.setItem('cp_lang',lang);document.documentElement.lang=lang==='zh'?'zh-Hant':lang==='ja'?'ja':'en';document.querySelectorAll('option[data-'+lang+']').forEach(opt=>{opt.textContent=opt.getAttribute('data-'+lang);});}
 document.addEventListener('DOMContentLoaded',()=>{
     switchLanguage(localStorage.getItem('cp_lang')||'en');
     document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));
     document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));
     if(localStorage.getItem('cp_theme')==='dark')document.body.classList.add('dark-mode');
-    // Currency-based budget options
-    const budgetData={
-        TWD:[
-            {value:'',text:{en:'Select',zh:'請選擇',ja:'選択'},disabled:true},
-            {value:'Under NT$5,000',text:{en:'Under NT$5,000',zh:'NT$5,000 以下',ja:'NT$5,000 以下'}},
-            {value:'NT$5,000 - 15,000',text:{en:'NT$5,000 - 15,000',zh:'NT$5,000 - 15,000',ja:'NT$5,000 - 15,000'}},
-            {value:'NT$15,000+',text:{en:'NT$15,000+',zh:'NT$15,000+',ja:'NT$15,000+'}},
-            {value:"Let's discuss",text:{en:"Let's discuss",zh:'再討論',ja:'要相談'}}
-        ],
-        USD:[
-            {value:'',text:{en:'Select',zh:'請選擇',ja:'選択'},disabled:true},
-            {value:'Under $500',text:{en:'Under $500',zh:'$500 以下',ja:'$500 以下'}},
-            {value:'$500 - $1,500',text:{en:'$500 - $1,500',zh:'$500 - $1,500',ja:'$500 - $1,500'}},
-            {value:'$1,500+',text:{en:'$1,500+',zh:'$1,500+',ja:'$1,500+'}},
-            {value:"Let's discuss",text:{en:"Let's discuss",zh:'再討論',ja:'要相談'}}
-        ],
-        JPY:[
-            {value:'',text:{en:'Select',zh:'請選擇',ja:'選択'},disabled:true},
-            {value:'Under ¥50,000',text:{en:'Under ¥50,000',zh:'¥50,000 以下',ja:'¥50,000 以下'}},
-            {value:'¥50,000 - ¥150,000',text:{en:'¥50,000 - ¥150,000',zh:'¥50,000 - ¥150,000',ja:'¥50,000 - ¥150,000'}},
-            {value:'¥150,000+',text:{en:'¥150,000+',zh:'¥150,000+',ja:'¥150,000+'}},
-            {value:"Let's discuss",text:{en:"Let's discuss",zh:'再討論',ja:'要相談'}}
-        ]
-    };
-    function updateBudget(){
-        const cur=document.getElementById('currencySelect').value;
-        const sel=document.getElementById('budgetSelect');
-        const opts=budgetData[cur];
-        sel.innerHTML='';
-        opts.forEach(o=>{
-            const opt=document.createElement('option');
-            opt.value=o.value;
-            opt.textContent=o.text[currentLang]||o.text.en;
-            if(o.disabled){opt.disabled=true;opt.selected=true;}
-            opt.setAttribute('data-en',o.text.en);
-            opt.setAttribute('data-zh',o.text.zh);
-            opt.setAttribute('data-ja',o.text.ja);
-            sel.appendChild(opt);
-        });
-    }
-    // POS brand toggle
-    document.getElementById('posYes').addEventListener('change',()=>{document.getElementById('posBrandRow').style.display='';});
-    document.getElementById('posNo').addEventListener('change',()=>{document.getElementById('posBrandRow').style.display='none';document.querySelector('input[name="pos_brand"]').value='';});
-    document.getElementById('currencySelect').addEventListener('change',updateBudget);
-    updateBudget();
     // Set redirect URL for FormSubmit
     document.getElementById('formNext').value=window.location.href.split('?')[0]+'?sent=1';
     // Show success message if redirected back

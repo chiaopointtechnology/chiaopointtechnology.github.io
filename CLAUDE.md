@@ -2,7 +2,7 @@
 
 ## 專案概述
 
-**喬點科技 ChiaoPoint Technology** — AI 公司組織規劃與工具
+**喬點科技 CHIAOPOINT TECHNOLOGY LLC** — AI 公司組織規劃與工具（Wyoming LLC）
 
 ### 網站（GitHub Pages）
 - 帳號：`chiaopointtechnology`
