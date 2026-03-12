@@ -20,9 +20,33 @@
         .bg-chiao-teal { background-color: #9bc6bd; }
         .text-pretty { text-wrap: pretty; }
 
-        /* Logo 尺寸優化 */
         .logo-img { height: 40px; width: auto; object-fit: contain; }
         @media (min-width: 768px) { .logo-img { height: 50px; } }
+
+        /* 滑動頁面 Overlay 樣式 */
+        .slide-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 100;
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
+            overflow-y: auto;
+        }
+        .slide-overlay.active {
+            transform: translateY(0);
+        }
+
+        /* 法律文字排版 */
+        .legal-text h2 { color: #0f172a; font-weight: 700; margin-top: 2.5rem; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; font-size: 1.1rem; border-left: 4px solid #f292b1; padding-left: 1rem; }
+        .legal-text p { margin-bottom: 1.25rem; color: #475569; line-height: 1.8; }
+        .legal-text strong { color: #1e293b; }
+        .legal-text ul { margin-bottom: 1.5rem; }
+        .legal-text li { margin-bottom: 0.75rem; padding-left: 1.5rem; position: relative; color: #475569; }
+        .legal-text li::before { content: "•"; color: #9bc6bd; position: absolute; left: 0; font-weight: bold; }
     </style>
 </head>
 <body class="bg-white text-slate-900">
@@ -30,9 +54,7 @@
     <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-50">
         <div class="flex justify-between items-center px-8 md:px-12 py-5 max-w-7xl mx-auto">
             <div class="flex items-center">
-                <a href="index.html">
-                    <img src="LOGO.png" alt="CHIAOPOINT" class="logo-img">
-                </a>
+                <img src="LOGO.png" alt="CHIAOPOINT" class="logo-img cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
             </div>
             <div class="hidden md:flex space-x-12 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
                 <a href="#mission" class="hover:text-[#f292b1] transition">Mission</a>
@@ -42,91 +64,214 @@
         </div>
     </nav>
 
-    <header class="px-8 pt-24 pb-20 max-w-7xl mx-auto">
-        <div class="max-w-4xl">
-            <p class="text-[11px] font-bold tracking-[0.4em] text-slate-400 uppercase mb-4 text-pretty">TECHNOLOGY LLC</p>
-            <h1 class="text-5xl md:text-8xl font-extrabold leading-[1.1] tracking-tighter mb-10 text-slate-900 text-pretty">
-                Innovating for <br>
-                <span class="chiao-pink">Human</span> <span class="chiao-teal">Freedom</span>.
-            </h1>
-            <p class="text-xl md:text-2xl text-slate-500 font-light leading-relaxed max-w-2xl text-pretty">
-                A US-based tech collective specializing in predictive AI solutions and artistic mobile engineering. We build the infrastructure that buys you back your time.
-            </p>
-        </div>
-    </header>
-
-    <section id="mission" class="px-8 py-32 bg-slate-50 text-pretty">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="w-16 h-1 bg-gradient-to-r from-chiao-pink to-chiao-teal mx-auto mb-16 rounded-full"></div>
-
-            <h2 class="text-xs font-bold tracking-[0.6em] text-slate-400 uppercase mb-12">CEO's Vision</h2>
-
-            <p class="text-3xl md:text-5xl font-light leading-tight text-slate-900 mb-10 px-4">
-                "The ultimate mission of AI is not to replace human productivity, but to <span class="chiao-pink font-semibold">liberate human vitality</span>."
-            </p>
-
-            <p class="text-xl md:text-2xl font-light leading-relaxed text-slate-600 italic mb-16 px-6">
-                We build intelligent tools to return time to life—empowering everyone to reclaim the freedom to explore the world, the right to health, and the purest moments with family.
-            </p>
-
-            <div class="mt-20">
-                <p class="text-sm font-bold tracking-[0.4em] text-slate-900 uppercase">Efficiency for freedom.</p>
-                <p class="mt-4 text-xs text-slate-400 uppercase tracking-widest font-bold">— CHIAO, Founder & CEO</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="divisions" class="px-8 py-32 max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-20">
-            <div class="group">
-                <div class="mb-10 w-16 h-1 bg-chiao-teal rounded-full"></div>
-                <h3 class="text-3xl font-bold mb-6 tracking-tight text-slate-900">AI Solutions</h3>
-                <p class="text-lg text-slate-500 font-light leading-relaxed mb-10 text-pretty">
-                    We deploy predictive algorithms to optimize operational efficiency. Our flagship, <strong>SnapStock AI</strong>, redefines supply chain management for independent restaurants, converting hour-long manual checks into 10-second confirmations.
+    <main>
+        <header class="px-8 pt-24 pb-20 max-w-7xl mx-auto">
+            <div class="max-w-4xl">
+                <p class="text-[11px] font-bold tracking-[0.4em] text-slate-400 uppercase mb-4">TECHNOLOGY LLC</p>
+                <h1 class="text-5xl md:text-8xl font-extrabold leading-[1.1] tracking-tighter mb-10 text-slate-900 text-pretty">
+                    Innovating for <br>
+                    <span class="chiao-pink">Human</span> <span class="chiao-teal">Freedom</span>.
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-500 font-light leading-relaxed max-w-2xl text-pretty">
+                    A US-based tech collective specializing in predictive AI solutions and artistic mobile engineering. We build the infrastructure that buys you back your time.
                 </p>
-                <a href="snapstock-landing.html" class="inline-flex items-center text-xs font-bold uppercase tracking-widest text-slate-900 border-b-2 border-chiao-teal pb-1 hover:text-chiao-teal transition-all">
-                    Launch SnapStock AI
-                </a>
             </div>
+        </header>
 
-            <div class="group">
-                <div class="mb-10 w-16 h-1 bg-chiao-pink rounded-full"></div>
-                <h3 class="text-3xl font-bold mb-6 tracking-tight text-slate-900">App Development</h3>
-                <p class="text-lg text-slate-500 font-light leading-relaxed mb-10 text-pretty">
-                    ChiaoPoint Labs explores the intersection of fitness and digital expression. Our application, <strong>Petit à Petit</strong>, transforms running trajectories into generative digital masterpieces, encouraging a healthier and more inspired lifestyle.
+        <section id="mission" class="px-8 py-32 bg-slate-50 text-pretty text-center">
+            <div class="max-w-4xl mx-auto">
+                <div class="w-16 h-1 bg-gradient-to-r from-chiao-pink to-chiao-teal mx-auto mb-16 rounded-full"></div>
+                <h2 class="text-xs font-bold tracking-[0.6em] text-slate-400 uppercase mb-12">CEO's Vision</h2>
+                <p class="text-3xl md:text-5xl font-light leading-tight text-slate-900 mb-10 px-4">
+                    "The ultimate mission of AI is not to replace human productivity, but to <span class="chiao-pink font-semibold">liberate human vitality</span>."
                 </p>
-                <a href="https://apps.apple.com/us/app/petit-a-petit-running-art/id6758299890" target="_blank" class="inline-flex items-center text-xs font-bold uppercase tracking-widest text-slate-900 border-b-2 border-chiao-pink pb-1 hover:text-chiao-pink transition-all">
-                    View on App Store
-                </a>
+                <p class="text-xl md:text-2xl font-light leading-relaxed text-slate-500 italic mb-16 px-6">
+                    We build intelligent tools to return time to life—empowering everyone to reclaim the freedom to explore the world, the right to health, and the purest moments with family.
+                </p>
+                <div class="mt-20">
+                    <p class="text-sm font-bold tracking-[0.4em] text-slate-900 uppercase">Efficiency for freedom.</p>
+                    <p class="mt-4 text-xs text-slate-400 uppercase tracking-widest font-bold">— CHIAO, Founder & CEO</p>
+                </div>
             </div>
+        </section>
+
+        <section id="divisions" class="px-8 py-32 max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-20">
+                <div class="group">
+                    <div class="mb-10 w-16 h-1 bg-chiao-teal rounded-full"></div>
+                    <h3 class="text-3xl font-bold mb-6 tracking-tight text-slate-900 uppercase">AI Solutions</h3>
+                    <p class="text-lg text-slate-500 font-light leading-relaxed mb-10">
+                        We deploy predictive algorithms to optimize operational efficiency. Our flagship, <strong>SnapStock AI</strong>, redefines supply chain management for independent restaurants.
+                    </p>
+                </div>
+                <div class="group">
+                    <div class="mb-10 w-16 h-1 bg-chiao-pink rounded-full"></div>
+                    <h3 class="text-3xl font-bold mb-6 tracking-tight text-slate-900 uppercase">App Development</h3>
+                    <p class="text-lg text-slate-500 font-light leading-relaxed mb-10">
+                        ChiaoPoint Labs explores the intersection of fitness and digital expression, creating tools designed for a healthier and more inspired lifestyle.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="overlay-privacy" class="slide-overlay">
+        <div class="sticky top-0 bg-white/90 backdrop-blur-md px-8 py-6 flex justify-between items-center border-b border-slate-50">
+            <span class="text-[10px] font-bold tracking-widest uppercase text-slate-400">Privacy Policy</span>
+            <button onclick="closeOverlay('privacy')" class="text-2xl font-light hover:text-chiao-pink transition">✕</button>
         </div>
-    </section>
+        <div class="max-w-3xl mx-auto px-8 py-20 legal-text text-pretty">
+            <h1 class="text-5xl font-extrabold mb-4 tracking-tighter">Privacy Policy</h1>
+            <p class="text-slate-400 text-xs mb-12 uppercase tracking-widest font-bold">Last updated: March 2026</p>
+            <p>CHIAOPOINT TECHNOLOGY LLC ("we", "us") values your privacy. This Privacy Policy applies to all apps we develop and operate.</p>
+
+            <h2>1. What We Collect</h2>
+            <p>We may collect the following data depending on the app features you use:</p>
+            <ul>
+                <li><strong>Location Data</strong> — For run tracking and weather queries. Used only when you authorize.</li>
+                <li><strong>Photos</strong> — For clothing photo storage. Stored only on your device or iCloud, never uploaded to our servers.</li>
+                <li><strong>Account Info</strong> — Email address (via Apple or Google sign-in) and anonymous user ID.</li>
+                <li><strong>Purchase Records</strong> — In-app purchase items, used only for feature unlock verification.</li>
+                <li><strong>Usage Data</strong> — App interactions and feature usage frequency (anonymized).</li>
+                <li><strong>Fitness Data</strong> — Running distance, time, and pace.</li>
+            </ul>
+
+            <h2>2. How We Use Data</h2>
+            <ul>
+                <li>Provide and maintain core app features (tracking, recommendations, sync)</li>
+                <li>Improve user experience and fix bugs</li>
+                <li>Analyze usage trends for product optimization (anonymized data)</li>
+            </ul>
+            <p>We do NOT sell your personal data to any third party.</p>
+            <p>We do NOT use your data for advertising.</p>
+
+            <h2>3. Data Storage & Security</h2>
+            <ul>
+                <li><strong>Local Storage</strong> — Data stored on your device (SwiftData / CoreData)</li>
+                <li><strong>Cloud Sync</strong> — Synced via Apple CloudKit or Firebase Firestore with encrypted transmission</li>
+                <li><strong>Photo Storage</strong> — Stored only on your device or iCloud, never on our servers</li>
+            </ul>
+
+            <h2>4. Third-Party Services</h2>
+            <p>Our apps may use the following third-party services, each with their own privacy policies:</p>
+            <ul>
+                <li>Apple CloudKit — iCloud data sync</li>
+                <li>Firebase — Cloud database, analytics, crash reporting</li>
+                <li>Open-Meteo — Weather API (no personal data collected)</li>
+                <li>Apple App Store — In-app purchase processing</li>
+            </ul>
+
+            <h2>5. Your Rights</h2>
+            <ul>
+                <li>Delete your account and all related data anytime (in app settings)</li>
+                <li>Disable cloud sync features</li>
+                <li>Revoke location, photo, or other permissions</li>
+                <li>Contact us to inquire about or delete your personal data</li>
+            </ul>
+
+            <h2>6. Children's Privacy</h2>
+            <p>Our services are not directed at children under 13. We do not knowingly collect personal data from children under 13. If you are a parent and discover your child has provided personal data, please contact us and we will delete it immediately.</p>
+
+            <h2>7. Policy Changes</h2>
+            <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated date.</p>
+
+            <h2>8. Contact Us</h2>
+            <p>CHIAOPOINT TECHNOLOGY LLC<br>Email: chiaopoint.technology@gmail.com</p>
+        </div>
+    </div>
+
+    <div id="overlay-terms" class="slide-overlay">
+        <div class="sticky top-0 bg-white/90 backdrop-blur-md px-8 py-6 flex justify-between items-center border-b border-slate-50">
+            <span class="text-[10px] font-bold tracking-widest uppercase text-slate-400">Terms of Service</span>
+            <button onclick="closeOverlay('terms')" class="text-2xl font-light hover:text-chiao-pink transition">✕</button>
+        </div>
+        <div class="max-w-3xl mx-auto px-8 py-20 legal-text text-pretty">
+            <h1 class="text-5xl font-extrabold mb-4 tracking-tighter">Terms of Service</h1>
+            <p class="text-slate-400 text-xs mb-12 uppercase tracking-widest font-bold">Last updated: March 2026</p>
+            <p>Welcome to the apps developed and operated by CHIAOPOINT TECHNOLOGY LLC ("we", "us"). By using our services, you agree to the following terms. These terms apply to all our apps and future products.</p>
+
+            <h2>1. Scope of Services</h2>
+            <ul>
+                <li>We provide iOS application software services</li>
+                <li>We reserve the right to modify, suspend, or terminate services at any time</li>
+                <li>We do not guarantee uninterrupted or error-free service</li>
+            </ul>
+
+            <h2>2. User Responsibilities</h2>
+            <ul>
+                <li>Be at least 13 years old (or legal age in your jurisdiction)</li>
+                <li>Provide truthful and accurate information</li>
+                <li>Not abuse the service or engage in illegal activities</li>
+                <li>Not reverse engineer, decompile, or attempt to extract source code</li>
+            </ul>
+
+            <h2>3. Payment Terms</h2>
+            <ul>
+                <li>In-app purchases are processed through Apple App Store</li>
+                <li>Non-consumable items (themes, stickers, Pro features) are permanent once purchased</li>
+                <li>Refund policy follows Apple App Store terms</li>
+                <li>We do not handle refund requests directly; please apply through Apple App Store</li>
+            </ul>
+
+            <h2>4. Intellectual Property</h2>
+            <ul>
+                <li>All app content (code, design, icons, text) is owned by CHIAOPOINT TECHNOLOGY LLC</li>
+                <li>User-generated content (run records, photos, outfit logs, etc.) belongs to you</li>
+                <li>Unauthorized copying, modification, or distribution of our app content is prohibited</li>
+            </ul>
+
+            <h2>5. Disclaimers</h2>
+            <ul>
+                <li>GPS location may have errors; do not rely solely on navigation features</li>
+                <li>We are not liable for any physical injuries from running or exercise</li>
+                <li>Weather recommendations and outfit suggestions are for reference only; accuracy not guaranteed</li>
+                <li>We do not guarantee permanent data storage; please back up important data</li>
+            </ul>
+
+            <h2>6. Account & Termination</h2>
+            <ul>
+                <li>You may delete your account anytime within the app to terminate services</li>
+                <li>We reserve the right to suspend accounts that violate these terms</li>
+                <li>After account termination, your cloud data will be deleted</li>
+            </ul>
+
+            <h2>7. Changes to Terms</h2>
+            <p>We may update these Terms of Service from time to time. Changes will be posted on this page with an updated "Last updated" date. Continued use of our services constitutes acceptance of the updated terms.</p>
+
+            <h2>8. Governing Law</h2>
+            <p>These terms are governed by and construed in accordance with the laws of the State of Wyoming, United States, without regard to its conflict of law provisions. For any disputes arising from these terms, both parties agree to submit to the exclusive jurisdiction of the state and federal courts located in the State of Wyoming.</p>
+
+            <h2>9. Contact Us</h2>
+            <p>CHIAOPOINT TECHNOLOGY LLC<br>Email: chiaopoint.technology@gmail.com</p>
+        </div>
+    </div>
 
     <footer id="contact" class="bg-white border-t border-slate-100 py-32 px-8">
-        <div class="max-w-7xl mx-auto flex flex-col items-center">
-
+        <div class="max-w-7xl mx-auto flex flex-col items-center text-center">
             <h2 class="text-xs font-bold tracking-[0.5em] text-slate-400 uppercase mb-8">Inquiries</h2>
-
-            <a href="mailto:CHIAOPOINT.TECHNOLOGY@gmail.com" class="inline-flex items-center justify-center px-10 py-5 font-bold text-white bg-slate-900 rounded-xl hover:bg-slate-800 transition shadow-lg mb-8">
-                Connect with our team
-            </a>
-
-            <p class="text-slate-400 text-xs mb-32">Based in Wyoming, USA. Serving globally.</p>
-
-            <div class="w-full pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-end text-[10px] tracking-[0.1em] text-slate-400 font-bold uppercase">
-
-                <div class="flex flex-col space-y-2 text-left">
+            <a href="mailto:CHIAOPOINT.TECHNOLOGY@gmail.com" class="inline-flex items-center justify-center px-10 py-5 font-bold text-white bg-slate-900 rounded-xl hover:bg-slate-800 transition shadow-lg mb-32">Connect with our team</a>
+            <div class="w-full pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-end text-[10px] tracking-[0.1em] text-slate-400 font-bold uppercase text-left">
+                <div class="flex flex-col space-y-2">
                     <p>© 2026 CHIAOPOINT TECHNOLOGY LLC</p>
-                    <p>Intelligent Living · Life Exploration <span class="mx-1 text-slate-200 font-light">|</span> Registered in Wyoming, USA</p>
+                    <p>Intelligent Living · Life Exploration | Registered in Wyoming, USA</p>
                 </div>
-
-                <div class="mt-6 md:mt-0 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 text-left md:text-right">
-                    <a href="privacy.html" class="hover:text-chiao-pink transition">Privacy Policy</a>
-                    <a href="terms.html" class="hover:text-chiao-pink transition">Terms of Service</a>
+                <div class="mt-6 md:mt-0 flex space-x-6">
+                    <button onclick="openOverlay('privacy')" class="hover:text-chiao-pink transition">Privacy Policy</button>
+                    <button onclick="openOverlay('terms')" class="hover:text-chiao-pink transition">Terms of Service</button>
                 </div>
             </div>
         </div>
     </footer>
 
+    <script>
+        function openOverlay(id) {
+            document.getElementById('overlay-' + id).classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeOverlay(id) {
+            document.getElementById('overlay-' + id).classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
 </body>
 </html>
