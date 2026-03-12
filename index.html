@@ -1,656 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <title>CHIAO.POINT(); — App Development & AI Solution</title>
-    <meta name="description" content="CHIAOPOINT Technology — App Development & AI Solution">
-    <meta property="og:title" content="CHIAO.POINT(); — CHIAOPOINT Technology">
-    <meta property="og:description" content="App Development & AI Solution">
-    <meta property="og:image" content="CPlogo4.png">
-    <link rel="icon" href="CPlogo4.png">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>CHIAOPOINT TECHNOLOGY LLC | Intelligent Living & Exploration</title>
+    <meta name="description" content="CHIAOPOINT Technology — Predictive AI Solutions & Artistic Mobile Engineering">
+    <meta property="og:title" content="CHIAOPOINT TECHNOLOGY LLC">
+    <meta property="og:description" content="Intelligent Living & Exploration">
+    <meta property="og:image" content="LOGO.png">
+    <link rel="icon" href="LOGO.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Outfit', sans-serif; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
+        .chiao-pink { color: #f292b1; }
+        .chiao-teal { color: #9bc6bd; }
+        .bg-chiao-pink { background-color: #f292b1; }
+        .bg-chiao-teal { background-color: #9bc6bd; }
+        .text-pretty { text-wrap: pretty; }
 
-        :root {
-            --white: #ffffff;
-            --bg: #fafafa;
-            --text: #222222;
-            --text-light: #888888;
-            --pink: #E8A0B4;
-            --mint: #8FBFB4;
-            --border: #e8e8e8;
-            --font-body: 'Roboto', 'Noto Sans TC', 'Noto Sans JP', sans-serif;
-            --font-mono: 'Space Mono', monospace;
-        }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--white);
-            color: var(--text);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* === NAV === */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 48px;
-            height: 72px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-logo {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        .nav-logo img {
-            height: 32px;
-            width: auto;
-        }
-
-        .nav-right { display: flex; align-items: center; gap: 36px; }
-
-        .nav-links { display: flex; align-items: center; gap: 32px; }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-light);
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover, .nav-links a.active { color: var(--text); }
-
-        .lang-switch { display: flex; gap: 4px; }
-        .lang-btn {
-            background: none;
-            border: 1px solid var(--border);
-            padding: 4px 10px;
-            font-size: 11px;
-            font-family: var(--font-body);
-            cursor: pointer;
-            color: var(--text-light);
-            transition: all 0.2s;
-            border-radius: 3px;
-        }
-        .lang-btn.active {
-            background: var(--text);
-            color: var(--white);
-            border-color: var(--text);
-        }
-
-        .menu-toggle { display: none; background: none; border: none; cursor: pointer; padding: 8px; }
-        .menu-toggle span { display: block; width: 22px; height: 1.5px; background: var(--text); margin: 5px 0; transition: 0.3s; }
-
-        /* === HERO === */
-        .hero {
-            min-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 120px 48px 60px;
-            position: relative;
-        }
-
-        .hero-logo-wrap {
-            position: relative;
-            display: inline-block;
-            width: 320px;
-            max-width: 80%;
-            margin-bottom: 32px;
-        }
-
-        .hero-logo {
-            display: block;
-            width: 100%;
-        }
-
-        .hero h1 {
-            font-size: 16px;
-            font-weight: 400;
-            color: var(--text-light);
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            margin-bottom: 32px;
-        }
-
-        .hero-line {
-            width: 36px;
-            height: 1px;
-            background: var(--border);
-            margin: 0 auto 24px;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 16px;
-            margin-top: 36px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 10px 28px;
-            font-family: var(--font-body);
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-decoration: none;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: none;
-            border-radius: 0;
-        }
-
-        .btn-dark {
-            background: var(--text);
-            color: var(--white);
-        }
-        .btn-dark:hover {
-            background: #444;
-        }
-
-        .btn-contact {
-            background: transparent;
-            color: var(--pink);
-            border: 1.5px solid var(--pink);
-            border-radius: 50px;
-            padding: 12px 36px;
-            font-size: 13px;
-            letter-spacing: 1.5px;
-            transition: all 0.3s;
-        }
-        .btn-contact:hover {
-            background: var(--pink);
-            color: #fff;
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text);
-            border: 1px solid var(--text);
-        }
-        .btn-outline:hover {
-            background: var(--text);
-            color: var(--white);
-        }
-
-        /* === SECTIONS === */
-        section {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 80px 48px;
-        }
-
-        .section-border {
-            border-top: 1px solid var(--border);
-        }
-
-        .section-num {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--pink);
-            letter-spacing: 2px;
-            margin-bottom: 16px;
-        }
-
-        .section-title {
-            font-size: clamp(22px, 3vw, 30px);
-            font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: 16px;
-            letter-spacing: -0.3px;
-        }
-
-        .section-desc {
-            font-size: 14px;
-            color: var(--text-light);
-            max-width: 480px;
-            line-height: 1.9;
-            font-weight: 300;
-        }
-
-        /* === ABOUT === */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 48px;
-            align-items: start;
-        }
-
-        /* === VALUES === */
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1px;
-            background: var(--border);
-            margin-top: 40px;
-        }
-
-        .value-card {
-            background: var(--white);
-            padding: 32px 28px;
-        }
-
-        .value-num {
-            font-family: var(--font-mono);
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--bg);
-            -webkit-text-stroke: 1px var(--border);
-            margin-bottom: 16px;
-        }
-
-        .value-card h3 {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .value-en {
-            font-size: 10px;
-            color: var(--mint);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 500;
-            margin-bottom: 14px;
-        }
-
-        .value-card p {
-            font-size: 13px;
-            color: var(--text-light);
-            line-height: 1.8;
-            font-weight: 300;
-        }
-
-        /* === FOOTER === */
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 64px 48px;
-        }
-
-        .footer-inner {
-            max-width: 900px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .footer-logo {
-            font-family: var(--font-mono);
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .footer-logo .cp-chiao { color: var(--pink); }
-        .footer-logo .cp-point { color: var(--mint); }
-
-        .footer-info { font-size: 13px; color: var(--text-light); line-height: 2; }
-
-        .footer-links { display: flex; gap: 40px; }
-        .footer-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-            transition: color 0.2s;
-        }
-        .footer-links a:hover { color: var(--text); }
-
-        .footer-copy {
-            margin-top: 48px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-            font-size: 12px;
-            color: var(--text-light);
-            text-align: center;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* === THEME TOGGLE === */
-        .theme-toggle-wrap {
-            position: absolute;
-            top: 78%;
-            left: 75%;
-            transform: translate(-50%, -50%);
-        }
-
-        .theme-toggle-label {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--text-light);
-        }
-
-        .theme-toggle {
-            display: inline-block;
-            position: relative;
-            width: 51px;
-            height: 31px;
-            cursor: pointer;
-        }
-
-        .theme-toggle input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: #e0e0e0;
-            border-radius: 31px;
-            transition: background 0.3s;
-        }
-
-        .toggle-slider::before {
-            content: '';
-            position: absolute;
-            width: 27px;
-            height: 27px;
-            left: 2px;
-            bottom: 2px;
-            background: #ffffff;
-            border-radius: 50%;
-            transition: transform 0.3s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-        }
-
-        .theme-toggle input:checked + .toggle-slider {
-            background: #89CFF0;
-        }
-
-        .theme-toggle input:checked + .toggle-slider::before {
-            transform: translateX(20px);
-        }
-
-        /* === DARK MODE === */
-        body.dark-mode {
-            background: #111111;
-            color: #e8e8e8;
-        }
-
-        body.dark-mode nav {
-            background: rgba(17,17,17,0.95);
-            border-bottom-color: #333;
-        }
-
-        body.dark-mode .nav-links a { color: #999; }
-        body.dark-mode .nav-links a:hover,
-        body.dark-mode .nav-links a.active { color: #e8e8e8; }
-
-        body.dark-mode .lang-btn { color: #999; border-color: #444; }
-        body.dark-mode .lang-btn.active { background: #e8e8e8; color: #111; border-color: #e8e8e8; }
-
-        body.dark-mode .nav-right.open { background: rgba(17,17,17,0.98); border-bottom-color: #333; }
-        body.dark-mode .menu-toggle span { background: #e8e8e8; }
-
-        body.dark-mode .section-border { border-top-color: #333; }
-        body.dark-mode .section-desc { color: #999; }
-        body.dark-mode .theme-toggle-label { color: #777; }
-
-        body.dark-mode .values-grid { background: #333; }
-        body.dark-mode .value-card { background: #111111; }
-        body.dark-mode .value-num { color: #1a1a1a; -webkit-text-stroke: 1px #333; }
-        body.dark-mode .value-card p { color: #999; }
-
-        body.dark-mode .btn-dark { background: #e8e8e8; color: #111; }
-        body.dark-mode .btn-dark:hover { background: #ccc; }
-
-        body.dark-mode footer { border-top-color: #333; }
-        body.dark-mode .footer-info { color: #999; }
-        body.dark-mode .footer-links a { color: #999; }
-        body.dark-mode .footer-links a:hover { color: #e8e8e8; }
-        body.dark-mode .footer-copy { color: #666; border-top-color: #333; }
-
-        body.dark-mode .nav-logo img { filter: brightness(0) invert(1); }
-        body.dark-mode .btn-contact:hover { background: var(--pink); border-color: var(--pink); color: #fff; }
-
-        /* === SCROLL ANIMATIONS === */
-        .slide-left, .slide-right, .slide-up {
-            opacity: 0;
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-        .slide-left { transform: translateX(-60px); }
-        .slide-right { transform: translateX(60px); }
-        .slide-up { transform: translateY(40px); }
-        .slide-left.visible, .slide-right.visible, .slide-up.visible {
-            opacity: 1;
-            transform: translate(0);
-        }
-
-        /* === RESPONSIVE === */
-        @media (max-width: 768px) {
-            .nav-right { display: none; }
-            .nav-right.open {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                top: 72px;
-                left: 0;
-                right: 0;
-                background: rgba(255,255,255,0.98);
-                padding: 32px 48px;
-                border-bottom: 1px solid var(--border);
-                gap: 24px;
-            }
-            .nav-links { flex-direction: column; gap: 20px; }
-            .menu-toggle { display: block; }
-            .nav-inner { padding: 0 24px; }
-            .hero { padding: 100px 24px 48px; min-height: 60vh; }
-            .hero-logo-wrap { width: 240px; }
-            .theme-toggle-wrap {
-                transform: translate(-50%, -50%) scale(0.8);
-            }
-            section { padding: 56px 24px; }
-            .about-grid { grid-template-columns: 1fr; gap: 40px; }
-            .values-grid { grid-template-columns: 1fr; }
-            .hero-cta { flex-direction: column; }
-            .footer-inner { flex-direction: column; gap: 32px; }
-            .footer-links { flex-direction: column; gap: 12px; }
-            footer { padding: 48px 24px; }
-        }
+        /* Logo 尺寸優化 */
+        .logo-img { height: 40px; width: auto; object-fit: contain; }
+        @media (min-width: 768px) { .logo-img { height: 50px; } }
     </style>
 </head>
-<body>
+<body class="bg-white text-slate-900">
 
-<nav>
-    <div class="nav-inner">
-        <a href="index.html" class="nav-logo">
-            <img src="nav-logo.png" alt="CHIAO.POINT();">
-        </a>
-        <div class="nav-right" id="navRight">
-            <div class="nav-links">
-                <a href="index.html" class="active">
-                    <span class="lang-en">Home</span><span class="lang-zh" style="display:none">首頁</span><span class="lang-ja" style="display:none">ホーム</span>
-                </a>
-                <a href="products.html">
-                    <span class="lang-en">Services</span><span class="lang-zh" style="display:none">產品服務</span><span class="lang-ja" style="display:none">サービス</span>
-                </a>
-                <a href="contact.html">
-                    <span class="lang-en">Consult</span><span class="lang-zh" style="display:none">諮詢</span><span class="lang-ja" style="display:none">お問い合わせ</span>
-                </a>
-                <a href="privacy.html">
-                    <span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span>
-                </a>
-                <a href="terms.html">
-                    <span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span>
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-50">
+        <div class="flex justify-between items-center px-8 md:px-12 py-5 max-w-7xl mx-auto">
+            <div class="flex items-center">
+                <a href="index.html">
+                    <img src="LOGO.png" alt="CHIAOPOINT" class="logo-img">
                 </a>
             </div>
-            <div class="lang-switch">
-                <button class="lang-btn active" data-lang="en">EN</button>
-                <button class="lang-btn" data-lang="zh">中</button>
-                <button class="lang-btn" data-lang="ja">日</button>
+            <div class="hidden md:flex space-x-12 text-[10px] font-bold uppercase tracking-[0.3em] text-slate-400">
+                <a href="#mission" class="hover:text-[#f292b1] transition">Mission</a>
+                <a href="#divisions" class="hover:text-[#f292b1] transition">Divisions</a>
+                <a href="#contact" class="hover:text-[#f292b1] transition">Contact</a>
             </div>
         </div>
-        <button class="menu-toggle" id="menuToggle" aria-label="Menu">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-</nav>
+    </nav>
 
-<!-- HERO -->
-<section class="hero">
-    <div class="hero-logo-wrap">
-        <img src="CPlogo4.png" alt="CHIAO.POINT();" class="hero-logo">
-        <div class="theme-toggle-wrap">
-            <label class="theme-toggle" aria-label="Toggle dark mode">
-                <input type="checkbox" id="themeToggle" checked>
-                <span class="toggle-slider"></span>
-            </label>
-        </div>
-    </div>
-</section>
-
-<!-- ABOUT -->
-<section class="section-border">
-    <div class="about-grid">
-        <div class="slide-left">
-            <h2 class="section-title">
-                <span class="lang-en">Technology Should<br>Enhance Life</span>
-                <span class="lang-zh" style="display:none">科技應該讓<br>生活更美好</span>
-                <span class="lang-ja" style="display:none">テクノロジーで<br>暮らしをもっと豊かに</span>
-            </h2>
-        </div>
-        <div class="slide-right">
-            <p class="section-desc">
-                <span class="lang-en">CHIAOPOINT focuses on iOS app development and helping enterprises adopt AI system solutions. From product design to technical implementation, we create simple yet efficient digital experiences driven by design thinking and user insights.</span>
-                <span class="lang-zh" style="display:none">喬點科技專注於開發 iOS 應用程式，同時協助企業導入 AI 系統解決方案。從產品設計到技術落地，我們以設計思維與用戶洞察為核心，為客戶創造簡單而高效的數位體驗。</span>
-                <span class="lang-ja" style="display:none">CHIAOPOINTはiOSアプリ開発に専念し、企業のAIソリューション導入を支援しています。プロダクトデザインから技術実装まで、デザイン思考とユーザーインサイトを軸に、シンプルで効率的なデジタル体験を創造します。</span>
+    <header class="px-8 pt-24 pb-20 max-w-7xl mx-auto">
+        <div class="max-w-4xl">
+            <p class="text-[11px] font-bold tracking-[0.4em] text-slate-400 uppercase mb-4 text-pretty">TECHNOLOGY LLC</p>
+            <h1 class="text-5xl md:text-8xl font-extrabold leading-[1.1] tracking-tighter mb-10 text-slate-900 text-pretty">
+                Innovating for <br>
+                <span class="chiao-pink">Human</span> <span class="chiao-teal">Freedom</span>.
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-500 font-light leading-relaxed max-w-2xl text-pretty">
+                A US-based tech collective specializing in predictive AI solutions and artistic mobile engineering. We build the infrastructure that buys you back your time.
             </p>
         </div>
-    </div>
-</section>
+    </header>
 
-<!-- VALUES -->
-<section class="section-border">
-    <h2 class="section-title slide-left">
-        <span class="lang-en">Core Values</span>
-        <span class="lang-zh" style="display:none">核心價值</span>
-        <span class="lang-ja" style="display:none">コアバリュー</span>
-    </h2>
-    <div class="values-grid">
-        <div class="value-card slide-up">
-            <div class="value-num">01</div>
-            <h3><span class="lang-en">Design-First</span><span class="lang-zh" style="display:none">專注美學</span><span class="lang-ja" style="display:none">デザイン・ファースト</span></h3>
-            <p class="value-en">Design-First</p>
-            <p><span class="lang-en">Design before code, aesthetics drive development. A great app should be a joy to use every moment.</span><span class="lang-zh" style="display:none">設計先於技術，美感驅動開發。好的 App 不只功能完善，更要讓人享受使用的每一刻。</span><span class="lang-ja" style="display:none">デザインをコードより先に、美意識が開発を駆動します。優れたアプリは機能だけでなく、使う喜びを届けます。</span></p>
-        </div>
-        <div class="value-card slide-up" style="transition-delay:0.15s">
-            <div class="value-num">02</div>
-            <h3><span class="lang-en">User-Centric</span><span class="lang-zh" style="display:none">用戶至上</span><span class="lang-ja" style="display:none">ユーザー中心</span></h3>
-            <p class="value-en">User-Centric</p>
-            <p><span class="lang-en">Deeply understand needs, build intuitive experiences. Every feature starts from how users feel.</span><span class="lang-zh" style="display:none">深入理解需求，打造直覺體驗。每一個功能、每一個動畫，都以用戶感受為出發點。</span><span class="lang-ja" style="display:none">ニーズを深く理解し、直感的な体験を構築。すべての機能はユーザーの感覚から始まります。</span></p>
-        </div>
-        <div class="value-card slide-up" style="transition-delay:0.3s">
-            <div class="value-num">03</div>
-            <h3><span class="lang-en">AI-Focused</span><span class="lang-zh" style="display:none">專注 AI 應用</span><span class="lang-ja" style="display:none">AI特化</span></h3>
-            <p class="value-en">AI-Focused</p>
-            <p><span class="lang-en">Combining AI technology with real-world needs, helping enterprises adopt intelligent solutions to boost efficiency and competitiveness.</span><span class="lang-zh" style="display:none">結合 AI 技術與實務需求，協助企業導入智慧化解決方案，提升營運效率與競爭力。</span><span class="lang-ja" style="display:none">AI技術と実務ニーズを融合し、企業のスマートソリューション導入を支援。効率と競争力を向上させます。</span></p>
-        </div>
-    </div>
-</section>
+    <section id="mission" class="px-8 py-32 bg-slate-50 text-pretty">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="w-16 h-1 bg-gradient-to-r from-chiao-pink to-chiao-teal mx-auto mb-16 rounded-full"></div>
 
-<!-- CONTACT -->
-<section class="section-border" style="text-align:center;padding:60px 48px">
-    <a href="mailto:chiaopoint.technology@gmail.com" class="btn btn-contact slide-up">
-        <span class="lang-en">Contact Us</span><span class="lang-zh" style="display:none">聯絡我們</span><span class="lang-ja" style="display:none">お問い合わせ</span>
-    </a>
-</section>
+            <h2 class="text-xs font-bold tracking-[0.6em] text-slate-400 uppercase mb-12">CEO's Vision</h2>
 
-<footer>
-    <div class="footer-inner">
-        <div>
-            <div class="footer-info">
-                <span class="lang-en">CHIAOPOINT TECHNOLOGY LLC</span><span class="lang-zh" style="display:none">CHIAOPOINT TECHNOLOGY LLC</span><span class="lang-ja" style="display:none">CHIAOPOINT TECHNOLOGY LLC</span>
+            <p class="text-3xl md:text-5xl font-light leading-tight text-slate-900 mb-10 px-4">
+                "The ultimate mission of AI is not to replace human productivity, but to <span class="chiao-pink font-semibold">liberate human vitality</span>."
+            </p>
+
+            <p class="text-xl md:text-2xl font-light leading-relaxed text-slate-600 italic mb-16 px-6">
+                We build intelligent tools to return time to life—empowering everyone to reclaim the freedom to explore the world, the right to health, and the purest moments with family.
+            </p>
+
+            <div class="mt-20">
+                <p class="text-sm font-bold tracking-[0.4em] text-slate-900 uppercase">Efficiency for freedom.</p>
+                <p class="mt-4 text-xs text-slate-400 uppercase tracking-widest font-bold">— CHIAO, Founder & CEO</p>
             </div>
         </div>
-        <div class="footer-links">
-            <a href="products.html"><span class="lang-en">Services</span><span class="lang-zh" style="display:none">產品服務</span><span class="lang-ja" style="display:none">サービス</span></a>
-            <a href="privacy.html"><span class="lang-en">Privacy</span><span class="lang-zh" style="display:none">隱私政策</span><span class="lang-ja" style="display:none">プライバシー</span></a>
-            <a href="terms.html"><span class="lang-en">Terms</span><span class="lang-zh" style="display:none">服務條款</span><span class="lang-ja" style="display:none">利用規約</span></a>
+    </section>
+
+    <section id="divisions" class="px-8 py-32 max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-20">
+            <div class="group">
+                <div class="mb-10 w-16 h-1 bg-chiao-teal rounded-full"></div>
+                <h3 class="text-3xl font-bold mb-6 tracking-tight text-slate-900">AI Solutions</h3>
+                <p class="text-lg text-slate-500 font-light leading-relaxed mb-10 text-pretty">
+                    We deploy predictive algorithms to optimize operational efficiency. Our flagship, <strong>SnapStock AI</strong>, redefines supply chain management for independent restaurants, converting hour-long manual checks into 10-second confirmations.
+                </p>
+                <a href="snapstock-landing.html" class="inline-flex items-center text-xs font-bold uppercase tracking-widest text-slate-900 border-b-2 border-chiao-teal pb-1 hover:text-chiao-teal transition-all">
+                    Launch SnapStock AI
+                </a>
+            </div>
+
+            <div class="group">
+                <div class="mb-10 w-16 h-1 bg-chiao-pink rounded-full"></div>
+                <h3 class="text-3xl font-bold mb-6 tracking-tight text-slate-900">App Development</h3>
+                <p class="text-lg text-slate-500 font-light leading-relaxed mb-10 text-pretty">
+                    ChiaoPoint Labs explores the intersection of fitness and digital expression. Our application, <strong>Petit à Petit</strong>, transforms running trajectories into generative digital masterpieces, encouraging a healthier and more inspired lifestyle.
+                </p>
+                <a href="https://apps.apple.com/us/app/petit-a-petit-running-art/id6758299890" target="_blank" class="inline-flex items-center text-xs font-bold uppercase tracking-widest text-slate-900 border-b-2 border-chiao-pink pb-1 hover:text-chiao-pink transition-all">
+                    View on App Store
+                </a>
+            </div>
         </div>
-    </div>
-    <p class="footer-copy">&copy; 2026 CHIAOPOINT TECHNOLOGY LLC All rights reserved.</p>
-</footer>
+    </section>
 
-<script>
-let currentLang='en';
-function switchLanguage(lang){
-    currentLang=lang;
-    document.querySelectorAll('.lang-en').forEach(el=>el.style.display='none');
-    document.querySelectorAll('.lang-zh').forEach(el=>el.style.display='none');
-    document.querySelectorAll('.lang-ja').forEach(el=>el.style.display='none');
-    document.querySelectorAll(`.lang-${lang}`).forEach(el=>{el.style.display=el.tagName==='SPAN'?'inline':'';});
-    document.querySelectorAll('.lang-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.lang===lang));
-    localStorage.setItem('cp_lang',lang);
-    document.documentElement.lang=lang==='zh'?'zh-Hant':lang==='ja'?'ja':'en';
-}
-document.addEventListener('DOMContentLoaded',()=>{
-    switchLanguage(localStorage.getItem('cp_lang')||'en');
-    document.querySelectorAll('.lang-btn').forEach(btn=>btn.addEventListener('click',()=>switchLanguage(btn.dataset.lang)));
-    document.getElementById('menuToggle').addEventListener('click',()=>document.getElementById('navRight').classList.toggle('open'));
+    <footer id="contact" class="bg-white border-t border-slate-100 py-32 px-8">
+        <div class="max-w-7xl mx-auto flex flex-col items-center">
 
-    // Scroll animations — only animate elements that enter viewport by scrolling
-    const animEls=document.querySelectorAll('.slide-left,.slide-right,.slide-up');
-    // Elements already in viewport on load: show immediately without animation
-    animEls.forEach(el=>{
-        const rect=el.getBoundingClientRect();
-        if(rect.top<window.innerHeight){el.style.transition='none';el.classList.add('visible');requestAnimationFrame(()=>requestAnimationFrame(()=>el.style.transition=''));}
-    });
-    // Elements below fold: animate on scroll
-    const observer=new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});
-    },{threshold:0.15});
-    animEls.forEach(el=>{if(!el.classList.contains('visible'))observer.observe(el);});
+            <h2 class="text-xs font-bold tracking-[0.5em] text-slate-400 uppercase mb-8">Inquiries</h2>
 
-    // Theme toggle: checked=ON=light, unchecked=OFF=dark
-    const toggle=document.getElementById('themeToggle');
-    const savedTheme=localStorage.getItem('cp_theme');
-    if(savedTheme==='dark'){
-        document.body.classList.add('dark-mode');
-        toggle.checked=false;
-    }
-    toggle.addEventListener('change',()=>{
-        if(toggle.checked){
-            document.body.classList.remove('dark-mode');
-            localStorage.setItem('cp_theme','light');
-        }else{
-            document.body.classList.add('dark-mode');
-            localStorage.setItem('cp_theme','dark');
-        }
-    });
-});
-</script>
+            <a href="mailto:CHIAOPOINT.TECHNOLOGY@gmail.com" class="inline-flex items-center justify-center px-10 py-5 font-bold text-white bg-slate-900 rounded-xl hover:bg-slate-800 transition shadow-lg mb-8">
+                Connect with our team
+            </a>
+
+            <p class="text-slate-400 text-xs mb-32">Based in Wyoming, USA. Serving globally.</p>
+
+            <div class="w-full pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-end text-[10px] tracking-[0.1em] text-slate-400 font-bold uppercase">
+
+                <div class="flex flex-col space-y-2 text-left">
+                    <p>© 2026 CHIAOPOINT TECHNOLOGY LLC</p>
+                    <p>Intelligent Living · Life Exploration <span class="mx-1 text-slate-200 font-light">|</span> Registered in Wyoming, USA</p>
+                </div>
+
+                <div class="mt-6 md:mt-0 flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-6 text-left md:text-right">
+                    <a href="privacy.html" class="hover:text-chiao-pink transition">Privacy Policy</a>
+                    <a href="terms.html" class="hover:text-chiao-pink transition">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
