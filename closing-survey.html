@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>打烊回報</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
+
+    .busy-option { transition: all 0.15s ease; }
+    .busy-option.selected { border-color: #1DB446; background: #e8f5e9; }
+    .busy-option:active { transform: scale(0.97); }
+
+    .product-chip { transition: all 0.15s ease; }
+    .product-chip.checked { border-color: #1DB446; background: #e8f5e9; }
+    .product-chip:active { transform: scale(0.97); }
+
+    .ingredient-row { transition: all 0.15s ease; }
+
+    .sub-option { transition: all 0.12s ease; }
+    .sub-option.active-low { border-color: #f59e0b; background: #fffbeb; color: #b45309; }
+    .sub-option.active-empty { border-color: #ef4444; background: #fef2f2; color: #dc2626; }
+
+    .submit-btn { transition: all 0.2s ease; }
+    .submit-btn:active:not(:disabled) { transform: scale(0.97); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .success-overlay {
+      position: fixed; inset: 0; background: rgba(255,255,255,0.95);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 100; animation: fadeIn 0.3s ease;
+    }
+    .success-check {
+      width: 80px; height: 80px; border-radius: 50%; background: #1DB446;
+      display: flex; align-items: center; justify-content: center;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+    .spinner {
+      width: 40px; height: 40px; border: 4px solid #e0e0e0;
+      border-top-color: #1DB446; border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .expand-arrow { transition: transform 0.2s ease; }
+    .expand-arrow.open { transform: rotate(180deg); }
+  </style>
+</head>
+<body class="min-h-screen pb-8">
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
+    <div class="spinner mb-4"></div>
+    <p class="text-gray-500 text-sm" id="loadingText">正在初始化...</p>
+  </div>
+
+  <!-- Error Screen -->
+  <div id="errorScreen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center px-6 hidden">
+    <div class="text-5xl mb-4">😥</div>
+    <p class="text-gray-700 text-center text-lg font-medium mb-2" id="errorTitle">載入失敗</p>
+    <p class="text-gray-500 text-center text-sm mb-6" id="errorMsg">請稍後再試</p>
+    <button onclick="location.reload()"
+      class="px-6 py-3 bg-[#1DB446] text-white rounded-xl font-medium text-base">
+      重新載入
+    </button>
+  </div>
+
+  <!-- Success Overlay -->
+  <div id="successOverlay" class="success-overlay hidden">
+    <div class="success-check mb-4">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+    </div>
+    <p class="text-xl font-bold text-gray-800 mb-1">已記錄！</p>
+    <p class="text-gray-500">感謝回報，辛苦了</p>
+  </div>
+
+  <!-- Main Content -->
+  <div id="mainContent" class="hidden">
+    <!-- Header -->
+    <div class="bg-[#1DB446] text-white px-5 pt-6 pb-5">
+      <p class="text-sm opacity-80 mb-1" id="headerDate"></p>
+      <h1 class="text-xl font-bold" id="headerShopName">打烊回報</h1>
+    </div>
+
+    <div class="px-4 -mt-3 space-y-4 pb-4">
+
+      <!-- Section 1: Busy Level -->
+      <div class="bg-white rounded-2xl shadow-sm p-5">
+        <h2 class="text-base font-bold text-gray-800 mb-3">今天生意如何？<span class="text-red-400 text-sm ml-1">*</span></h2>
+        <div class="grid grid-cols-2 gap-2" id="busyLevelContainer">
+          <label class="busy-option border-2 border-gray-200 rounded-xl p-3 flex items-center gap-2 cursor-pointer" data-value="slow">
+            <input type="radio" name="busy_level" value="slow" class="hidden">
+            <span class="text-2xl">😴</span>
+            <span class="text-sm font-medium text-gray-700">冷清</span>
+          </label>
+          <label class="busy-option border-2 border-gray-200 rounded-xl p-3 flex items-center gap-2 cursor-pointer" data-value="normal">
+            <input type="radio" name="busy_level" value="normal" class="hidden">
+            <span class="text-2xl">🙂</span>
+            <span class="text-sm font-medium text-gray-700">普通</span>
+          </label>
+          <label class="busy-option border-2 border-gray-200 rounded-xl p-3 flex items-center gap-2 cursor-pointer" data-value="busy">
+            <input type="radio" name="busy_level" value="busy" class="hidden">
+            <span class="text-2xl">😊</span>
+            <span class="text-sm font-medium text-gray-700">小忙</span>
+          </label>
+          <label class="busy-option border-2 border-gray-200 rounded-xl p-3 flex items-center gap-2 cursor-pointer" data-value="packed">
+            <input type="radio" name="busy_level" value="packed" class="hidden">
+            <span class="text-2xl">🔥</span>
+            <span class="text-sm font-medium text-gray-700">爆滿</span>
+          </label>
+        </div>
+        <p id="busyLevelError" class="text-red-400 text-xs mt-2 hidden">請選擇今天的生意狀況</p>
+      </div>
+
+      <!-- Section 2: Hot Products -->
+      <div class="bg-white rounded-2xl shadow-sm p-5">
+        <h2 class="text-base font-bold text-gray-800 mb-1">今天哪些產品賣特別好？</h2>
+        <p class="text-xs text-gray-400 mb-3">可複選，沒有特別的可跳過</p>
+        <div id="productsContainer"></div>
+      </div>
+
+      <!-- Section 3: Ingredients -->
+      <div class="bg-white rounded-2xl shadow-sm p-5">
+        <button type="button" id="ingredientToggle" class="w-full flex items-center justify-between" onclick="toggleIngredients()">
+          <div>
+            <h2 class="text-base font-bold text-gray-800 text-left">回報原料狀況</h2>
+            <p class="text-xs text-gray-400 mt-0.5">有快用完或已用完的原料再展開</p>
+          </div>
+          <svg class="expand-arrow w-5 h-5 text-gray-400" id="expandArrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div id="ingredientsContainer" class="hidden mt-4 space-y-2"></div>
+      </div>
+
+      <!-- Section 4: Note -->
+      <div class="bg-white rounded-2xl shadow-sm p-5">
+        <h2 class="text-base font-bold text-gray-800 mb-2">備註</h2>
+        <textarea id="noteInput" rows="2" placeholder="選填，例如：雞腿提早賣完、冰箱有異音..."
+          class="w-full border border-gray-200 rounded-xl p-3 text-sm text-gray-700 placeholder-gray-300 resize-none focus:outline-none focus:border-[#1DB446]"></textarea>
+      </div>
+
+      <!-- Submit -->
+      <button type="button" id="submitBtn" onclick="submitSurvey()" class="submit-btn w-full py-4 bg-[#1DB446] text-white rounded-2xl font-bold text-base shadow-lg shadow-green-200">
+        ✅ 送出打烊回報
+      </button>
+
+    </div>
+  </div>
+
+  <script>
+    // ==================== Config ====================
+    const API_BASE = 'https://n8n.snaporderai.com'; // 部署後替換為正式 URL
+    // 本地開發用: const API_BASE = 'http://localhost:5678';
+
+    // ==================== State ====================
+    let lineUserId = null;
+    let shopData = null;
+    let selectedBusyLevel = null;
+    let hotProducts = new Set();
+    let lowStockItems = {}; // { ingredient_id: 'low' | 'empty' }
+    let ingredientsExpanded = false;
+
+    // ==================== Init ====================
+    async function init() {
+      try {
+        updateLoading('正在連線 LINE...');
+        await liff.init({ liffId: 'LIFF_ID_PLACEHOLDER' });
+
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+
+        const profile = await liff.getProfile();
+        lineUserId = profile.userId;
+
+        updateLoading('正在載入店家資料...');
+        await loadShopData();
+
+        renderForm();
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
+      } catch (err) {
+        console.error('Init error:', err);
+        showError('初始化失敗', err.message || '請關閉後重新開啟');
+      }
+    }
+
+    function updateLoading(text) {
+      document.getElementById('loadingText').textContent = text;
+    }
+
+    function showError(title, msg) {
+      document.getElementById('loadingScreen').classList.add('hidden');
+      document.getElementById('errorTitle').textContent = title;
+      document.getElementById('errorMsg').textContent = msg;
+      document.getElementById('errorScreen').classList.remove('hidden');
+    }
+
+    // ==================== API ====================
+    async function loadShopData() {
+      const url = `${API_BASE}/webhook/closing-survey-data?user_id=${encodeURIComponent(lineUserId)}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`伺服器回應 ${res.status}`);
+      shopData = await res.json();
+    }
+
+    // ==================== Render ====================
+    function renderForm() {
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')}`;
+      const weekdays = ['日','一','二','三','四','五','六'];
+      document.getElementById('headerDate').textContent = `${dateStr}（${weekdays[now.getDay()]}）打烊回報`;
+      document.getElementById('headerShopName').textContent = shopData.shop_name || '打烊回報';
+
+      document.querySelectorAll('.busy-option').forEach(el => {
+        el.addEventListener('click', () => {
+          document.querySelectorAll('.busy-option').forEach(e => e.classList.remove('selected'));
+          el.classList.add('selected');
+          selectedBusyLevel = el.dataset.value;
+          document.getElementById('busyLevelError').classList.add('hidden');
+        });
+      });
+
+      renderProducts();
+      renderIngredients();
+    }
+
+    function renderProducts() {
+      const container = document.getElementById('productsContainer');
+      if (!shopData.products || shopData.products.length === 0) {
+        container.innerHTML = '<p class="text-sm text-gray-400">尚無產品資料</p>';
+        return;
+      }
+
+      const grouped = {};
+      shopData.products.forEach(p => {
+        const cat = p.category || '其他';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(p);
+      });
+
+      let html = '';
+      Object.entries(grouped).forEach(([category, products]) => {
+        html += `<p class="text-xs font-medium text-gray-400 mb-2 mt-3 first:mt-0">${category}</p>`;
+        html += '<div class="flex flex-wrap gap-2 mb-2">';
+        products.forEach(p => {
+          html += `
+            <label class="product-chip border-2 border-gray-200 rounded-xl px-3 py-2 cursor-pointer flex items-center gap-1.5"
+              data-pid="${p.product_id}" onclick="toggleProduct(this, '${p.product_id}')">
+              <span class="text-sm text-gray-700">${p.product_name}</span>
+              <span class="text-xs text-gray-400">$${p.price}</span>
+            </label>`;
+        });
+        html += '</div>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    function toggleProduct(el, productId) {
+      if (hotProducts.has(productId)) {
+        hotProducts.delete(productId);
+        el.classList.remove('checked');
+      } else {
+        hotProducts.add(productId);
+        el.classList.add('checked');
+      }
+    }
+
+    function renderIngredients() {
+      const container = document.getElementById('ingredientsContainer');
+      if (!shopData.ingredients || shopData.ingredients.length === 0) {
+        document.getElementById('ingredientToggle').style.display = 'none';
+        return;
+      }
+
+      const categoryLabels = {
+        'meat': '肉類', 'seafood': '海鮮', 'vegetable': '蔬菜',
+        'grain': '穀物', 'seasoning': '調味料', 'beverage': '飲料', 'other': '其他'
+      };
+
+      const grouped = {};
+      shopData.ingredients.forEach(ing => {
+        const cat = ing.category || 'other';
+        if (!grouped[cat]) grouped[cat] = [];
+        grouped[cat].push(ing);
+      });
+
+      let html = '';
+      Object.entries(grouped).forEach(([cat, items]) => {
+        const label = categoryLabels[cat] || cat;
+        html += `<p class="text-xs font-medium text-gray-400 mb-1 mt-2 first:mt-0">${label}</p>`;
+        items.forEach(ing => {
+          html += `
+            <div class="ingredient-row border border-gray-100 rounded-xl p-3" id="ing-${ing.ingredient_id}">
+              <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">${ing.ingredient_name}<span class="text-xs text-gray-400 ml-1">(${ing.unit})</span></span>
+                <button type="button" class="text-xs px-3 py-1 rounded-lg border border-gray-200 text-gray-500"
+                  onclick="toggleIngredientAlert('${ing.ingredient_id}', this)">
+                  回報不足
+                </button>
+              </div>
+              <div class="sub-options hidden mt-2 flex gap-2" id="sub-${ing.ingredient_id}">
+                <button type="button" class="sub-option flex-1 text-center py-2 rounded-lg border-2 border-gray-200 text-sm"
+                  onclick="setIngredientStatus('${ing.ingredient_id}', 'low', this)">
+                  ⚠️ 快用完
+                </button>
+                <button type="button" class="sub-option flex-1 text-center py-2 rounded-lg border-2 border-gray-200 text-sm"
+                  onclick="setIngredientStatus('${ing.ingredient_id}', 'empty', this)">
+                  ❌ 已用完
+                </button>
+              </div>
+            </div>`;
+        });
+      });
+
+      container.innerHTML = html;
+    }
+
+    // ==================== Ingredient Interactions ====================
+    function toggleIngredients() {
+      ingredientsExpanded = !ingredientsExpanded;
+      document.getElementById('ingredientsContainer').classList.toggle('hidden', !ingredientsExpanded);
+      document.getElementById('expandArrow').classList.toggle('open', ingredientsExpanded);
+    }
+
+    function toggleIngredientAlert(ingredientId, btn) {
+      const subEl = document.getElementById(`sub-${ingredientId}`);
+      const isHidden = subEl.classList.contains('hidden');
+
+      if (isHidden) {
+        subEl.classList.remove('hidden');
+        btn.textContent = '取消';
+        btn.classList.add('text-red-400', 'border-red-200');
+        btn.classList.remove('text-gray-500', 'border-gray-200');
+      } else {
+        subEl.classList.add('hidden');
+        btn.textContent = '回報不足';
+        btn.classList.remove('text-red-400', 'border-red-200');
+        btn.classList.add('text-gray-500', 'border-gray-200');
+        delete lowStockItems[ingredientId];
+        subEl.querySelectorAll('.sub-option').forEach(s => {
+          s.classList.remove('active-low', 'active-empty');
+        });
+        document.getElementById(`ing-${ingredientId}`).classList.remove('border-yellow-300', 'border-red-300', 'bg-yellow-50', 'bg-red-50');
+        document.getElementById(`ing-${ingredientId}`).classList.add('border-gray-100');
+      }
+    }
+
+    function setIngredientStatus(ingredientId, status, btn) {
+      const subEl = document.getElementById(`sub-${ingredientId}`);
+      const row = document.getElementById(`ing-${ingredientId}`);
+
+      subEl.querySelectorAll('.sub-option').forEach(s => {
+        s.classList.remove('active-low', 'active-empty');
+      });
+
+      if (lowStockItems[ingredientId] === status) {
+        delete lowStockItems[ingredientId];
+        row.classList.remove('border-yellow-300', 'border-red-300', 'bg-yellow-50', 'bg-red-50');
+        row.classList.add('border-gray-100');
+        return;
+      }
+
+      lowStockItems[ingredientId] = status;
+      btn.classList.add(status === 'low' ? 'active-low' : 'active-empty');
+
+      row.classList.remove('border-gray-100', 'border-yellow-300', 'border-red-300', 'bg-yellow-50', 'bg-red-50');
+      if (status === 'low') {
+        row.classList.add('border-yellow-300', 'bg-yellow-50');
+      } else {
+        row.classList.add('border-red-300', 'bg-red-50');
+      }
+    }
+
+    // ==================== Submit ====================
+    async function submitSurvey() {
+      if (!selectedBusyLevel) {
+        document.getElementById('busyLevelError').classList.remove('hidden');
+        document.querySelector('.busy-option').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = '送出中...';
+
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const dateStr = `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())}`;
+      const tzOffset = -now.getTimezoneOffset();
+      const tzSign = tzOffset >= 0 ? '+' : '-';
+      const tzH = pad(Math.floor(Math.abs(tzOffset) / 60));
+      const tzM = pad(Math.abs(tzOffset) % 60);
+      const isoStr = `${dateStr}T${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}${tzSign}${tzH}:${tzM}`;
+
+      const lowStockArray = Object.entries(lowStockItems).map(([id, status]) => ({
+        ingredient_id: id,
+        status: status
+      }));
+
+      const payload = {
+        shop_id: shopData.shop_id,
+        line_user_id: lineUserId,
+        date: dateStr,
+        busy_level: selectedBusyLevel,
+        hot_products: Array.from(hotProducts),
+        low_stock: lowStockArray,
+        note: document.getElementById('noteInput').value.trim(),
+        submitted_at: isoStr
+      };
+
+      try {
+        const res = await fetch(`${API_BASE}/webhook/closing-survey`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) throw new Error(`送出失敗 (${res.status})`);
+
+        document.getElementById('successOverlay').classList.remove('hidden');
+        setTimeout(() => {
+          if (liff.isInClient()) {
+            liff.closeWindow();
+          } else {
+            document.getElementById('successOverlay').querySelector('p:last-child').textContent = '可以關閉此頁面了';
+          }
+        }, 2000);
+
+      } catch (err) {
+        console.error('Submit error:', err);
+        alert('送出失敗，請再試一次\n' + (err.message || ''));
+        btn.disabled = false;
+        btn.textContent = '✅ 送出打烊回報';
+      }
+    }
+
+    // ==================== Start ====================
+    init();
+  </script>
+</body>
+</html>
