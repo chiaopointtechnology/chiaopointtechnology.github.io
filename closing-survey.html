@@ -174,7 +174,13 @@
       try {
         updateLoading('正在連線 LINE...');
         await liff.init({ liffId: '2009445264-zkCbEEcq' });
+      } catch (err) {
+        console.error('LIFF init error:', err);
+        showError('LIFF 初始化失敗', 'LIFF SDK 錯誤: ' + (err.message || '請確認 LIFF ID 設定'));
+        return;
+      }
 
+      try {
         if (!liff.isLoggedIn()) {
           liff.login();
           return;
@@ -190,8 +196,8 @@
         document.getElementById('loadingScreen').classList.add('hidden');
         document.getElementById('mainContent').classList.remove('hidden');
       } catch (err) {
-        console.error('Init error:', err);
-        showError('初始化失敗', err.message || '請關閉後重新開啟');
+        console.error('Data load error:', err);
+        showError('載入失敗', err.message || '請關閉後重新開啟');
       }
     }
 
