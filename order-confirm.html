@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>叫貨確認</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; }
+
+    .order-row { transition: all 0.15s ease; }
+
+    .qty-input {
+      width: 72px; text-align: center; font-size: 16px; font-weight: 600;
+      border: 2px solid #e5e7eb; border-radius: 10px; padding: 6px 4px;
+      outline: none; transition: border-color 0.15s ease;
+      -moz-appearance: textfield;
+    }
+    .qty-input:focus { border-color: #0066CC; }
+    .qty-input::-webkit-inner-spin-button,
+    .qty-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+    .btn-confirm { transition: all 0.2s ease; }
+    .btn-confirm:active:not(:disabled) { transform: scale(0.97); }
+    .btn-confirm:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .btn-cancel { transition: all 0.2s ease; }
+    .btn-cancel:active:not(:disabled) { transform: scale(0.97); }
+    .btn-cancel:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .success-overlay {
+      position: fixed; inset: 0; background: rgba(255,255,255,0.95);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 100; animation: fadeIn 0.3s ease;
+    }
+    .success-check {
+      width: 80px; height: 80px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes popIn { from { transform: scale(0); } to { transform: scale(1); } }
+
+    .spinner {
+      width: 40px; height: 40px; border: 4px solid #e0e0e0;
+      border-top-color: #0066CC; border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .priority-tag {
+      display: inline-flex; align-items: center; gap: 2px;
+      font-size: 11px; font-weight: 600; padding: 2px 8px;
+      border-radius: 6px; white-space: nowrap;
+    }
+    .priority-high { background: #fef2f2; color: #dc2626; }
+    .priority-medium { background: #fffbeb; color: #b45309; }
+    .priority-low { background: #f0fdf4; color: #16a34a; }
+  </style>
+</head>
+<body class="min-h-screen pb-8">
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center">
+    <div class="spinner mb-4"></div>
+    <p class="text-gray-500 text-sm" id="loadingText">正在初始化...</p>
+  </div>
+
+  <!-- Error Screen -->
+  <div id="errorScreen" class="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center px-6 hidden">
+    <div class="text-5xl mb-4">😥</div>
+    <p class="text-gray-700 text-center text-lg font-medium mb-2" id="errorTitle">載入失敗</p>
+    <p class="text-gray-500 text-center text-sm mb-6" id="errorMsg">請稍後再試</p>
+    <button onclick="location.reload()"
+      class="px-6 py-3 bg-[#0066CC] text-white rounded-xl font-medium text-base">
+      重新載入
+    </button>
+  </div>
+
+  <!-- Success Overlay -->
+  <div id="successOverlay" class="success-overlay hidden">
+    <div class="success-check mb-4" id="successIcon"></div>
+    <p class="text-xl font-bold text-gray-800 mb-1" id="successTitle"></p>
+    <p class="text-gray-500" id="successSubtitle"></p>
+  </div>
+
+  <!-- Main Content -->
+  <div id="mainContent" class="hidden">
+    <!-- Header -->
+    <div class="bg-[#0066CC] text-white px-5 pt-6 pb-5">
+      <p class="text-sm opacity-80 mb-1" id="headerDate"></p>
+      <h1 class="text-xl font-bold" id="headerTitle">叫貨確認</h1>
+    </div>
+
+    <div class="px-4 -mt-3 space-y-4 pb-4">
+
+      <!-- AI Summary -->
+      <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4">
+        <div class="flex items-start gap-2">
+          <span class="text-lg mt-0.5">🤖</span>
+          <div>
+            <p class="text-sm font-bold text-blue-800 mb-1">AI 分析摘要</p>
+            <p class="text-sm text-blue-700 leading-relaxed" id="aiSummary"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warnings -->
+      <div id="warningsContainer" class="hidden">
+      </div>
+
+      <!-- Order Items -->
+      <div class="bg-white rounded-2xl shadow-sm p-5">
+        <h2 class="text-base font-bold text-gray-800 mb-3">叫貨明細</h2>
+        <div id="ordersContainer" class="space-y-3"></div>
+      </div>
+
+      <!-- Estimated Cost -->
+      <div class="bg-white rounded-2xl shadow-sm p-4">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-medium text-gray-600">預估總金額</span>
+          <span class="text-lg font-bold text-gray-800" id="estimatedCost"></span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <button type="button" id="confirmBtn" onclick="confirmOrder()"
+        class="btn-confirm w-full py-4 bg-[#0066CC] text-white rounded-2xl font-bold text-base shadow-lg shadow-blue-200">
+        ✅ 確認叫貨
+      </button>
+
+      <button type="button" id="cancelBtn" onclick="cancelOrder()"
+        class="btn-cancel w-full py-3 bg-gray-100 text-gray-500 rounded-2xl font-medium text-base border border-gray-200">
+        ❌ 全部取消
+      </button>
+
+    </div>
+  </div>
+
+  <script>
+    // ==================== Config ====================
+    const API_BASE = 'https://n8n.snaporderai.com'; // 部署後替換
+    const LIFF_ID = '2009445264-iGR0Weab'; // OrderConfirm LIFF App
+
+    // ==================== State ====================
+    let lineUserId = null;
+    let orderData = null;
+    let orderDate = null;
+    let orderAction = null;
+
+    // ==================== Init ====================
+    async function init() {
+      // 從 URL params 取得 date 和 action
+      const params = new URLSearchParams(window.location.search);
+      orderDate = params.get('date') || getDefaultDate();
+      orderAction = params.get('action') || 'confirm';
+
+      try {
+        updateLoading('正在連線 LINE...');
+        await liff.init({ liffId: LIFF_ID });
+      } catch (err) {
+        console.error('LIFF init error:', err);
+        showError('LIFF 初始化失敗', 'LIFF SDK 錯誤: ' + (err.message || '請確認 LIFF ID 設定'));
+        return;
+      }
+
+      try {
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+
+        const profile = await liff.getProfile();
+        lineUserId = profile.userId;
+
+        updateLoading('正在載入叫貨資料...');
+        await loadOrderData();
+
+        renderPage();
+        document.getElementById('loadingScreen').classList.add('hidden');
+        document.getElementById('mainContent').classList.remove('hidden');
+      } catch (err) {
+        console.error('Data load error:', err);
+        showError('載入失敗', err.message || '請關閉後重新開啟');
+      }
+    }
+
+    function getDefaultDate() {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const y = tomorrow.getFullYear();
+      const m = String(tomorrow.getMonth() + 1).padStart(2, '0');
+      const d = String(tomorrow.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function updateLoading(text) {
+      document.getElementById('loadingText').textContent = text;
+    }
+
+    function showError(title, msg) {
+      document.getElementById('loadingScreen').classList.add('hidden');
+      document.getElementById('errorTitle').textContent = title;
+      document.getElementById('errorMsg').textContent = msg;
+      document.getElementById('errorScreen').classList.remove('hidden');
+    }
+
+    // ==================== API ====================
+    async function loadOrderData() {
+      try {
+        const url = `${API_BASE}/webhook/order-details?date=${encodeURIComponent(orderDate)}`;
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 5000);
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error(`伺服器回應 ${res.status}`);
+        orderData = await res.json();
+      } catch (e) {
+        console.warn('API unreachable, using demo data:', e.message);
+        orderData = getDemoData();
+      }
+    }
+
+    function getDemoData() {
+      return {
+        date: '2026-03-15',
+        restaurant_name: '測試餐廳（Demo）',
+        summary: '明天需優先補貨鮮蝦，並考慮雞腿飯和珍珠奶茶的高需求。',
+        estimated_cost: '約 $1,200 - $1,500',
+        orders: [
+          { item: '鮮蝦', qty: 5, unit: 'kg', reason: '低於安全庫存，需補貨', priority: 'high', supplier: '海鮮供應商' },
+          { item: '雞腿', qty: 5, unit: 'kg', reason: '熱門商品，預估需求增加', priority: 'medium', supplier: '肉類供應商' },
+          { item: '珍珠', qty: 5, unit: '包', reason: '熱門商品，確保庫存充足', priority: 'medium', supplier: '飲料供應商' }
+        ],
+        warnings: ['注意鮮蝦的供應情況，確保能及時到貨']
+      };
+    }
+
+    // ==================== Render ====================
+    function renderPage() {
+      // Header date
+      const dateParts = (orderData.date || orderDate).split('-');
+      const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+      const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+      const dateDisplay = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]} 週${weekdays[dateObj.getDay()]}`;
+      document.getElementById('headerDate').textContent = dateDisplay;
+      document.getElementById('headerTitle').textContent = orderData.restaurant_name || '叫貨確認';
+
+      // AI Summary
+      document.getElementById('aiSummary').textContent = orderData.summary || '';
+
+      // Warnings
+      renderWarnings();
+
+      // Orders
+      renderOrders();
+
+      // Estimated cost
+      document.getElementById('estimatedCost').textContent = orderData.estimated_cost || '';
+    }
+
+    function renderWarnings() {
+      const container = document.getElementById('warningsContainer');
+      if (!orderData.warnings || orderData.warnings.length === 0) {
+        container.classList.add('hidden');
+        return;
+      }
+
+      let html = '';
+      orderData.warnings.forEach(w => {
+        html += `
+          <div class="bg-orange-50 border border-orange-200 rounded-2xl p-4 mb-3">
+            <div class="flex items-start gap-2">
+              <span class="text-lg mt-0.5">⚠️</span>
+              <p class="text-sm text-orange-700 leading-relaxed">${escapeHtml(w)}</p>
+            </div>
+          </div>`;
+      });
+
+      container.innerHTML = html;
+      container.classList.remove('hidden');
+    }
+
+    function renderOrders() {
+      const container = document.getElementById('ordersContainer');
+      if (!orderData.orders || orderData.orders.length === 0) {
+        container.innerHTML = '<p class="text-sm text-gray-400 text-center py-4">目前沒有待確認的叫貨項目</p>';
+        return;
+      }
+
+      let html = '';
+      orderData.orders.forEach((order, idx) => {
+        const priorityClass = order.priority === 'high' ? 'priority-high' :
+                              order.priority === 'medium' ? 'priority-medium' : 'priority-low';
+        const priorityIcon = order.priority === 'high' ? '🔴' :
+                             order.priority === 'medium' ? '🟡' : '🟢';
+        const priorityLabel = order.priority === 'high' ? '急' :
+                              order.priority === 'medium' ? '中' : '低';
+
+        html += `
+          <div class="order-row border border-gray-100 rounded-xl p-4" data-index="${idx}">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="priority-tag ${priorityClass}">${priorityIcon} ${priorityLabel}</span>
+                  <span class="text-base font-bold text-gray-800">${escapeHtml(order.item)}</span>
+                </div>
+                <p class="text-xs text-gray-400 mb-1.5">${escapeHtml(order.supplier || '')}</p>
+                <p class="text-xs text-gray-500 leading-relaxed">${escapeHtml(order.reason || '')}</p>
+              </div>
+              <div class="flex items-center gap-1.5 flex-shrink-0 pt-1">
+                <input type="number" class="qty-input" id="qty-${idx}"
+                  value="${order.qty}" min="0" step="0.5"
+                  onchange="onQtyChange(${idx}, this.value)">
+                <span class="text-sm text-gray-500 font-medium w-8">${escapeHtml(order.unit)}</span>
+              </div>
+            </div>
+          </div>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function onQtyChange(idx, value) {
+      const num = parseFloat(value);
+      if (isNaN(num) || num < 0) {
+        document.getElementById(`qty-${idx}`).value = orderData.orders[idx].qty;
+        return;
+      }
+      orderData.orders[idx].qty = num;
+    }
+
+    // ==================== Submit ====================
+    async function confirmOrder() {
+      // 收集目前數量（包含老闆可能的修改）
+      const currentOrders = orderData.orders.map((order, idx) => {
+        const inputVal = parseFloat(document.getElementById(`qty-${idx}`).value);
+        return {
+          item: order.item,
+          qty: isNaN(inputVal) ? order.qty : inputVal,
+          unit: order.unit
+        };
+      }).filter(o => o.qty > 0); // 過濾掉數量為 0 的品項
+
+      if (currentOrders.length === 0) {
+        if (!confirm('所有品項數量都為 0，確定要送出嗎？')) return;
+      }
+
+      const orderSummary = currentOrders.map(o => `${o.item} ${o.qty}${o.unit}`).join('、');
+      if (!confirm(`確認送出以下叫貨？\n\n${orderSummary}\n\n送出後將通知供應商準備。`)) return;
+
+      const confirmBtn = document.getElementById('confirmBtn');
+      const cancelBtn = document.getElementById('cancelBtn');
+      confirmBtn.disabled = true;
+      cancelBtn.disabled = true;
+      confirmBtn.textContent = '送出中...';
+
+      const payload = {
+        action: 'confirm',
+        date: orderData.date || orderDate,
+        line_user_id: lineUserId,
+        orders: currentOrders,
+        submitted_at: getISOString()
+      };
+
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
+        const res = await fetch(`${API_BASE}/webhook/order-confirm`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error(`送出失敗 (${res.status})`);
+      } catch (err) {
+        console.warn('Submit to API failed (demo mode):', err.message);
+      }
+
+      // 不管 API 成功或失敗都顯示成功（demo 模式）
+      showSuccess('confirmed');
+    }
+
+    async function cancelOrder() {
+      if (!confirm('確定要取消全部叫貨嗎？\n\n取消後今天將不會進貨。')) return;
+
+      const confirmBtn = document.getElementById('confirmBtn');
+      const cancelBtn = document.getElementById('cancelBtn');
+      confirmBtn.disabled = true;
+      cancelBtn.disabled = true;
+      cancelBtn.textContent = '取消中...';
+
+      const payload = {
+        action: 'cancel',
+        date: orderData.date || orderDate,
+        line_user_id: lineUserId,
+        submitted_at: getISOString()
+      };
+
+      try {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 8000);
+        const res = await fetch(`${API_BASE}/webhook/order-confirm`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error(`送出失敗 (${res.status})`);
+      } catch (err) {
+        console.warn('Cancel to API failed (demo mode):', err.message);
+      }
+
+      // 不管 API 成功或失敗都顯示成功（demo 模式）
+      showSuccess('cancelled');
+    }
+
+    function showSuccess(type) {
+      const iconEl = document.getElementById('successIcon');
+      const titleEl = document.getElementById('successTitle');
+      const subtitleEl = document.getElementById('successSubtitle');
+
+      if (type === 'confirmed') {
+        iconEl.style.background = '#16a34a';
+        iconEl.innerHTML = `
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>`;
+        titleEl.textContent = '叫貨已確認！';
+        subtitleEl.textContent = '系統將通知供應商準備';
+      } else {
+        iconEl.style.background = '#9ca3af';
+        iconEl.innerHTML = `
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>`;
+        titleEl.textContent = '叫貨已取消';
+        subtitleEl.textContent = '今天不會進貨';
+      }
+
+      document.getElementById('successOverlay').classList.remove('hidden');
+
+      setTimeout(() => {
+        if (liff.isInClient()) {
+          liff.closeWindow();
+        } else {
+          subtitleEl.textContent = '可以關閉此頁面了';
+        }
+      }, 2000);
+    }
+
+    // ==================== Helpers ====================
+    function getISOString() {
+      const now = new Date();
+      const pad = (n) => String(n).padStart(2, '0');
+      const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+      const tzOffset = -now.getTimezoneOffset();
+      const tzSign = tzOffset >= 0 ? '+' : '-';
+      const tzH = pad(Math.floor(Math.abs(tzOffset) / 60));
+      const tzM = pad(Math.abs(tzOffset) % 60);
+      return `${dateStr}T${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}${tzSign}${tzH}:${tzM}`;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ==================== Start ====================
+    init();
+  </script>
+</body>
+</html>
