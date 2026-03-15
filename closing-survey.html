@@ -440,10 +440,14 @@
       const tzM = pad(Math.abs(tzOffset) % 60);
       const isoStr = `${dateStr}T${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}${tzSign}${tzH}:${tzM}`;
 
-      const lowStockArray = Object.entries(lowStockItems).map(([id, status]) => ({
-        ingredient_id: id,
-        status: status
-      }));
+      const lowStockArray = Object.entries(lowStockItems).map(([id, status]) => {
+        const ing = shopData.ingredients.find(i => i.ingredient_id === id);
+        return {
+          ingredient_id: id,
+          ingredient_name: ing ? ing.ingredient_name : id,
+          status: status
+        };
+      });
 
       const payload = {
         shop_id: shopData.shop_id,
