@@ -15,7 +15,8 @@
 |------|------|------|
 | `index.html` | 公司首頁（核心價值、聯絡方式、多語系 EN/中/日） | /index.html |
 | `products.html` | 產品展示（PAP、ClosetTime、CCeSIM、FoodMODAPP） | /products.html |
-| `prompts.html` | 方案中心（9 分類、50+ 方案模板與 AI 指令） | /prompts.html |
+| `prompts.html` | 方案中心（10 分類、70+ 方案模板與 AI 指令） | /prompts.html |
+| `snaporder-mindmap.html` | SnapOrder AI 互動式架構心智圖（單店版 vs 連鎖版） | /snaporder-mindmap.html |
 | `office.html` | 像素風格虛擬辦公室（RPG 動畫） | /office.html |
 | `privacy.html` | 隱私政策 | /privacy.html |
 | `terms.html` | 服務條款 | /terms.html |
@@ -32,6 +33,7 @@
 | 自動化流程 | n8n 工作流、批次處理、備份、Claude API |
 | Claude Code 指令 | /foodmod-single、/foodmod-chain、/new-view、/art、/list |
 | **AI 應用方案** | **餐飲 AI 智慧叫貨（架構、預測引擎、防範機制、LINE版、SMS版、Prompt）** |
+| **SnapOrder AI** | **專案架構（14張卡片：系統介紹、檔案結構、單店/連鎖架構、WF1-WF5、技術堆疊、資料結構、成本定價、市場策略、心智圖、開發教訓）** |
 | 學習專區 | Claude Code、Node.js、GitHub、API、Git、MCP、Hooks、SDK、Skills |
 
 ### n8n 自動化工作流（未部署）
