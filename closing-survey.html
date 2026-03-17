@@ -401,10 +401,9 @@
         s.classList.remove('active-low', 'active-empty');
       });
 
+      // 已選擇同狀態：不取消，保持選擇（防止誤觸取消）
       if (lowStockItems[ingredientId] === status) {
-        delete lowStockItems[ingredientId];
-        row.classList.remove('border-yellow-300', 'border-red-300', 'bg-yellow-50', 'bg-red-50');
-        row.classList.add('border-gray-100');
+        btn.classList.add(status === 'low' ? 'active-low' : 'active-empty');
         return;
       }
 
